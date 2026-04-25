@@ -36,84 +36,112 @@
   </nav>
 
   <main class="container">
-    <section class="stream-shell reveal home-live-shell" id="live">
-      <span class="kicker">Live en direct</span>
+    <section class="hero-shell reveal home-welcome-shell">
+      <span class="kicker">Bienvenue dans le hub</span>
       <hgroup>
-        <h2>Le live en premier</h2>
-        <h3>Le cœur du site, c’est le stream</h3>
+        <h2>Bienvenue sur le site du streamer Reddice</h2>
+        <h3>Un hub central autour du live, de la communauté, de l’univers geek et du cosplay</h3>
       </hgroup>
 
       <p class="lead">
-        Bienvenue dans le hub de Reddice. Ici, le live passe au centre,
-        avec l’accès direct aux réseaux et à la communauté.
+        Ce site regroupe l’essentiel de l’univers Reddice : le live Twitch en direct,
+        le chat, les accès communautaires, la bio, le livre d’or et le planning des streams.
+        Le but est simple : tout retrouver au même endroit, dans une ambiance cyberpunk
+        qui colle au stream.
       </p>
 
-      <div class="home-live-layout">
-        <div class="player-box home-player">
-          <iframe
-            id="twitch-player"
-            allowfullscreen="true"
-            scrolling="no"
-            title="Lecteur Twitch Reddice">
-          </iframe>
+      <div class="home-welcome-grid">
+        <article class="card reveal visible">
+          <h3>Live direct</h3>
+          <p>Le stream Twitch est intégré au cœur de la page d’accueil.</p>
+        </article>
+        <article class="card reveal visible">
+          <h3>Communauté</h3>
+          <p>Accès rapide à Discord, YouTube, Instagram et aux autres plateformes.</p>
+        </article>
+        <article class="card reveal visible">
+          <h3>Hub central</h3>
+          <p>La bio, le livre d’or, le planning et le contact restent accessibles en quelques clics.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="home-main-grid" style="margin-top: 2rem;">
+      <section class="stream-shell reveal home-live-shell" id="live">
+        <span class="section-chip">Live en direct</span>
+        <h3 style="margin-top:0; position:relative; z-index:1;">Le flux Twitch et le chat</h3>
+        <p class="muted">
+          Le live passe au centre du site pour que l’accueil soit directement orienté stream.
+        </p>
+
+        <div class="live-stack">
+          <div class="player-box home-player">
+            <iframe
+              id="twitch-player"
+              allowfullscreen="true"
+              scrolling="no"
+              title="Lecteur Twitch Reddice">
+            </iframe>
+          </div>
+
+          <div class="chat-box home-chat">
+            <iframe
+              id="twitch-chat"
+              scrolling="no"
+              title="Chat Twitch Reddice">
+            </iframe>
+          </div>
         </div>
 
-        <aside class="home-sidebar">
-          <article class="card reveal visible">
-            <h3>Accès rapide</h3>
-            <p>Le stream, la communauté et les plateformes du hub sont regroupés ici.</p>
-          </article>
+        <div class="embed-warning" id="embed-warning">
+          L’intégration Twitch a besoin d’un domaine ou d’un serveur local pour fonctionner correctement.
+        </div>
+      </section>
 
-          <div class="home-socials">
-            <a class="social reveal visible" data-tone="twitch" href="https://www.twitch.tv/reddice_stream" target="_blank">
-              <strong>Twitch</strong>
-              <span>La chaîne principale</span>
-            </a>
+      <aside class="panel-shell reveal home-social-shell">
+        <span class="section-chip">Réseaux & communauté</span>
+        <h3 style="margin-top:0; position:relative; z-index:1;">Rester connecté à l’univers Reddice</h3>
+        <p class="muted">
+          Tous les accès rapides sont regroupés ici dans une fenêtre séparée du live.
+        </p>
 
-            <a class="social reveal visible" data-tone="discord" href="https://discord.gg/vY8WJQcwPN" target="_blank">
-              <strong>Discord</strong>
-              <span>La communauté</span>
-            </a>
+        <div class="home-socials">
+          <a class="social reveal visible" data-tone="twitch" href="https://www.twitch.tv/reddice_stream" target="_blank">
+            <strong>Twitch</strong>
+            <span>La chaîne principale</span>
+          </a>
 
-            <a class="social reveal visible" data-tone="youtube" href="https://www.youtube.com/@reddice_geek9473" target="_blank">
-              <strong>YouTube</strong>
-              <span>Vidéos et replays</span>
-            </a>
+          <a class="social reveal visible" data-tone="discord" href="https://discord.gg/vY8WJQcwPN" target="_blank">
+            <strong>Discord</strong>
+            <span>La communauté</span>
+          </a>
 
-            <a class="social reveal visible" data-tone="insta" href="https://www.instagram.com/reddice.cos" target="_blank">
-              <strong>Instagram</strong>
-              <span>Cosplay et univers visuel</span>
-            </a>
+          <a class="social reveal visible" data-tone="youtube" href="https://www.youtube.com/@reddice_geek9473" target="_blank">
+            <strong>YouTube</strong>
+            <span>Vidéos et replays</span>
+          </a>
 
-            <a class="social reveal visible" data-tone="tiktok" href="https://www.tiktok.com/@reddice.geek" target="_blank">
-              <strong>TikTok</strong>
-              <span>Formats courts et extraits</span>
-            </a>
-          </div>
-        </aside>
-      </div>
+          <a class="social reveal visible" data-tone="insta" href="https://www.instagram.com/reddice.cos" target="_blank">
+            <strong>Instagram</strong>
+            <span>Cosplay et univers visuel</span>
+          </a>
 
-      <div class="chat-box home-chat">
-        <iframe
-          id="twitch-chat"
-          scrolling="no"
-          title="Chat Twitch Reddice">
-        </iframe>
-      </div>
-
-      <div class="embed-warning" id="embed-warning">
-        L’intégration Twitch a besoin d’un domaine ou d’un serveur local pour fonctionner correctement.
-      </div>
+          <a class="social reveal visible" data-tone="tiktok" href="https://www.tiktok.com/@reddice.geek" target="_blank">
+            <strong>TikTok</strong>
+            <span>Formats courts et extraits</span>
+          </a>
+        </div>
+      </aside>
     </section>
 
     <section class="hero-shell reveal" style="margin-top: 2rem;">
       <span class="section-chip">Entrées du hub</span>
-      <h3 style="margin-top:0; position:relative; z-index:1;">Le reste du site</h3>
+      <h3 style="margin-top:0; position:relative; z-index:1;">Explorer le reste du site</h3>
       <p class="muted">
-        L’accueil sert à entrer directement dans le live. Les autres pages gardent le reste de l’univers.
+        L’accueil met en avant le live, mais le reste de l’univers reste disponible juste en dessous.
       </p>
 
-      <div class="grid-3">
+      <div class="grid-4">
         <article class="card reveal">
           <h3>Bio</h3>
           <p>Retrouve la présentation complète de l’univers Reddice et de son identité.</p>
@@ -130,6 +158,12 @@
           <h3>Planning</h3>
           <p>Consulte le rythme du stream et l’historique récent des sessions Twitch.</p>
           <a href="planning.html" class="ghost-btn" style="margin-top: 0.9rem;">Voir le planning</a>
+        </article>
+
+        <article class="card reveal">
+          <h3>Contact</h3>
+          <p>Prépare un message, une demande de collab ou un contact direct.</p>
+          <a href="contact.html" class="ghost-btn" style="margin-top: 0.9rem;">Me contacter</a>
         </article>
       </div>
     </section>
