@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reddice // Planning</title>
+  <title>Reddice HUB // Planning</title>
   <meta name="description" content="Planning et historique des streams de Reddice." />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
@@ -16,23 +16,32 @@
   <div class="aurora"></div>
   <div class="aurora-2"></div>
 
-  <nav class="container-fluid">
-    <ul>
-      <li>
-        <strong>
-          <img src="https://cdn.streamelements.com/uploads/01kfvz4qzddskgzp8ecd95jxwh.webp" alt="Logo Reddice" class="nav-logo">
-          Reddice // Stream Hub
-        </strong>
-      </li>
-    </ul>
-    <ul>
-      <li><a href="index.html" data-nav="home">Accueil</a></li>
-      <li><a href="bio.html" data-nav="bio">Bio</a></li>
-      <li><a href="livre-or.html" data-nav="guestbook">Livre d’or</a></li>
-      <li><a href="planning.html" data-nav="planning">Planning</a></li>
-      <li><a href="contact.html" data-nav="contact">Contact</a></li>
-      <li><span class="stream-badge is-loading" data-stream-status>Checking</span></li>
-    </ul>
+  <header class="hub-header">
+    <div class="container hub-brand">
+      <img
+        src="https://cdn.streamelements.com/uploads/01kfvz4qzddskgzp8ecd95jxwh.webp"
+        alt="Logo Reddice"
+        class="hub-logo"
+      >
+      <span class="hub-overline">Bienvenue dans mon univers</span>
+      <h1 class="hub-title">Reddice HUB</h1>
+      <p class="hub-subtitle">
+        Le point d’accès central au live, à la communauté et à l’univers du stream.
+      </p>
+    </div>
+  </header>
+
+  <nav class="hub-nav-shell">
+    <div class="container">
+      <ul class="hub-nav">
+        <li><a href="index.html" class="hub-link" data-nav="home" data-text="Accueil">Accueil</a></li>
+        <li><a href="bio.html" class="hub-link" data-nav="bio" data-text="Bio">Bio</a></li>
+        <li><a href="livre-or.html" class="hub-link" data-nav="guestbook" data-text="Livre d’or">Livre d’or</a></li>
+        <li><a href="planning.html" class="hub-link" data-nav="planning" data-text="Planning">Planning</a></li>
+        <li><a href="contact.html" class="hub-link" data-nav="contact" data-text="Contact">Contact</a></li>
+        <li><span class="stream-badge is-loading" data-stream-status>Checking</span></li>
+      </ul>
+    </div>
   </nav>
 
   <main class="container">
@@ -40,12 +49,12 @@
       <span class="kicker">Planning sync</span>
       <hgroup>
         <h2>Rythme réel du stream</h2>
-        <h3>Les jours de stream en priorité, puis l’historique récent</h3>
+        <h3>Les jours de stream passent avant les stats secondaires</h3>
       </hgroup>
 
       <p class="lead">
-        Cette page récupère les derniers streams archivés de la chaîne pour montrer les jours où tu streams le plus,
-        un aperçu rapide du rythme global et les dernières rediffusions.
+        Cette page récupère les derniers streams archivés pour montrer d’abord les jours où je stream le plus,
+        puis l’historique récent des rediffusions.
       </p>
     </section>
 
@@ -61,7 +70,7 @@
     </section>
 
     <section class="panel-shell reveal" style="margin-top: 2rem;">
-      <span class="section-chip">Derniers streams</span>
+      <span class="section-chip">Dernières rediffusions</span>
       <div id="planning-streams" class="creation-grid"></div>
     </section>
 
@@ -83,7 +92,7 @@
       <a href="planning.html">Planning</a> •
       <a href="contact.html">Contact</a>
       <br>
-      Reddice // <span id="current-year"></span>
+      Reddice HUB // <span id="current-year"></span>
     </small>
   </footer>
 
