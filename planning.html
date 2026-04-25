@@ -40,30 +40,29 @@
       <span class="kicker">Planning sync</span>
       <hgroup>
         <h2>Rythme réel du stream</h2>
-        <h3>Historique des dernières sessions et rythme de diffusion</h3>
+        <h3>Les jours de stream en priorité, puis l’historique récent</h3>
       </hgroup>
 
       <p class="lead">
-        Cette page récupère les derniers streams archivés de la chaîne pour montrer le rythme réel du hub,
-        les dernières sessions et les jours les plus actifs.
+        Cette page récupère les derniers streams archivés de la chaîne pour montrer les jours où tu streams le plus,
+        un aperçu rapide du rythme global et les dernières rediffusions.
       </p>
     </section>
 
     <section class="panel-shell reveal" style="margin-top: 2rem;">
-      <span class="section-chip">Vue d’ensemble</span>
+      <span class="section-chip">Jours les plus actifs</span>
       <p class="muted" id="planning-status">Synchronisation des streams...</p>
+      <div id="planning-days" class="grid-3"></div>
+    </section>
 
+    <section class="panel-shell reveal" style="margin-top: 2rem;">
+      <span class="section-chip">Vue d’ensemble</span>
       <div id="planning-summary" class="grid-3"></div>
     </section>
 
     <section class="panel-shell reveal" style="margin-top: 2rem;">
       <span class="section-chip">Derniers streams</span>
       <div id="planning-streams" class="creation-grid"></div>
-    </section>
-
-    <section class="panel-shell reveal" style="margin-top: 2rem;">
-      <span class="section-chip">Jours les plus actifs</span>
-      <div id="planning-days" class="grid-3"></div>
     </section>
 
     <section class="panel-shell reveal" style="margin-top: 2rem;">
