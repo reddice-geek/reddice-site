@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reddice // Accueil</title>
+  <title>Reddice HUB // Accueil</title>
   <meta name="description" content="Accueil du site officiel de Reddice : live Twitch, chat, réseaux et accès au hub." />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
@@ -16,23 +16,32 @@
   <div class="aurora"></div>
   <div class="aurora-2"></div>
 
-  <nav class="container-fluid">
-    <ul>
-      <li>
-        <strong>
-          <img src="https://cdn.streamelements.com/uploads/01kfvz4qzddskgzp8ecd95jxwh.webp" alt="Logo Reddice" class="nav-logo">
-          Reddice // Stream Hub
-        </strong>
-      </li>
-    </ul>
-    <ul>
-      <li><a href="index.html" data-nav="home">Accueil</a></li>
-      <li><a href="bio.html" data-nav="bio">Bio</a></li>
-      <li><a href="livre-or.html" data-nav="guestbook">Livre d’or</a></li>
-      <li><a href="planning.html" data-nav="planning">Planning</a></li>
-      <li><a href="contact.html" data-nav="contact">Contact</a></li>
-      <li><span class="stream-badge is-loading" data-stream-status>Checking</span></li>
-    </ul>
+  <header class="hub-header">
+    <div class="container hub-brand">
+      <img
+        src="https://cdn.streamelements.com/uploads/01kfvz4qzddskgzp8ecd95jxwh.webp"
+        alt="Logo Reddice"
+        class="hub-logo"
+      >
+      <span class="hub-overline">Bienvenue dans mon univers</span>
+      <h1 class="hub-title">Reddice HUB</h1>
+      <p class="hub-subtitle">
+        Le point d’accès central au live, à la communauté et à l’univers du stream.
+      </p>
+    </div>
+  </header>
+
+  <nav class="hub-nav-shell">
+    <div class="container">
+      <ul class="hub-nav">
+        <li><a href="index.html" class="hub-link" data-nav="home" data-text="Accueil">Accueil</a></li>
+        <li><a href="bio.html" class="hub-link" data-nav="bio" data-text="Bio">Bio</a></li>
+        <li><a href="livre-or.html" class="hub-link" data-nav="guestbook" data-text="Livre d’or">Livre d’or</a></li>
+        <li><a href="planning.html" class="hub-link" data-nav="planning" data-text="Planning">Planning</a></li>
+        <li><a href="contact.html" class="hub-link" data-nav="contact" data-text="Contact">Contact</a></li>
+        <li><span class="stream-badge is-loading" data-stream-status>Checking</span></li>
+      </ul>
+    </div>
   </nav>
 
   <main class="container">
@@ -45,9 +54,8 @@
 
       <p class="lead">
         Ce site regroupe l’essentiel de l’univers Reddice : le live Twitch en direct,
-        le chat, les accès communautaires, la bio, le livre d’or et le planning des streams.
-        Le but est simple : tout retrouver au même endroit, dans une ambiance cyberpunk
-        qui colle au stream.
+        le chat, les accès communautaires, la bio, le livre d’or, le planning des streams
+        et un point de contact direct.
       </p>
 
       <div class="home-welcome-grid">
@@ -145,25 +153,25 @@
       <div class="grid-4">
         <article class="card reveal">
           <h3>Bio</h3>
-          <p>Retrouve la présentation complète de l’univers Reddice et de son identité.</p>
+          <p>Retrouve une présentation simple et claire de qui je suis et de ce que je partage.</p>
           <a href="bio.html" class="ghost-btn" style="margin-top: 0.9rem;">Voir la bio</a>
         </article>
 
         <article class="card reveal">
           <h3>Livre d’or</h3>
-          <p>Laisse un message, un mot de soutien ou une trace de ton passage.</p>
+          <p>Laisse un vrai avis, une note sur 5 étoiles et un message visible directement.</p>
           <a href="livre-or.html" class="ghost-btn" style="margin-top: 0.9rem;">Ouvrir le livre d’or</a>
         </article>
 
         <article class="card reveal">
           <h3>Planning</h3>
-          <p>Consulte le rythme du stream et l’historique récent des sessions Twitch.</p>
+          <p>Consulte les jours de stream les plus actifs et les dernières rediffusions.</p>
           <a href="planning.html" class="ghost-btn" style="margin-top: 0.9rem;">Voir le planning</a>
         </article>
 
         <article class="card reveal">
           <h3>Contact</h3>
-          <p>Prépare un message, une demande de collab ou un contact direct.</p>
+          <p>Envoie un vrai message pro directement depuis le site.</p>
           <a href="contact.html" class="ghost-btn" style="margin-top: 0.9rem;">Me contacter</a>
         </article>
       </div>
@@ -178,7 +186,7 @@
       <a href="planning.html">Planning</a> •
       <a href="contact.html">Contact</a>
       <br>
-      Reddice // <span id="current-year"></span>
+      Reddice HUB // <span id="current-year"></span>
     </small>
   </footer>
 
