@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reddice // Contact</title>
+  <meta name="description" content="Page contact de Reddice : collaborations, créations, projets et messages." />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="contact">
+  <div class="aurora"></div>
+  <div class="aurora-2"></div>
+
+  <nav class="container-fluid">
+    <ul>
+      <li>
+        <strong>
+          <img src="https://cdn.streamelements.com/uploads/01kfvz4qzddskgzp8ecd95jxwh.webp" alt="Logo Reddice" class="nav-logo">
+          Reddice // Stream Hub
+        </strong>
+      </li>
+    </ul>
+    <ul>
+      <li><a href="index.html" data-nav="home">Accueil</a></li>
+      <li><a href="bio.html" data-nav="bio">Bio</a></li>
+      <li><a href="livre-or.html" data-nav="guestbook">Livre d’or</a></li>
+      <li><a href="creations.html" data-nav="creations">Créations</a></li>
+      <li><a href="planning.html" data-nav="planning">Planning</a></li>
+      <li><a href="contact.html" data-nav="contact">Contact</a></li>
+      <li><span class="stream-badge is-loading" data-stream-status>Checking</span></li>
+      <li><a href="https://reddice-stream-shop.fourthwall.com/en-eur" target="_blank" role="button">Shop</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <section class="hero-shell reveal">
+      <span class="kicker">Contact</span>
+      <hgroup>
+        <h2>Entrer en contact</h2>
+        <h3>Collabs, créations, projets, échanges et demandes</h3>
+      </hgroup>
+
+      <p class="lead">
+        Cette page te permet de préparer un message et de retrouver les principaux canaux
+        pour entrer dans l’univers Reddice.
+      </p>
+    </section>
+
+    <section class="panel-shell reveal" style="margin-top: 2rem;">
+      <span class="section-chip">Canaux principaux</span>
+      <div class="social-grid">
+        <a class="social reveal" data-tone="twitch" href="https://www.twitch.tv/reddice_stream" target="_blank">
+          <strong>Twitch</strong>
+          <span>Live, chat et présence principale</span>
+        </a>
+        <a class="social reveal" data-tone="discord" href="https://discord.gg/vY8WJQcwPN" target="_blank">
+          <strong>Discord</strong>
+          <span>Le meilleur point d’entrée pour la communauté</span>
+        </a>
+        <a class="social reveal" data-tone="insta" href="https://www.instagram.com/reddice.cos" target="_blank">
+          <strong>Instagram</strong>
+          <span>Cosplay, univers visuel et présence sociale</span>
+        </a>
+        <a class="social reveal" data-tone="shop" href="https://reddice-stream-shop.fourthwall.com/en-eur" target="_blank">
+          <strong>Shop</strong>
+          <span>Branding, merch et prolongement de l’univers</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="panel-shell reveal" style="margin-top: 2rem;">
+      <span class="section-chip">Préparer un message</span>
+      <div class="grid-2">
+        <section class="card reveal">
+          <h3>Formulaire</h3>
+          <form id="contact-draft-form" class="guestbook-form">
+            <input type="text" name="name" placeholder="Ton pseudo / nom" aria-label="Ton pseudo / nom" required>
+            <input type="text" name="subject" placeholder="Sujet" aria-label="Sujet" required>
+            <select name="channel" aria-label="Canal souhaité" required>
+              <option value="">Canal souhaité</option>
+              <option value="Discord">Discord</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Twitch">Twitch</option>
+              <option value="Autre">Autre</option>
+            </select>
+            <textarea name="message" rows="7" placeholder="Écris ton message..." aria-label="Message" required></textarea>
+            <button type="submit">Préparer le message</button>
+          </form>
+        </section>
+
+        <section class="card reveal">
+          <h3>Texte prêt à copier</h3>
+          <textarea id="contact-draft-output" rows="14" hidden aria-label="Message préparé"></textarea>
+          <button id="contact-draft-copy" type="button" hidden>Copier</button>
+          <p class="footer-note">
+            Prépare ici ton message puis envoie-le sur le canal de ton choix.
+          </p>
+        </section>
+      </div>
+    </section>
+
+    <section class="panel-shell reveal" style="margin-top: 2rem;">
+      <span class="section-chip">Demandes possibles</span>
+      <div class="grid-3">
+        <article class="card reveal">
+          <h3>Collaboration</h3>
+          <p>Projet, présence live, event ou format partagé.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Création visuelle</h3>
+          <p>Logo, visuel, custom, identité ou habillage stream.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Message perso</h3>
+          <p>Échange simple, retour, question ou prise de contact.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="index.html">Accueil</a> •
+      <a href="bio.html">Bio</a> •
+      <a href="livre-or.html">Livre d’or</a> •
+      <a href="creations.html">Créations</a> •
+      <a href="planning.html">Planning</a> •
+      <a href="contact.html">Contact</a>
+      <br>
+      Reddice // <span id="current-year"></span>
+    </small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

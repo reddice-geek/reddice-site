@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reddice // Accueil</title>
+  <meta name="description" content="Accueil du site officiel de Reddice : stream Twitch, chat live, shop et univers cyberpunk." />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="home">
+  <div class="aurora"></div>
+  <div class="aurora-2"></div>
+
+  <nav class="container-fluid">
+    <ul>
+      <li>
+        <strong>
+          <img src="https://cdn.streamelements.com/uploads/01kfvz4qzddskgzp8ecd95jxwh.webp" alt="Logo Reddice" class="nav-logo">
+          Reddice // Stream Hub
+        </strong>
+      </li>
+    </ul>
+    <ul>
+      <li><a href="index.html" data-nav="home">Accueil</a></li>
+      <li><a href="bio.html" data-nav="bio">Bio</a></li>
+      <li><a href="livre-or.html" data-nav="guestbook">Livre d’or</a></li>
+      <li><a href="creations.html" data-nav="creations">Créations</a></li>
+      <li><a href="planning.html" data-nav="planning">Planning</a></li>
+      <li><a href="contact.html" data-nav="contact">Contact</a></li>
+      <li><span class="stream-badge is-loading" data-stream-status>Checking</span></li>
+      <li><a href="https://reddice-stream-shop.fourthwall.com/en-eur" target="_blank" role="button">Shop</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <div class="grid-hero">
+      <section class="hero-shell reveal">
+        <span class="kicker">Univers stream online</span>
+        <hgroup>
+          <h2>Bienvenue dans le hub de Reddice</h2>
+          <h3>Gaming, cosplay, métal, créations digitales et ambiance cyberspace</h3>
+        </hgroup>
+
+        <p class="lead">
+          Bienvenue dans mon univers. Tu retrouves ici le live, le chat Twitch, mon shop,
+          ma bio, le livre d’or et l’espace dédié à mes créations digitales.
+        </p>
+
+        <div class="pill-row">
+          <span class="pill">Gaming</span>
+          <span class="pill">Cosplay</span>
+          <span class="pill">Metal</span>
+          <span class="pill">Création digitale</span>
+        </div>
+
+        <div class="cta-row">
+          <a href="#live" role="button">Voir le live</a>
+          <a href="creations.html" class="ghost-btn">Voir mes créations</a>
+          <a href="bio.html" class="secondary-btn">Découvrir ma bio</a>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat reveal">
+            <strong>Live</strong>
+            <span>Twitch directement intégré au site.</span>
+          </div>
+          <div class="stat reveal">
+            <strong>Shop</strong>
+            <span>Accès direct au merch et aux produits.</span>
+          </div>
+          <div class="stat reveal">
+            <strong>Créa</strong>
+            <span>Logos, overlays, visuels et customs.</span>
+          </div>
+        </div>
+
+        <span class="section-chip">Accès rapides</span>
+        <div class="social-grid">
+          <a class="social reveal" data-tone="twitch" href="https://www.twitch.tv/reddice_stream" target="_blank">
+            <strong>Twitch</strong>
+            <span>Les lives en direct</span>
+          </a>
+          <a class="social reveal" data-tone="youtube" href="https://www.youtube.com/@reddice_geek9473" target="_blank">
+            <strong>YouTube</strong>
+            <span>Replays et vidéos</span>
+          </a>
+          <a class="social reveal" data-tone="discord" href="https://discord.gg/vY8WJQcwPN" target="_blank">
+            <strong>Discord</strong>
+            <span>La communauté</span>
+          </a>
+          <a class="social reveal" data-tone="insta" href="https://www.instagram.com/reddice.cos" target="_blank">
+            <strong>Instagram</strong>
+            <span>Le côté cosplay</span>
+          </a>
+          <a class="social reveal" data-tone="shop" href="https://reddice-stream-shop.fourthwall.com/en-eur" target="_blank">
+            <strong>Shop</strong>
+            <span>Merch et univers Reddice</span>
+          </a>
+        </div>
+      </section>
+
+      <aside class="logo-panel">
+        <figure class="logo-card reveal">
+          <div class="visual-wrap">
+            <img src="https://cdn.streamelements.com/uploads/01kfvz4qzddskgzp8ecd95jxwh.webp" alt="Logo Reddice">
+            <div class="scanline"></div>
+            <div class="floating-badge">Interface active</div>
+          </div>
+          <figcaption>
+            Logo officiel de Reddice —
+            <a href="https://www.twitch.tv/reddice_stream" target="_blank">voir la chaîne Twitch</a>
+          </figcaption>
+        </figure>
+
+        <section class="info-shell reveal">
+          <h3>Le nexus central</h3>
+          <p class="muted">
+            Un site pensé comme un point d’accès unique à l’univers Reddice :
+            stream, communauté, identité visuelle et créations.
+          </p>
+        </section>
+      </aside>
+    </div>
+
+    <section class="stream-shell reveal" id="live" style="margin-top: 2rem;">
+      <span class="section-chip">Live Twitch intégré</span>
+      <h3 style="margin-top:0; position:relative; z-index:1;">Le stream et le chat en direct</h3>
+      <p class="muted">
+        Retrouve le live Twitch de Reddice directement depuis le hub.
+      </p>
+
+      <div class="stream-layout">
+        <div class="player-box">
+          <iframe id="twitch-player" allowfullscreen="true" scrolling="no" title="Lecteur Twitch Reddice"></iframe>
+        </div>
+        <div class="chat-box">
+          <iframe id="twitch-chat" scrolling="no" title="Chat Twitch Reddice"></iframe>
+        </div>
+      </div>
+
+      <div class="embed-warning" id="embed-warning">
+        L’intégration Twitch a besoin d’un domaine ou d’un serveur local pour fonctionner correctement.
+      </div>
+
+      <div class="stream-meta">
+        <div class="mini-info reveal">
+          <strong>Live Twitch</strong>
+          <span>Le stream est accessible directement depuis cette page.</span>
+        </div>
+        <div class="mini-info reveal">
+          <strong>Chat live</strong>
+          <span>Rejoins la discussion et l’ambiance en direct.</span>
+        </div>
+        <div class="mini-info reveal">
+          <strong>Communauté</strong>
+          <span>Un point d’accès central à l’univers Reddice.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="shop-shell reveal" style="margin-top: 2rem;">
+      <span class="section-chip">Shop officiel</span>
+      <h3 style="margin-top:0; position:relative; z-index:1;">Le merch a sa place dans le hub</h3>
+      <p class="muted">
+        Le shop fait partie intégrante de l’univers visuel et du parcours du site.
+      </p>
+
+      <div class="grid-3">
+        <article class="card reveal">
+          <h3>Visible</h3>
+          <p>Le shop est mis en avant dans la navigation et les accès rapides.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Cohérent</h3>
+          <p>Le branding reste aligné avec l’identité générale du site.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Direct</h3>
+          <p>Un clic suffit pour passer du live au merch.</p>
+        </article>
+      </div>
+
+      <a href="https://reddice-stream-shop.fourthwall.com/en-eur" class="shop-cta" target="_blank">Ouvrir le shop Reddice</a>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="index.html">Accueil</a> •
+      <a href="bio.html">Bio</a> •
+      <a href="livre-or.html">Livre d’or</a> •
+      <a href="creations.html">Créations</a> •
+      <a href="planning.html">Planning</a> •
+      <a href="contact.html">Contact</a> •
+      <a href="https://reddice-stream-shop.fourthwall.com/en-eur" target="_blank">Shop</a>
+      <br>
+      Reddice // <span id="current-year"></span>
+    </small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

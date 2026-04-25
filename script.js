@@ -1,0 +1,467 @@
+document.addEventListener("DOMContentLoaded", () => {
+  safeRun(initReveal);
+  safeRun(initActiveNav);
+  safeRun(initTwitchEmbeds);
+  safeRun(initStreamStatus);
+  safeRun(initGuestbook);
+  safeRun(initCreationFilters);
+  safeRun(initDeviantArtFeed);
+  safeRun(initContactDraft);
+  safeRun(setCurrentYear);
+});
+
+function safeRun(fn) {
+  try {
+    fn();
+  } catch (error) {
+    console.error(`Erreur dans ${fn.name}:`, error);
+  }
+}
+
+function initReveal() {
+  const items = document.querySelectorAll(".reveal");
+  if (!items.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  }, { threshold: 0.12 });
+
+  items.forEach((item) => observer.observe(item));
+}
+
+function initActiveNav() {
+  const page = document.body.dataset.page;
+  if (!page) return;
+
+  document.querySelectorAll("[data-nav]").forEach((link) => {
+    if (link.dataset.nav === page) {
+      link.classList.add("active");
+    }
+  });
+}
+
+function initTwitchEmbeds() {
+  const player = document.getElementById("twitch-player");
+  const chat = document.getElementById("twitch-chat");
+  const warning = document.getElementById("embed-warning");
+
+  if (!player || !chat) return;
+
+  const host = window.location.hostname;
+
+  if (!host) {
+    if (warning) warning.style.display = "block";
+    return;
+  }
+
+  const parent = encodeURIComponent(host);
+  player.src = `https://player.twitch.tv/?channel=reddice_stream&parent=${parent}&muted=true`;
+  chat.src = `https://www.twitch.tv/embed/reddice_stream/chat?parent=${parent}`;
+}
+
+async function initStreamStatus() {
+  const badges = document.querySelectorAll("[data-stream-status]");
+  if (!badges.length) return;
+
+  const setState = (state, text) => {
+    badges.forEach((badge) => {
+      badge.classList.remove("is-loading", "is-live", "is-offline", "is-error");
+      badge.classList.add(state);
+      badge.textContent = text;
+    });
+  };
+
+  const refresh = async () => {
+    setState("is-loading", "Checking");
+
+    try {
+      const response = await fetch("/api/twitch-status?login=reddice_stream", {
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        throw new Error("status endpoint error");
+      }
+
+      const data = await response.json();
+
+      if (data.live) {
+        setState("is-live", "Stream On");
+      } else {
+        setState("is-offline", "Stream Off");
+      }
+    } catch (error) {
+      console.error("Erreur Twitch status:", error);
+      setState("is-error", "Unknown");
+    }
+  };
+
+  await refresh();
+  setInterval(refresh, 60000);
+}
+
+function initGuestbook() {
+  const form = document.getElementById("guestbook-form");
+  const list = document.getElementById("guestbook-list");
+  const clearBtn = document.getElementById("guestbook-clear");
+
+  if (!form || !list) return;
+
+  const STORAGE_KEY = "reddice_guestbook_entries";
+
+  const seedEntries = [
+    {
+      name: "Visiteur du Nexus",
+      title: "Belle ambiance",
+      message: "Le style du site colle super bien à l’univers stream.",
+      date: new Date().toISOString()
+    },
+    {
+      name: "Crew Member",
+      title: "Force à toi",
+      message: "Le mix gaming, cosplay et cyberpunk te correspond vraiment bien.",
+      date: new Date(Date.now() - 86400000).toISOString()
+    }
+  ];
+
+  function loadEntries() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(seedEntries));
+      return seedEntries;
+    }
+
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function saveEntries(entries) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  }
+
+  function formatDate(isoDate) {
+    const date = new Date(isoDate);
+    return new Intl.DateTimeFormat("fr-FR", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    }).format(date);
+  }
+
+  function renderEntries() {
+    const entries = loadEntries().slice().reverse();
+    list.innerHTML = "";
+
+    if (!entries.length) {
+      const empty = document.createElement("div");
+      empty.className = "entry-empty";
+      empty.textContent = "Aucun message pour le moment.";
+      list.appendChild(empty);
+      return;
+    }
+
+    entries.forEach((entry) => {
+      const card = document.createElement("article");
+      card.className = "entry-card reveal visible";
+
+      const meta = document.createElement("div");
+      meta.className = "entry-meta";
+
+      const name = document.createElement("strong");
+      name.textContent = entry.name || "Anonyme";
+
+      const date = document.createElement("small");
+      date.textContent = formatDate(entry.date);
+
+      const title = document.createElement("h4");
+      title.textContent = entry.title || "Message";
+
+      const message = document.createElement("p");
+      message.textContent = entry.message || "";
+
+      meta.appendChild(name);
+      meta.appendChild(date);
+
+      card.appendChild(meta);
+      card.appendChild(title);
+      card.appendChild(message);
+
+      list.appendChild(card);
+    });
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+    const name = String(formData.get("name") || "").trim();
+    const title = String(formData.get("title") || "").trim();
+    const message = String(formData.get("message") || "").trim();
+
+    if (!name || !message) return;
+
+    const entries = loadEntries();
+    entries.push({
+      name,
+      title: title || "Message du livre d’or",
+      message,
+      date: new Date().toISOString()
+    });
+
+    saveEntries(entries);
+    form.reset();
+    renderEntries();
+  });
+
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(seedEntries));
+      renderEntries();
+    });
+  }
+
+  renderEntries();
+}
+
+function initCreationFilters() {
+  const buttons = document.querySelectorAll(".filter-btn");
+  const cards = document.querySelectorAll(".creation-card[data-category]");
+
+  if (!buttons.length || !cards.length) return;
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const filter = button.dataset.filter;
+
+      buttons.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+
+      cards.forEach((card) => {
+        const category = card.dataset.category;
+        const show = filter === "all" || filter === category;
+        card.classList.toggle("filter-hidden", !show);
+      });
+    });
+  });
+}
+
+function initDeviantArtFeed() {
+  const gallery = document.getElementById("deviantart-gallery");
+  const status = document.getElementById("deviantart-status");
+
+  if (!gallery) return;
+
+  const username = gallery.dataset.username || "hasukegames";
+  const profileUrl = gallery.dataset.profile || `https://www.deviantart.com/${username}`;
+  const rssUrl = `https://backend.deviantart.com/rss.xml?q=gallery:${encodeURIComponent(username)}`;
+  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
+
+  function setStatus(text) {
+    if (status) status.textContent = text;
+  }
+
+  function stripHtml(html) {
+    const temp = document.createElement("div");
+    temp.innerHTML = html || "";
+    return (temp.textContent || temp.innerText || "").trim();
+  }
+
+  function extractImage(item) {
+    const mediaThumb = item.querySelector("media\\:thumbnail, thumbnail");
+    if (mediaThumb && mediaThumb.getAttribute("url")) return mediaThumb.getAttribute("url");
+
+    const mediaContent = item.querySelector("media\\:content");
+    if (mediaContent && mediaContent.getAttribute("url")) return mediaContent.getAttribute("url");
+
+    const description = item.querySelector("description")?.textContent || "";
+    const match = description.match(/<img[^>]+src=["']([^"']+)["']/i);
+    return match ? match[1] : "";
+  }
+
+  function createCard(data) {
+    const article = document.createElement("article");
+    article.className = "creation-card reveal visible";
+
+    const thumb = document.createElement("div");
+    thumb.className = "creation-thumb";
+
+    if (data.image) {
+      thumb.style.backgroundImage = `linear-gradient(rgba(8,12,20,0.28), rgba(8,12,20,0.28)), url("${data.image}")`;
+      thumb.style.backgroundSize = "cover";
+      thumb.style.backgroundPosition = "center";
+      thumb.style.backgroundRepeat = "no-repeat";
+      thumb.style.minHeight = "220px";
+      thumb.textContent = "";
+    } else {
+      thumb.textContent = "DeviantArt";
+    }
+
+    const title = document.createElement("h3");
+    title.textContent = data.title || "Création";
+
+    const text = document.createElement("p");
+    text.textContent = data.excerpt || "Création importée depuis DeviantArt.";
+
+    const meta = document.createElement("div");
+    if (data.date) {
+      const chip = document.createElement("span");
+      chip.className = "mini-chip";
+      chip.textContent = data.date;
+      meta.appendChild(chip);
+    }
+
+    const link = document.createElement("a");
+    link.href = data.link || profileUrl;
+    link.target = "_blank";
+    link.className = "ghost-btn";
+    link.style.marginTop = "0.9rem";
+    link.textContent = "Voir sur DeviantArt";
+
+    article.appendChild(thumb);
+    article.appendChild(title);
+    article.appendChild(text);
+    article.appendChild(meta);
+    article.appendChild(link);
+
+    return article;
+  }
+
+  function showFallback() {
+    gallery.innerHTML = "";
+
+    const article = document.createElement("article");
+    article.className = "creation-card reveal visible";
+
+    const thumb = document.createElement("div");
+    thumb.className = "creation-thumb";
+    thumb.textContent = "DeviantArt";
+
+    const title = document.createElement("h3");
+    title.textContent = "Galerie DeviantArt";
+
+    const text = document.createElement("p");
+    text.textContent = "La galerie reste accessible directement depuis la page DeviantArt.";
+
+    const link = document.createElement("a");
+    link.href = profileUrl;
+    link.target = "_blank";
+    link.className = "ghost-btn";
+    link.textContent = "Ouvrir la galerie";
+
+    article.appendChild(thumb);
+    article.appendChild(title);
+    article.appendChild(text);
+    article.appendChild(link);
+
+    gallery.appendChild(article);
+    setStatus("Galerie externe disponible.");
+  }
+
+  setStatus("Chargement de la galerie...");
+
+  fetch(proxyUrl)
+    .then((response) => {
+      if (!response.ok) throw new Error("Flux indisponible");
+      return response.text();
+    })
+    .then((xmlText) => {
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(xmlText, "text/xml");
+      const items = Array.from(xml.querySelectorAll("item")).slice(0, 8);
+
+      if (!items.length) throw new Error("Aucun élément");
+
+      gallery.innerHTML = "";
+
+      items.forEach((item) => {
+        const title = item.querySelector("title")?.textContent?.trim() || "Création";
+        const link = item.querySelector("link")?.textContent?.trim() || profileUrl;
+        const image = extractImage(item);
+        const pubDateRaw = item.querySelector("pubDate")?.textContent || "";
+        const excerpt = stripHtml(item.querySelector("description")?.textContent || "").slice(0, 140);
+
+        let date = "";
+        if (pubDateRaw) {
+          const d = new Date(pubDateRaw);
+          if (!Number.isNaN(d.getTime())) {
+            date = new Intl.DateTimeFormat("fr-FR", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric"
+            }).format(d);
+          }
+        }
+
+        gallery.appendChild(createCard({ title, link, image, date, excerpt }));
+      });
+
+      setStatus("Import DeviantArt actif.");
+    })
+    .catch(() => {
+      showFallback();
+    });
+}
+
+function initContactDraft() {
+  const form = document.getElementById("contact-draft-form");
+  const output = document.getElementById("contact-draft-output");
+  const copyBtn = document.getElementById("contact-draft-copy");
+
+  if (!form || !output) return;
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(form);
+    const name = String(formData.get("name") || "").trim();
+    const subject = String(formData.get("subject") || "").trim();
+    const channel = String(formData.get("channel") || "").trim();
+    const message = String(formData.get("message") || "").trim();
+
+    const text = [
+      `Pseudo : ${name || "-"}`,
+      `Sujet : ${subject || "-"}`,
+      `Canal souhaité : ${channel || "-"}`,
+      "",
+      "Message :",
+      message || "-"
+    ].join("\n");
+
+    output.value = text;
+    output.hidden = false;
+
+    if (copyBtn) {
+      copyBtn.hidden = false;
+    }
+  });
+
+  if (copyBtn) {
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(output.value);
+        copyBtn.textContent = "Copié";
+        setTimeout(() => {
+          copyBtn.textContent = "Copier";
+        }, 1500);
+      } catch {
+        copyBtn.textContent = "Impossible";
+      }
+    });
+  }
+}
+
+function setCurrentYear() {
+  const yearNode = document.getElementById("current-year");
+  if (yearNode) {
+    yearNode.textContent = String(new Date().getFullYear());
+  }
+}

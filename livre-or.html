@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reddice // Livre d’or</title>
+  <meta name="description" content="Livre d’or du site de Reddice : laisse un message à la communauté." />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="guestbook">
+  <div class="aurora"></div>
+  <div class="aurora-2"></div>
+
+  <nav class="container-fluid">
+    <ul>
+      <li>
+        <strong>
+          <img src="https://cdn.streamelements.com/uploads/01kfvz4qzddskgzp8ecd95jxwh.webp" alt="Logo Reddice" class="nav-logo">
+          Reddice // Stream Hub
+        </strong>
+      </li>
+    </ul>
+    <ul>
+      <li><a href="index.html" data-nav="home">Accueil</a></li>
+      <li><a href="bio.html" data-nav="bio">Bio</a></li>
+      <li><a href="livre-or.html" data-nav="guestbook">Livre d’or</a></li>
+      <li><a href="creations.html" data-nav="creations">Créations</a></li>
+      <li><a href="planning.html" data-nav="planning">Planning</a></li>
+      <li><a href="contact.html" data-nav="contact">Contact</a></li>
+      <li><span class="stream-badge is-loading" data-stream-status>Checking</span></li>
+      <li><a href="https://reddice-stream-shop.fourthwall.com/en-eur" target="_blank" role="button">Shop</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <section class="guestbook-shell reveal">
+      <span class="kicker">Livre d’or</span>
+      <hgroup>
+        <h2>Laisse une trace dans le nexus</h2>
+        <h3>Un espace pour laisser un mot, un avis ou un message</h3>
+      </hgroup>
+
+      <p class="lead">
+        Laisse un message, un mot de soutien ou une trace de ton passage dans l’univers de Reddice.
+      </p>
+
+      <div class="guestbook-layout">
+        <section class="panel-shell reveal">
+          <h3 style="margin-top:0; position:relative; z-index:1;">Écrire un message</h3>
+          <form id="guestbook-form" class="guestbook-form">
+            <input type="text" name="name" placeholder="Ton pseudo" aria-label="Ton pseudo" required>
+            <input type="text" name="title" placeholder="Titre du message" aria-label="Titre du message">
+            <textarea name="message" rows="7" placeholder="Écris ton message..." aria-label="Message" required></textarea>
+            <button type="submit">Publier le message</button>
+            <button type="button" id="guestbook-clear" class="secondary">Réinitialiser</button>
+          </form>
+          <p class="footer-note">
+            Merci à toutes les personnes qui prennent le temps de laisser un message.
+          </p>
+        </section>
+
+        <section class="panel-shell reveal">
+          <h3 style="margin-top:0; position:relative; z-index:1;">Messages</h3>
+          <div id="guestbook-list" class="entry-list"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="index.html">Accueil</a> •
+      <a href="bio.html">Bio</a> •
+      <a href="livre-or.html">Livre d’or</a> •
+      <a href="creations.html">Créations</a> •
+      <a href="planning.html">Planning</a> •
+      <a href="contact.html">Contact</a>
+      <br>
+      Reddice // <span id="current-year"></span>
+    </small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

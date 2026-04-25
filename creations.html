@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reddice // Créations digitales</title>
+  <meta name="description" content="Portfolio de créations digitales de Reddice : logos, Photoshop, overlays, customs et visuels." />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="creations">
+  <div class="aurora"></div>
+  <div class="aurora-2"></div>
+
+  <nav class="container-fluid">
+    <ul>
+      <li>
+        <strong>
+          <img src="https://cdn.streamelements.com/uploads/01kfvz4qzddskgzp8ecd95jxwh.webp" alt="Logo Reddice" class="nav-logo">
+          Reddice // Stream Hub
+        </strong>
+      </li>
+    </ul>
+    <ul>
+      <li><a href="index.html" data-nav="home">Accueil</a></li>
+      <li><a href="bio.html" data-nav="bio">Bio</a></li>
+      <li><a href="livre-or.html" data-nav="guestbook">Livre d’or</a></li>
+      <li><a href="creations.html" data-nav="creations">Créations</a></li>
+      <li><a href="planning.html" data-nav="planning">Planning</a></li>
+      <li><a href="contact.html" data-nav="contact">Contact</a></li>
+      <li><span class="stream-badge is-loading" data-stream-status>Checking</span></li>
+      <li><a href="https://reddice-stream-shop.fourthwall.com/en-eur" target="_blank" role="button">Shop</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <section class="creation-shell reveal">
+      <span class="kicker">Portfolio digital</span>
+      <hgroup>
+        <h2>Mes créations digitales</h2>
+        <h3>Photoshop, logos, overlays, playmats customs et identité visuelle</h3>
+      </hgroup>
+
+      <p class="lead">
+        Un espace dédié à mes créations graphiques, à mon univers visuel et à mes travaux digitaux.
+      </p>
+    </section>
+
+    <section class="panel-shell reveal" style="margin-top: 2rem;">
+      <span class="section-chip">Import DeviantArt</span>
+      <h3 style="margin-top:0; position:relative; z-index:1;">Galerie automatique depuis mon DeviantArt</h3>
+      <p class="muted" id="deviantart-status">
+        Chargement de la galerie...
+      </p>
+
+      <div
+        id="deviantart-gallery"
+        class="creation-grid"
+        data-username="hasukegames"
+        data-profile="https://www.deviantart.com/hasukegames">
+      </div>
+
+      <div class="cta-row">
+        <a href="https://www.deviantart.com/hasukegames" target="_blank" class="ghost-btn">Ouvrir mon DeviantArt</a>
+      </div>
+    </section>
+
+    <section class="panel-shell reveal" style="margin-top: 2rem;">
+      <span class="section-chip">Types de créations</span>
+
+      <div class="filter-row">
+        <button class="filter-btn active" data-filter="all" type="button">Tout</button>
+        <button class="filter-btn" data-filter="logo" type="button">Logos</button>
+        <button class="filter-btn" data-filter="photoshop" type="button">Photoshop</button>
+        <button class="filter-btn" data-filter="playmat" type="button">Playmats</button>
+        <button class="filter-btn" data-filter="custom" type="button">Customs</button>
+        <button class="filter-btn" data-filter="stream" type="button">Stream kit</button>
+      </div>
+
+      <div class="creation-grid">
+        <article class="creation-card reveal" data-category="logo">
+          <div class="creation-thumb">Logo design</div>
+          <h3>Logos & identité</h3>
+          <p>Création ou refonte de logos, déclinaisons visuelles, badges et signatures graphiques.</p>
+          <div>
+            <span class="mini-chip">branding</span>
+            <span class="mini-chip">logo</span>
+            <span class="mini-chip">identité</span>
+          </div>
+        </article>
+
+        <article class="creation-card reveal" data-category="photoshop">
+          <div class="creation-thumb">Photoshop art</div>
+          <h3>Compositions Photoshop</h3>
+          <p>Montages, affiches, visuels promo, miniatures et compositions inspirées de l’univers du stream.</p>
+          <div>
+            <span class="mini-chip">retouche</span>
+            <span class="mini-chip">affiche</span>
+            <span class="mini-chip">miniature</span>
+          </div>
+        </article>
+
+        <article class="creation-card reveal" data-category="playmat">
+          <div class="creation-thumb">Playmat custom</div>
+          <h3>Playmats customs</h3>
+          <p>Concepts graphiques pour playmats personnalisés avec direction visuelle thématique.</p>
+          <div>
+            <span class="mini-chip">tcg</span>
+            <span class="mini-chip">custom</span>
+            <span class="mini-chip">playmat</span>
+          </div>
+        </article>
+
+        <article class="creation-card reveal" data-category="custom">
+          <div class="creation-thumb">Custom project</div>
+          <h3>Customs visuels</h3>
+          <p>Éléments graphiques sur mesure pour profils, communautés, événements et projets perso.</p>
+          <div>
+            <span class="mini-chip">sur mesure</span>
+            <span class="mini-chip">visuel</span>
+            <span class="mini-chip">projet</span>
+          </div>
+        </article>
+
+        <article class="creation-card reveal" data-category="stream">
+          <div class="creation-thumb">Overlay stream</div>
+          <h3>Pack stream</h3>
+          <p>Overlays, panels, écrans d’attente, transitions et habillages pour Twitch.</p>
+          <div>
+            <span class="mini-chip">overlay</span>
+            <span class="mini-chip">panel</span>
+            <span class="mini-chip">twitch</span>
+          </div>
+        </article>
+
+        <article class="creation-card reveal" data-category="logo">
+          <div class="creation-thumb">Logo variation</div>
+          <h3>Déclinaisons logo</h3>
+          <p>Versions secondaires, avatars, variations couleur et adaptations multi-supports.</p>
+          <div>
+            <span class="mini-chip">avatar</span>
+            <span class="mini-chip">variation</span>
+            <span class="mini-chip">couleurs</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel-shell reveal" style="margin-top: 2rem;">
+      <span class="section-chip">Univers graphique</span>
+      <div class="grid-3">
+        <article class="card reveal">
+          <h3>Identité visuelle</h3>
+          <p>Logos, variations, branding et éléments forts d’image.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Création digitale</h3>
+          <p>Montages, compositions visuelles, concepts et travaux graphiques.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Projets custom</h3>
+          <p>Playmats, overlays, assets stream et créations sur mesure.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">
+    <small>
+      <a href="index.html">Accueil</a> •
+      <a href="bio.html">Bio</a> •
+      <a href="livre-or.html">Livre d’or</a> •
+      <a href="creations.html">Créations</a> •
+      <a href="planning.html">Planning</a> •
+      <a href="contact.html">Contact</a>
+      <br>
+      Reddice // <span id="current-year"></span>
+    </small>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
