@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   await safeRun(initStreamStatus);
   await safeRun(initPlanningSync);
   await safeRun(initGuestbook);
-  await safeRun(initContactDraft);
+  await safeRun(initContactForm);
   await safeRun(setCurrentYear);
 });
 
@@ -27,7 +27,7 @@ function initReveal() {
         entry.target.classList.add("visible");
       }
     });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.1 });
 
   items.forEach((item) => observer.observe(item));
 }
@@ -72,8 +72,6 @@ async function initStreamStatus() {
   const badges = document.querySelectorAll("[data-stream-status]");
   if (!badges.length) return;
 
-  const login = "reddice_stream";
-
   const setState = (state, text) => {
     badges.forEach((badge) => {
       badge.classList.remove("is-loading", "is-live", "is-offline", "is-error");
@@ -87,7 +85,7 @@ async function initStreamStatus() {
 
     try {
       const url = new URL("/api/twitch-status", window.location.origin);
-      url.searchParams.set("login", login);
+      url.searchParams.set("login", "reddice_stream");
       url.searchParams.set("_", String(Date.now()));
 
       const response = await fetch(url.toString(), {
@@ -97,14 +95,12 @@ async function initStreamStatus() {
       });
 
       if (!response.ok) {
-        const errorText = await response.text().catch(() => "");
-        throw new Error(`HTTP ${response.status} ${errorText}`);
+        throw new Error(`HTTP ${response.status}`);
       }
 
       const data = await response.json();
-      const isLive = data?.live === true || data?.live === "true" || data?.live === 1;
 
-      if (isLive) {
+      if (data?.live === true) {
         setState("is-live", "Stream On");
       } else {
         setState("is-offline", "Stream Off");
@@ -169,16 +165,9 @@ async function initPlanningSync() {
   };
 
   const renderEmpty = (text) => {
-    streamsNode.innerHTML = `<div class="planning-empty">${text}</div>`;
+    streamsNode.innerHTML = `<div class="planning-empty">${escapeHtml(text)}</div>`;
     summaryNode.innerHTML = "";
     daysNode.innerHTML = "";
-  };
-
-  const resolveThumb = (url) => {
-    if (!url) return "";
-    return url
-      .replace(/%\{width\}/g, "640")
-      .replace(/%\{height\}/g, "360");
   };
 
   try {
@@ -200,25 +189,6 @@ async function initPlanningSync() {
       return;
     }
 
-    const totalStreams = items.length;
-    const totalMinutes = items.reduce((sum, item) => sum + parseDurationToMinutes(item.duration), 0);
-    const lastStreamDate = items[0]?.created_at ? formatDate(items[0].created_at) : "—";
-
-    summaryNode.innerHTML = `
-      <article class="card reveal visible">
-        <h3>Streams récupérés</h3>
-        <p>${totalStreams} session${totalStreams > 1 ? "s" : ""}</p>
-      </article>
-      <article class="card reveal visible">
-        <h3>Durée totale récente</h3>
-        <p>${formatMinutes(totalMinutes)}</p>
-      </article>
-      <article class="card reveal visible">
-        <h3>Dernier live</h3>
-        <p>${lastStreamDate}</p>
-      </article>
-    `;
-
     const counts = [0, 0, 0, 0, 0, 0, 0];
     items.forEach((item) => {
       const d = new Date(item.created_at);
@@ -235,12 +205,31 @@ async function initPlanningSync() {
       const article = document.createElement("article");
       article.className = "card day-card reveal visible";
       article.innerHTML = `
-        <strong>${day}</strong>
+        <strong>${escapeHtml(day)}</strong>
         <div class="day-line"><span style="width:${width};"></span></div>
         <p>${count} stream${count > 1 ? "s" : ""}</p>
       `;
       daysNode.appendChild(article);
     });
+
+    const totalStreams = items.length;
+    const totalMinutes = items.reduce((sum, item) => sum + parseDurationToMinutes(item.duration), 0);
+    const lastStreamDate = items[0]?.created_at ? formatDate(items[0].created_at) : "—";
+
+    summaryNode.innerHTML = `
+      <article class="card reveal visible">
+        <h3>Streams récupérés</h3>
+        <p>${totalStreams} session${totalStreams > 1 ? "s" : ""}</p>
+      </article>
+      <article class="card reveal visible">
+        <h3>Durée totale récente</h3>
+        <p>${formatMinutes(totalMinutes)}</p>
+      </article>
+      <article class="card reveal visible">
+        <h3>Dernier live</h3>
+        <p>${escapeHtml(lastStreamDate)}</p>
+      </article>
+    `;
 
     streamsNode.innerHTML = "";
     items.forEach((item) => {
@@ -250,9 +239,8 @@ async function initPlanningSync() {
       const thumb = document.createElement("div");
       thumb.className = "creation-thumb planning-thumb";
 
-      const resolvedThumb = resolveThumb(item.thumbnail_url);
-      if (resolvedThumb) {
-        thumb.style.backgroundImage = `linear-gradient(rgba(8,12,20,0.22), rgba(8,12,20,0.22)), url("${resolvedThumb}")`;
+      if (item.thumbnail_url) {
+        thumb.style.backgroundImage = `linear-gradient(rgba(8,12,20,0.2), rgba(8,12,20,0.2)), url("${item.thumbnail_url}")`;
         thumb.style.backgroundSize = "cover";
         thumb.style.backgroundPosition = "center";
         thumb.style.backgroundRepeat = "no-repeat";
@@ -276,7 +264,7 @@ async function initPlanningSync() {
       text.textContent = item.description || "Session archivée sur Twitch.";
 
       const link = document.createElement("a");
-      link.className = "ghost-btn planning-link";
+      link.className = "ghost-btn";
       link.href = item.url;
       link.target = "_blank";
       link.textContent = "Voir la VOD";
@@ -298,189 +286,261 @@ async function initPlanningSync() {
   }
 }
 
-function escapeHtml(value) {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-function initGuestbook() {
+async function initGuestbook() {
   const form = document.getElementById("guestbook-form");
   const list = document.getElementById("guestbook-list");
-  const clearBtn = document.getElementById("guestbook-clear");
+  const status = document.getElementById("guestbook-status");
+  const ratingInput = document.getElementById("guestbook-rating");
+  const stars = document.querySelectorAll("[data-rating-value]");
 
-  if (!form || !list) return;
+  if (!form || !list || !ratingInput) return;
 
-  const STORAGE_KEY = "reddice_guestbook_entries";
+  if (status) status.hidden = false;
 
-  const seedEntries = [
-    {
-      name: "Visiteur du Nexus",
-      title: "Belle ambiance",
-      message: "Le style du site colle super bien à l’univers stream.",
-      date: new Date().toISOString()
-    },
-    {
-      name: "Crew Member",
-      title: "Force à toi",
-      message: "Le mix gaming, cosplay et cyberpunk te correspond vraiment bien.",
-      date: new Date(Date.now() - 86400000).toISOString()
-    }
-  ];
+  let items = [];
+  let currentRating = Number(ratingInput.value || 5);
 
-  function loadEntries() {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(seedEntries));
-      return seedEntries;
-    }
+  const paintStars = (value) => {
+    stars.forEach((star) => {
+      const current = Number(star.dataset.ratingValue);
+      star.classList.toggle("active", current <= value);
+    });
+  };
 
-    try {
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  }
-
-  function saveEntries(entries) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-  }
-
-  function formatDate(isoDate) {
+  const formatDate = (isoDate) => {
     const date = new Date(isoDate);
     return new Intl.DateTimeFormat("fr-FR", {
       day: "2-digit",
       month: "long",
       year: "numeric"
     }).format(date);
-  }
+  };
 
-  function renderEntries() {
-    const entries = loadEntries().slice().reverse();
+  const renderRating = (rating) => {
+    const safe = Math.max(1, Math.min(5, Number(rating || 0)));
+    return "★".repeat(safe) + "☆".repeat(5 - safe);
+  };
+
+  const renderEntries = () => {
     list.innerHTML = "";
 
-    if (!entries.length) {
-      const empty = document.createElement("div");
-      empty.className = "entry-empty";
-      empty.textContent = "Aucun message pour le moment.";
-      list.appendChild(empty);
+    if (!items.length) {
+      list.innerHTML = `<div class="entry-empty">Aucun avis pour le moment. Sois le premier à laisser ton message.</div>`;
       return;
     }
 
-    entries.forEach((entry) => {
+    items.forEach((entry) => {
       const card = document.createElement("article");
       card.className = "entry-card reveal visible";
 
-      const meta = document.createElement("div");
-      meta.className = "entry-meta";
-
-      const name = document.createElement("strong");
-      name.textContent = entry.name || "Anonyme";
-
-      const date = document.createElement("small");
-      date.textContent = formatDate(entry.date);
-
-      const title = document.createElement("h4");
-      title.textContent = entry.title || "Message";
-
-      const message = document.createElement("p");
-      message.textContent = entry.message || "";
-
-      meta.appendChild(name);
-      meta.appendChild(date);
-
-      card.appendChild(meta);
-      card.appendChild(title);
-      card.appendChild(message);
+      card.innerHTML = `
+        <div class="entry-meta">
+          <strong>${escapeHtml(entry.name || "Anonyme")}</strong>
+          <small>${escapeHtml(formatDate(entry.created_at))}</small>
+        </div>
+        <div class="rating-readonly">${escapeHtml(renderRating(entry.rating))}</div>
+        ${entry.title ? `<h4>${escapeHtml(entry.title)}</h4>` : ""}
+        <p>${escapeHtml(entry.message || "")}</p>
+      `;
 
       list.appendChild(card);
     });
-  }
+  };
 
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
+  const loadEntries = async () => {
+    try {
+      list.innerHTML = `<div class="entry-empty">Chargement des avis...</div>`;
+      const response = await fetch("/api/guestbook", { cache: "no-store" });
 
-    const formData = new FormData(form);
-    const name = String(formData.get("name") || "").trim();
-    const title = String(formData.get("title") || "").trim();
-    const message = String(formData.get("message") || "").trim();
+      if (!response.ok) {
+        throw new Error("Impossible de charger le livre d’or");
+      }
 
-    if (!name || !message) return;
+      const data = await response.json();
+      items = Array.isArray(data.items) ? data.items : [];
+      renderEntries();
+    } catch (error) {
+      console.error(error);
+      list.innerHTML = `<div class="entry-empty">Impossible de charger les avis pour le moment.</div>`;
+    }
+  };
 
-    const entries = loadEntries();
-    entries.push({
-      name,
-      title: title || "Message du livre d’or",
-      message,
-      date: new Date().toISOString()
+  paintStars(currentRating);
+
+  stars.forEach((star) => {
+    const value = Number(star.dataset.ratingValue);
+
+    star.addEventListener("mouseenter", () => {
+      paintStars(value);
     });
 
-    saveEntries(entries);
-    form.reset();
-    renderEntries();
+    star.addEventListener("click", () => {
+      currentRating = value;
+      ratingInput.value = String(value);
+      paintStars(currentRating);
+    });
   });
 
-  if (clearBtn) {
-    clearBtn.addEventListener("click", () => {
-      localStorage.removeItem(STORAGE_KEY);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(seedEntries));
-      renderEntries();
+  const picker = document.querySelector(".rating-picker");
+  if (picker) {
+    picker.addEventListener("mouseleave", () => {
+      paintStars(currentRating);
     });
   }
 
-  renderEntries();
-}
-
-function initContactDraft() {
-  const form = document.getElementById("contact-draft-form");
-  const output = document.getElementById("contact-draft-output");
-  const copyBtn = document.getElementById("contact-draft-copy");
-
-  if (!form || !output) return;
-
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
+    const submitBtn = form.querySelector('button[type="submit"]');
     const formData = new FormData(form);
-    const name = String(formData.get("name") || "").trim();
-    const subject = String(formData.get("subject") || "").trim();
-    const channel = String(formData.get("channel") || "").trim();
-    const message = String(formData.get("message") || "").trim();
 
-    const text = [
-      `Pseudo : ${name || "-"}`,
-      `Sujet : ${subject || "-"}`,
-      `Canal souhaité : ${channel || "-"}`,
-      "",
-      "Message :",
-      message || "-"
-    ].join("\n");
+    const payload = {
+      name: String(formData.get("name") || "").trim(),
+      title: String(formData.get("title") || "").trim(),
+      message: String(formData.get("message") || "").trim(),
+      rating: Number(formData.get("rating") || 5),
+      website: String(formData.get("website") || "").trim()
+    };
 
-    output.value = text;
-    output.hidden = false;
+    if (!payload.name || !payload.message) {
+      if (status) {
+        status.className = "form-status error";
+        status.textContent = "Merci de remplir au minimum ton pseudo et ton message.";
+      }
+      return;
+    }
 
-    if (copyBtn) {
-      copyBtn.hidden = false;
+    try {
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Envoi...";
+      }
+
+      if (status) {
+        status.className = "form-status";
+        status.textContent = "Publication de l’avis...";
+      }
+
+      const response = await fetch("/api/guestbook", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || "Impossible de publier l’avis");
+      }
+
+      if (data.item) {
+        items.unshift(data.item);
+      }
+
+      renderEntries();
+      form.reset();
+      currentRating = 5;
+      ratingInput.value = "5";
+      paintStars(5);
+
+      if (status) {
+        status.className = "form-status success";
+        status.textContent = "Ton avis a bien été publié.";
+      }
+    } catch (error) {
+      console.error(error);
+      if (status) {
+        status.className = "form-status error";
+        status.textContent = error.message || "Impossible de publier l’avis pour le moment.";
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Publier l’avis";
+      }
     }
   });
 
-  if (copyBtn) {
-    copyBtn.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(output.value);
-        copyBtn.textContent = "Copié";
-        setTimeout(() => {
-          copyBtn.textContent = "Copier";
-        }, 1500);
-      } catch {
-        copyBtn.textContent = "Impossible";
+  await loadEntries();
+}
+
+async function initContactForm() {
+  const form = document.getElementById("contact-form");
+  const status = document.getElementById("contact-status");
+
+  if (!form) return;
+  if (status) status.hidden = false;
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const formData = new FormData(form);
+
+    const payload = {
+      name: String(formData.get("name") || "").trim(),
+      email: String(formData.get("email") || "").trim(),
+      subject: String(formData.get("subject") || "").trim(),
+      message: String(formData.get("message") || "").trim(),
+      website: String(formData.get("website") || "").trim()
+    };
+
+    if (!payload.name || !payload.email || !payload.subject || !payload.message) {
+      if (status) {
+        status.className = "form-status error";
+        status.textContent = "Merci de remplir tous les champs du formulaire.";
       }
-    });
-  }
+      return;
+    }
+
+    try {
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Envoi...";
+      }
+
+      if (status) {
+        status.className = "form-status";
+        status.textContent = "Envoi du message...";
+      }
+
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || "Impossible d’envoyer le message");
+      }
+
+      form.reset();
+
+      if (status) {
+        status.className = "form-status success";
+        status.textContent = "Ton message a bien été envoyé.";
+      }
+    } catch (error) {
+      console.error(error);
+      if (status) {
+        status.className = "form-status error";
+        status.textContent = error.message || "Impossible d’envoyer le message pour le moment.";
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Envoyer le message";
+      }
+    }
+  });
 }
 
 function setCurrentYear() {
@@ -488,4 +548,13 @@ function setCurrentYear() {
   if (yearNode) {
     yearNode.textContent = String(new Date().getFullYear());
   }
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
