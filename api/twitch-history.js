@@ -73,7 +73,9 @@ export default async function handler(req, res) {
         created_at: video.created_at,
         published_at: video.published_at,
         url: video.url,
-        thumbnail_url: video.thumbnail_url,
+        thumbnail_url: (video.thumbnail_url || "")
+          .replace(/%\{width\}/g, "640")
+          .replace(/%\{height\}/g, "360"),
         duration: video.duration,
         view_count: video.view_count || 0
       }))
