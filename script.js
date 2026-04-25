@@ -86,9 +86,7 @@ async function initStreamStatus() {
 
       const response = await fetch(url.toString(), {
         method: "GET",
-        headers: {
-          "Accept": "application/json"
-        },
+        headers: { "Accept": "application/json" },
         cache: "no-store"
       });
 
