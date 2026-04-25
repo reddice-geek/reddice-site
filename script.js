@@ -58,8 +58,14 @@ function initTwitchEmbeds() {
   }
 
   const parent = encodeURIComponent(host);
-  player.src = `https://player.twitch.tv/?channel=reddice_stream&parent=${parent}&muted=true`;
-  chat.src = `https://www.twitch.tv/embed/reddice_stream/chat?parent=${parent}`;
+  const playerSrc = `https://player.twitch.tv/?channel=reddice_stream&parent=${parent}&muted=true`;
+  const chatSrc = `https://www.twitch.tv/embed/reddice_stream/chat?parent=${parent}`;
+
+  player.src = playerSrc;
+
+  window.setTimeout(() => {
+    chat.src = chatSrc;
+  }, 350);
 }
 
 async function initStreamStatus() {
@@ -93,12 +99,6 @@ async function initStreamStatus() {
       if (!response.ok) {
         const errorText = await response.text().catch(() => "");
         throw new Error(`HTTP ${response.status} ${errorText}`);
-      }
-
-      const contentType = response.headers.get("content-type") || "";
-      if (!contentType.includes("application/json")) {
-        const rawText = await response.text().catch(() => "");
-        throw new Error(`Réponse non JSON: ${rawText.slice(0, 120)}`);
       }
 
       const data = await response.json();
@@ -174,6 +174,13 @@ async function initPlanningSync() {
     daysNode.innerHTML = "";
   };
 
+  const resolveThumb = (url) => {
+    if (!url) return "";
+    return url
+      .replace(/%\{width\}/g, "640")
+      .replace(/%\{height\}/g, "360");
+  };
+
   try {
     statusNode.textContent = "Synchronisation des streams...";
     const response = await fetch("/api/twitch-history?login=reddice_stream", {
@@ -203,7 +210,7 @@ async function initPlanningSync() {
         <p>${totalStreams} session${totalStreams > 1 ? "s" : ""}</p>
       </article>
       <article class="card reveal visible">
-        <h3>Durée totale</h3>
+        <h3>Durée totale récente</h3>
         <p>${formatMinutes(totalMinutes)}</p>
       </article>
       <article class="card reveal visible">
@@ -211,26 +218,6 @@ async function initPlanningSync() {
         <p>${lastStreamDate}</p>
       </article>
     `;
-
-    streamsNode.innerHTML = "";
-    items.forEach((item) => {
-      const article = document.createElement("article");
-      article.className = "creation-card reveal visible";
-
-      article.innerHTML = `
-        <div class="creation-thumb">Stream archive</div>
-        <h3>${escapeHtml(item.title || "Stream")}</h3>
-        <div class="planning-meta">
-          <span class="mini-chip">${escapeHtml(formatDate(item.created_at))}</span>
-          <span class="mini-chip">${escapeHtml(item.duration || "—")}</span>
-          <span class="mini-chip">${Number(item.view_count || 0)} vue${Number(item.view_count || 0) > 1 ? "s" : ""}</span>
-        </div>
-        <p>${escapeHtml(item.description || "Session archivée sur Twitch.")}</p>
-        <a class="ghost-btn planning-link" href="${item.url}" target="_blank">Voir la VOD</a>
-      `;
-
-      streamsNode.appendChild(article);
-    });
 
     const counts = [0, 0, 0, 0, 0, 0, 0];
     items.forEach((item) => {
@@ -253,6 +240,54 @@ async function initPlanningSync() {
         <p>${count} stream${count > 1 ? "s" : ""}</p>
       `;
       daysNode.appendChild(article);
+    });
+
+    streamsNode.innerHTML = "";
+    items.forEach((item) => {
+      const article = document.createElement("article");
+      article.className = "creation-card reveal visible";
+
+      const thumb = document.createElement("div");
+      thumb.className = "creation-thumb planning-thumb";
+
+      const resolvedThumb = resolveThumb(item.thumbnail_url);
+      if (resolvedThumb) {
+        thumb.style.backgroundImage = `linear-gradient(rgba(8,12,20,0.22), rgba(8,12,20,0.22)), url("${resolvedThumb}")`;
+        thumb.style.backgroundSize = "cover";
+        thumb.style.backgroundPosition = "center";
+        thumb.style.backgroundRepeat = "no-repeat";
+        thumb.textContent = "";
+      } else {
+        thumb.textContent = "Stream archive";
+      }
+
+      const title = document.createElement("h3");
+      title.textContent = item.title || "Stream";
+
+      const meta = document.createElement("div");
+      meta.className = "planning-meta";
+      meta.innerHTML = `
+        <span class="mini-chip">${escapeHtml(formatDate(item.created_at))}</span>
+        <span class="mini-chip">${escapeHtml(item.duration || "—")}</span>
+        <span class="mini-chip">${Number(item.view_count || 0)} vue${Number(item.view_count || 0) > 1 ? "s" : ""}</span>
+      `;
+
+      const text = document.createElement("p");
+      text.textContent = item.description || "Session archivée sur Twitch.";
+
+      const link = document.createElement("a");
+      link.className = "ghost-btn planning-link";
+      link.href = item.url;
+      link.target = "_blank";
+      link.textContent = "Voir la VOD";
+
+      article.appendChild(thumb);
+      article.appendChild(title);
+      article.appendChild(meta);
+      article.appendChild(text);
+      article.appendChild(link);
+
+      streamsNode.appendChild(article);
     });
 
     statusNode.textContent = "Historique Twitch synchronisé.";
