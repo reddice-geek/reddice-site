@@ -294,7 +294,6 @@ async function initGuestbook() {
   const stars = document.querySelectorAll("[data-rating-value]");
 
   if (!form || !list || !ratingInput) return;
-
   if (status) status.hidden = false;
 
   let items = [];
