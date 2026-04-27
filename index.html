@@ -18,11 +18,13 @@
 
   <header class="hub-header">
     <div class="container hub-brand">
-      <img
-        src="https://cdn.streamelements.com/uploads/01kfvz4qzddskgzp8ecd95jxwh.webp"
-        alt="Logo Reddice"
-        class="hub-logo"
-      >
+      <a href="index.html" class="hub-logo-link" aria-label="Retour à l’accueil de Reddice HUB">
+        <img
+          src="https://cdn.streamelements.com/uploads/01kfvz4qzddskgzp8ecd95jxwh.webp"
+          alt="Logo Reddice"
+          class="hub-logo"
+        >
+      </a>
       <span class="hub-overline">Bienvenue dans mon univers</span>
       <h1 class="hub-title">Reddice HUB</h1>
       <p class="hub-subtitle">
@@ -32,15 +34,40 @@
   </header>
 
   <nav class="hub-nav-shell">
-    <div class="container">
-      <ul class="hub-nav">
-        <li><a href="index.html" class="hub-link" data-nav="home" data-text="Accueil">Accueil</a></li>
-        <li><a href="bio.html" class="hub-link" data-nav="bio" data-text="Bio">Bio</a></li>
-        <li><a href="livre-or.html" class="hub-link" data-nav="guestbook" data-text="Livre d’or">Livre d’or</a></li>
-        <li><a href="planning.html" class="hub-link" data-nav="planning" data-text="Planning">Planning</a></li>
-        <li><a href="contact.html" class="hub-link" data-nav="contact" data-text="Contact">Contact</a></li>
-        <li class="hub-status-item"><span class="stream-badge is-loading" data-stream-status>Checking</span></li>
-      </ul>
+    <div class="container hub-nav-layout">
+      <div class="hub-nav-spacer" aria-hidden="true"></div>
+
+      <div class="hub-nav-center">
+        <ul class="hub-nav">
+          <li><a href="index.html" class="hub-link" data-nav="home" data-text="Accueil">Accueil</a></li>
+          <li><a href="bio.html" class="hub-link" data-nav="bio" data-text="Bio">Bio</a></li>
+          <li><a href="livre-or.html" class="hub-link" data-nav="guestbook" data-text="Livre d’or">Livre d’or</a></li>
+          <li><a href="planning.html" class="hub-link" data-nav="planning" data-text="Planning">Planning</a></li>
+          <li><a href="contact.html" class="hub-link" data-nav="contact" data-text="Contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <aside class="hub-nav-side" aria-label="Accès rapides">
+        <a
+          href="https://reddice-stream-shop.fourthwall.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hub-quick-link hub-quick-shop"
+        >
+          Shop
+        </a>
+
+        <a
+          href="https://discord.gg/vY8WJQcwPN"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hub-quick-link hub-quick-discord"
+        >
+          Discord
+        </a>
+
+        <span class="stream-badge is-loading" data-stream-status>Checking</span>
+      </aside>
     </div>
   </nav>
 
