@@ -90,7 +90,7 @@ async function initStreamStatus() {
 
       const response = await fetch(url.toString(), {
         method: "GET",
-        headers: { "Accept": "application/json" },
+        headers: { Accept: "application/json" },
         cache: "no-store"
       });
 
@@ -267,6 +267,7 @@ async function initPlanningSync() {
       link.className = "ghost-btn";
       link.href = item.url;
       link.target = "_blank";
+      link.rel = "noopener noreferrer";
       link.textContent = "Voir la VOD";
 
       article.appendChild(thumb);
@@ -424,7 +425,7 @@ async function initGuestbook() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json"
+          Accept: "application/json"
         },
         body: JSON.stringify(payload)
       });
@@ -510,7 +511,7 @@ async function initContactForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json"
+          Accept: "application/json"
         },
         body: JSON.stringify(payload)
       });
