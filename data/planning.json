@@ -1,0 +1,30 @@
+[
+  {
+    "day": "Mardi",
+    "time": "20:30",
+    "title": "Star Citizen - Mining & Chill",
+    "tag": "Live principal",
+    "active": true
+  },
+  {
+    "day": "Jeudi",
+    "time": "20:30",
+    "title": "Variété / Découverte communauté",
+    "tag": "Live commu",
+    "active": true
+  },
+  {
+    "day": "Samedi",
+    "time": "21:00",
+    "title": "Grosse soirée - Events",
+    "tag": "Gros live",
+    "active": true
+  },
+  {
+    "day": "Dimanche",
+    "time": "Off",
+    "title": "Repos / Rediff",
+    "tag": "Off",
+    "active": false
+  }
+]
