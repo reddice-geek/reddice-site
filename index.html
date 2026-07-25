@@ -1,221 +1,61 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reddice HUB // Accueil</title>
-  <meta name="description" content="Accueil du site officiel de Reddice : live Twitch, chat, réseaux et accès au hub." />
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reddice HUB V2 // Accueil</title>
+<link rel="icon" href="assets/icon-r.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="home">
-  <div class="aurora"></div>
-  <div class="aurora-2"></div>
-
-  <header class="hub-header">
-    <div class="container hub-brand">
-      <a href="index.html" class="hub-logo-link" aria-label="Retour à l’accueil de Reddice HUB">
-        <img
-          src="https://cdn.streamelements.com/uploads/01kfvz4qzddskgzp8ecd95jxwh.webp"
-          alt="Logo Reddice"
-          class="hub-logo"
-        >
-      </a>
-      <span class="hub-overline">Bienvenue dans mon univers</span>
-      <h1 class="hub-title">Reddice HUB</h1>
-      <p class="hub-subtitle">
-        Le point d’accès central au live, à la communauté et à tout mon univers.
-      </p>
+<header class="hub-header">
+  <div class="hub-brand">
+    <img src="assets/logo-main.webp" alt="Reddice Logo" class="hub-logo-main">
+    <span class="hub-overline">Système en ligne - V2</span>
+    <p class="hub-subtitle">Live, planning éditable, archives Twitch et communauté au même endroit. Plus clean, plus rapide.</p>
+  </div>
+</header>
+<nav class="hub-nav-shell">
+  <div class="container hub-nav-layout">
+    <ul class="hub-nav">
+      <li><a href="index.html" class="hub-link-v2 active" data-nav="home">Accueil</a></li>
+      <li><a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a></li>
+      <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
+      <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
+      <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
+    </ul>
+    <div class="hub-nav-right">
+      <span class="stream-badge is-loading" data-stream-status>Checking</span>
+      <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop">Shop</a>
+      <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
     </div>
-  </header>
-
-  <nav class="hub-nav-shell">
-    <div class="container hub-nav-layout">
-      <div class="hub-nav-spacer" aria-hidden="true"></div>
-
-      <div class="hub-nav-center">
-        <ul class="hub-nav">
-          <li><a href="index.html" class="hub-link" data-nav="home" data-text="Accueil">Accueil</a></li>
-          <li><a href="bio.html" class="hub-link" data-nav="bio" data-text="Bio">Bio</a></li>
-          <li><a href="livre-or.html" class="hub-link" data-nav="guestbook" data-text="Livre d’or">Livre d’or</a></li>
-          <li><a href="planning.html" class="hub-link" data-nav="planning" data-text="Planning">Planning</a></li>
-          <li><a href="contact.html" class="hub-link" data-nav="contact" data-text="Contact">Contact</a></li>
-        </ul>
-      </div>
-
-      <aside class="hub-nav-side" aria-label="Accès rapides">
-        <a
-          href="https://reddice-stream-shop.fourthwall.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hub-quick-link hub-quick-shop"
-        >
-          Shop
-        </a>
-
-        <a
-          href="https://discord.gg/vY8WJQcwPN"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hub-quick-link hub-quick-discord"
-        >
-          Discord
-        </a>
-
-        <span class="stream-badge is-loading" data-stream-status>Checking</span>
-      </aside>
+  </div>
+</nav>
+<main class="container">
+  <section class="shell reveal">
+    <span class="kicker">Live center</span>
+    <h2 style="font-size:clamp(2rem,4vw,3rem); margin:0.6rem 0">Bienvenue sur le HUB V2</h2>
+    <p class="lead">Le style cyberpunk est gardé mais épuré : plus de grosses découpes, des boutons pill, des cartes arrondies, et ton nouveau logo au centre. Le planning est maintenant éditable depuis GitHub.</p>
+    <div class="grid-2" style="margin-top:1.2rem">
+      <div class="player-box"><iframe id="twitch-player" allowfullscreen></iframe></div>
+      <div class="player-box"><iframe id="twitch-chat"></iframe></div>
     </div>
-  </nav>
+  </section>
 
-  <main class="container">
-    <section class="hero-shell reveal home-welcome-shell">
-      <span class="kicker">Bienvenue dans le hub</span>
-      <hgroup>
-        <h2>Bienvenue sur le site de Reddice</h2>
-        <h3>Le live, la communauté, le planning et tout l’univers du stream au même endroit</h3>
-      </hgroup>
-
-      <p class="lead">
-        Ici, tu retrouves directement le live Twitch, le chat, mes réseaux, ma bio, le planning
-        des streams et un espace pour laisser un avis ou me contacter.
-      </p>
-
-      <div class="home-welcome-grid">
-        <article class="card reveal visible">
-          <h3>Le live au centre</h3>
-          <p>Le cœur du site reste le stream Twitch, accessible dès l’arrivée sur la page d’accueil.</p>
-        </article>
-        <article class="card reveal visible">
-          <h3>Un univers complet</h3>
-          <p>Tu peux découvrir mon parcours, mon ambiance, ma communauté et mon évolution au fil des années.</p>
-        </article>
-        <article class="card reveal visible">
-          <h3>Un vrai hub</h3>
-          <p>Tout est pensé pour que tu puisses trouver rapidement ce que tu cherches sur mobile comme sur PC.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="home-main-grid" style="margin-top: 2rem;">
-      <section class="stream-shell reveal home-live-shell" id="live">
-        <span class="section-chip">Live en direct</span>
-        <h3 style="margin-top:0; position:relative; z-index:1;">Le flux Twitch et le chat</h3>
-        <p class="muted">
-          Le live est au centre du site pour que l’accueil soit avant tout tourné vers le stream.
-        </p>
-
-        <div class="live-stack">
-          <div class="player-box home-player">
-            <iframe
-              id="twitch-player"
-              allowfullscreen="true"
-              scrolling="no"
-              title="Lecteur Twitch Reddice">
-            </iframe>
-          </div>
-
-          <div class="chat-box home-chat">
-            <iframe
-              id="twitch-chat"
-              scrolling="no"
-              loading="lazy"
-              title="Chat Twitch Reddice">
-            </iframe>
-          </div>
-        </div>
-
-        <div class="embed-warning" id="embed-warning">
-          L’intégration Twitch a besoin d’un vrai domaine ou d’un serveur local pour fonctionner correctement.
-        </div>
-      </section>
-
-      <aside class="panel-shell reveal home-social-shell">
-        <span class="section-chip">Réseaux & communauté</span>
-        <h3 style="margin-top:0; position:relative; z-index:1;">Rester connecté</h3>
-        <p class="muted">
-          Tous les accès rapides à mon univers sont regroupés ici.
-        </p>
-
-        <div class="home-socials">
-          <a class="social reveal visible" data-tone="twitch" href="https://www.twitch.tv/reddice_stream" target="_blank">
-            <strong>Twitch</strong>
-            <span>La chaîne principale</span>
-          </a>
-
-          <a class="social reveal visible" data-tone="discord" href="https://discord.gg/vY8WJQcwPN" target="_blank">
-            <strong>Discord</strong>
-            <span>La communauté</span>
-          </a>
-
-          <a class="social reveal visible" data-tone="youtube" href="https://www.youtube.com/@reddice_geek9473" target="_blank">
-            <strong>YouTube</strong>
-            <span>Archives, vidéos et ancien contenu</span>
-          </a>
-
-          <a class="social reveal visible" data-tone="insta" href="https://www.instagram.com/reddice.cos" target="_blank">
-            <strong>Instagram</strong>
-            <span>Cosplay et univers visuel</span>
-          </a>
-
-          <a class="social reveal visible" data-tone="tiktok" href="https://www.tiktok.com/@reddice.geek" target="_blank">
-            <strong>TikTok</strong>
-            <span>Formats courts et extraits</span>
-          </a>
-        </div>
-      </aside>
-    </section>
-
-    <section class="hero-shell reveal" style="margin-top: 2rem;">
-      <span class="section-chip">Explorer le hub</span>
-      <h3 style="margin-top:0; position:relative; z-index:1;">Le reste du site</h3>
-      <p class="muted">
-        Le live est mis en avant, mais le reste de l’univers reste accessible juste en dessous.
-      </p>
-
-      <div class="grid-4">
-        <article class="card reveal">
-          <h3>Bio</h3>
-          <p>Découvre mon parcours, mes débuts, mon évolution et ce qui m’a amené jusqu’ici.</p>
-          <a href="bio.html" class="ghost-btn" style="margin-top: 0.9rem;">Voir la bio</a>
-        </article>
-
-        <article class="card reveal">
-          <h3>Livre d’or</h3>
-          <p>Laisse un vrai avis avec une note sur 5 étoiles et un message visible directement.</p>
-          <a href="livre-or.html" class="ghost-btn" style="margin-top: 0.9rem;">Ouvrir le livre d’or</a>
-        </article>
-
-        <article class="card reveal">
-          <h3>Planning</h3>
-          <p>Retrouve les jours de stream les plus actifs et les dernières rediffusions.</p>
-          <a href="planning.html" class="ghost-btn" style="margin-top: 0.9rem;">Voir le planning</a>
-        </article>
-
-        <article class="card reveal">
-          <h3>Contact</h3>
-          <p>Envoie un vrai message directement depuis le site pour une collab ou une demande.</p>
-          <a href="contact.html" class="ghost-btn" style="margin-top: 0.9rem;">Me contacter</a>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <footer class="container">
-    <small>
-      <a href="index.html">Accueil</a> •
-      <a href="bio.html">Bio</a> •
-      <a href="livre-or.html">Livre d’or</a> •
-      <a href="planning.html">Planning</a> •
-      <a href="contact.html">Contact</a>
-      <br>
-      Reddice HUB // <span id="current-year"></span>
-    </small>
-  </footer>
-
-  <script src="script.js"></script>
+  <section class="shell reveal" style="margin-top:1.5rem">
+    <span class="kicker">Planning V2</span>
+    <h3>Comment ça marche maintenant</h3>
+    <p class="lead" id="planning-status">Chargement...</p>
+    <div class="planning-toolbar">
+      <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--muted)">Edite /data/planning.json dans ton repo GitHub pour changer les horaires. C'est instant sur Vercel.</span>
+    </div>
+    <div id="planning-editable" class="grid-3"></div>
+    <h3 style="margin-top:2rem">Dernières archives Twitch (API)</h3>
+    <div id="planning-archives" class="grid-3"></div>
+  </section>
+</main>
+<footer class="container" style="text-align:center; padding:2rem 0; color:var(--muted)"><small>Reddice HUB V2 • <span id="current-year"></span> • Logo principal = logo-main.webp • Icône = icon-r.webp</small></footer>
+<script src="script.js"></script>
 </body>
 </html>
