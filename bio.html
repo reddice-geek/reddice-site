@@ -37,13 +37,31 @@
 
 <section class="shell reveal">
   <span class="kicker">Bio</span>
-  <h2>Mon parcours</h2>
-  <p class="lead">Moi c'est Reddice. Gaming depuis gamin, YouTube à 16 ans, stream depuis Justin.tv, Twitch full time depuis 2018.</p>
-  <div class="grid-2" style="margin-top:1.2rem">
-    <div class="card"><strong style="color:#fff">Les débuts</strong><p style="color:var(--muted)">YouTube HasukeGames vers 20 ans, puis Justin.tv vers 21/22 ans avec Pokémon Jaune.</p></div>
+  <div style="display:grid; grid-template-columns: 320px 1fr; gap:2rem; align-items:start; margin-top:1rem">
+    <div style="position:relative">
+      <div style="border-radius:20px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.03); aspect-ratio:3/4">
+        <img src="assets/bio-photo.webp" alt="Reddice" style="width:100%; height:100%; object-fit:cover; display:block" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid'">
+        <div style="display:none; place-items:center; height:100%; color:var(--muted); font-family:var(--font-mono); font-size:0.8rem; text-align:center; padding:1rem">Ajoute ta photo ici :<br>assets/bio-photo.webp</div>
+      </div>
+      <div style="margin-top:0.8rem; display:flex; gap:0.5rem; flex-wrap:wrap">
+        <span class="mini-chip" style="display:inline-flex; padding:0.3rem 0.7rem; border-radius:999px; background:rgba(255,255,255,0.06); border:1px solid var(--border); font-family:var(--font-mono); font-size:0.7rem">Streamer</span>
+        <span class="mini-chip" style="display:inline-flex; padding:0.3rem 0.7rem; border-radius:999px; background:rgba(255,255,255,0.06); border:1px solid var(--border); font-family:var(--font-mono); font-size:0.7rem">Cosplayeur</span>
+        <span class="mini-chip" style="display:inline-flex; padding:0.3rem 0.7rem; border-radius:999px; background:rgba(0,232,255,0.12); border:1px solid rgba(0,232,255,0.2); font-family:var(--font-mono); font-size:0.7rem">Furioz Compagnie</span>
+      </div>
+    </div>
+    <div>
+      <h2 style="margin-top:0; font-size:clamp(2rem,4vw,3rem)">Moi c'est Reddice</h2>
+      <p class="lead" style="color:var(--muted)">Gaming depuis gamin, YouTube à 16 ans, stream depuis Justin.tv, Twitch full time depuis 2018. Aujourd'hui cosplay, collectif Furioz Compagnie et communauté.</p>
+      <p style="color:var(--muted); line-height:1.6">J'ai commencé sur YouTube vers mes 16 ans, plus actif vers 20 ans sous HasukeGames. Le stream arrive vers 21/22 ans sur Justin.tv avec du Pokémon Jaune, puis passage full Twitch en 2018. En 2021 je prends le nom Reddice pour une identité plus claire, et je fonde Furioz Company en 2022 parce que j'aime créer à plusieurs.</p>
+      <p style="color:var(--muted); line-height:1.6">Le cosplay arrive en 2020 : Darth Revan, Kirito, Shadow, Chica FNAF. C'est devenu une autre façon d'exprimer mon univers à côté du gaming.</p>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:2rem">
+    <div class="card"><strong style="color:#fff">Les débuts</strong><p style="color:var(--muted)">YouTube HasukeGames vers 20 ans, puis Justin.tv vers 21/22 ans.</p></div>
     <div class="card"><strong style="color:#fff">Passage Twitch</strong><p style="color:var(--muted)">2017/2018 full stream. WebTV, events, Japan Expo / PGW en vlogs.</p></div>
-    <div class="card"><strong style="color:#fff">Identité Reddice</strong><p style="color:var(--muted)">2021/2022 nouveau nom, plus clair. 2022 création Furioz Company.</p></div>
-    <div class="card"><strong style="color:#fff">Cosplay</strong><p style="color:var(--muted)">Depuis 2020 : Darth Revan, Kirito, Shadow, Chica FNAF.</p></div>
+    <div class="card"><strong style="color:#fff">Identité Reddice</strong><p style="color:var(--muted)">2021/2022 nouveau nom, 2022 création Furioz Company.</p></div>
+    <div class="card"><strong style="color:#fff">Cosplay</strong><p style="color:var(--muted)">Depuis 2020 : Revan, Kirito, Shadow, Chica.</p></div>
   </div>
 </section>
 
