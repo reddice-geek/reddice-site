@@ -38,26 +38,44 @@
 <section class="shell reveal">
   <span class="kicker">Live center</span>
   <h2 style="font-size:clamp(2.2rem,4vw,3.2rem); margin:0.6rem 0 0.4rem">Bienvenue sur le site de Reddice</h2>
-  <p class="lead">Le point d'accès central au live, à la communauté, au collectif Furioz Compagnie et à tout mon univers. Live Twitch direct + chat intégré.</p>
+  <p class="lead">Le point d'accès central au live, à la communauté, au collectif Furioz Compagnie et à tout mon univers.</p>
   <div class="grid-2" style="margin-top:1.4rem">
     <div class="player-box"><iframe id="twitch-player" allowfullscreen title="Twitch Player"></iframe></div>
     <div class="player-box"><iframe id="twitch-chat" title="Twitch Chat"></iframe></div>
   </div>
 </section>
 
-<section class="grid-2" style="margin-top:1.5rem">
-  <div class="shell reveal">
+<section style="margin-top:1.5rem; display:grid; gap:1.2rem">
+  <!-- Reseaux perso - PLUS GROS -->
+  <div class="shell reveal" style="padding:1.8rem">
     <span class="kicker">Réseaux</span>
-    <h3>Rester connecté</h3>
-    <div style="display:grid; gap:0.7rem; margin-top:1rem">
-      <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="card" style="text-decoration:none; display:block"><strong style="color:#fff">Twitch</strong><br><small style="color:var(--muted)">Chaîne principale</small></a>
-      <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="card" style="text-decoration:none; display:block"><strong style="color:#fff">Discord</strong><br><small style="color:var(--muted)">La communauté</small></a>
-      <a href="https://www.youtube.com/@reddice_geek9473" target="_blank" class="card" style="text-decoration:none; display:block"><strong style="color:#fff">YouTube</strong><br><small style="color:var(--muted)">Archives et vidéos</small></a>
-      <a href="https://www.twitch.tv/furiozcompagnie" target="_blank" class="card" style="text-decoration:none; display:block; border-color:rgba(0,232,255,0.22)"><strong style="color:#fff">Furioz Compagnie - Twitch</strong><br><small style="color:var(--muted)">Le collectif / WebTV</small></a>
-      <a href="https://discord.com/invite/nKj9NFDyxj" target="_blank" class="card" style="text-decoration:none; display:block; border-color:rgba(138,92,255,0.25)"><strong style="color:#fff">Furioz Compagnie - Discord</strong><br><small style="color:var(--muted)">Rejoindre la communauté Furioz</small></a>
+    <h3 style="font-size:1.8rem; margin:0.6rem 0">Rester connecté</h3>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:1rem; margin-top:1.2rem">
+      <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="card" style="text-decoration:none; display:block; padding:1.4rem"><strong style="color:#fff; font-size:1.15rem">Twitch</strong><br><small style="color:var(--muted); font-size:0.95rem">Chaîne principale - Live</small></a>
+      <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="card" style="text-decoration:none; display:block; padding:1.4rem"><strong style="color:#fff; font-size:1.15rem">Discord</strong><br><small style="color:var(--muted); font-size:0.95rem">Ma communauté perso</small></a>
+      <a href="https://www.youtube.com/@reddice_geek9473" target="_blank" class="card" style="text-decoration:none; display:block; padding:1.4rem"><strong style="color:#fff; font-size:1.15rem">YouTube</strong><br><small style="color:var(--muted); font-size:0.95rem">Archives et vidéos</small></a>
     </div>
   </div>
-  </section>
+
+  <!-- Furioz Compagnie - SEPARE avec logo -->
+  <div class="shell reveal" style="padding:1.8rem; background:linear-gradient(135deg, rgba(138,92,255,0.08), rgba(0,232,255,0.06)), var(--panel); border:1px solid rgba(138,92,255,0.18)">
+    <div style="display:flex; gap:1.2rem; align-items:center; flex-wrap:wrap">
+      <div style="width:72px; height:72px; border-radius:16px; background:rgba(255,255,255,0.06); border:1px solid var(--border); display:grid; place-items:center; font-family:var(--font-mono); font-weight:800; color:#fff; overflow:hidden">
+        <img src="assets/furioz-logo.webp" alt="Furioz Compagnie" style="width:100%; height:100%; object-fit:cover" onerror="this.style.display='none'; this.parentElement.textContent='FZ'">
+      </div>
+      <div>
+        <span class="kicker">Collectif</span>
+        <h3 style="margin:0.3rem 0; font-size:1.6rem">Furioz Compagnie</h3>
+        <p style="margin:0; color:var(--muted); font-size:0.95rem">Mon collectif de stream / WebTV - projets communs, events, lives multi</p>
+      </div>
+      <div style="margin-left:auto; display:flex; gap:0.6rem; flex-wrap:wrap">
+        <a href="https://www.twitch.tv/furiozcompagnie" target="_blank" class="btn btn-primary" style="text-decoration:none">Twitch Furioz</a>
+        <a href="https://discord.com/invite/nKj9NFDyxj" target="_blank" class="btn" style="text-decoration:none">Discord Furioz</a>
+      </div>
+    </div>
+    <p style="margin:0.8rem 0 0; font-family:var(--font-mono); font-size:0.75rem; color:var(--muted)">Logo : ajoute ton logo dans assets/furioz-logo.webp (carré 512x512)</p>
+  </div>
+</section>
 
 </main>
 <footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)"><small><a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a> • <a href="contact.html">Contact</a><br>Reddice HUB V2 • <span id="current-year"></span></small></footer>
