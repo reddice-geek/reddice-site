@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reddice HUB V2 // Accueil</title>
-<meta name="description" content="Accueil Reddice HUB V2">
+<meta name="description" content="Site de Reddice - Stream, Furioz Compagnie, communauté">
 <link rel="icon" type="image/webp" href="assets/icon-r.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -38,7 +38,7 @@
 <section class="shell reveal">
   <span class="kicker">Live center</span>
   <h2 style="font-size:clamp(2.2rem,4vw,3.2rem); margin:0.6rem 0 0.4rem">Bienvenue sur le site de Reddice</h2>
-  <p class="lead">Le point d'accès central au live, à la communauté, au collectif Furioz Compagnie et à tout mon univers.</p>
+  <p class="lead">Le point d'accès central au live, à la communauté, au collectif Furioz Compagnie et à tout mon univers. Live Twitch direct + chat intégré.</p>
   <div class="grid-2" style="margin-top:1.4rem">
     <div class="player-box"><iframe id="twitch-player" allowfullscreen title="Twitch Player"></iframe></div>
     <div class="player-box"><iframe id="twitch-chat" title="Twitch Chat"></iframe></div>
@@ -46,7 +46,6 @@
 </section>
 
 <section style="margin-top:1.5rem; display:grid; gap:1.2rem">
-  <!-- Reseaux perso - PLUS GROS -->
   <div class="shell reveal" style="padding:1.8rem">
     <span class="kicker">Réseaux</span>
     <h3 style="font-size:1.8rem; margin:0.6rem 0">Rester connecté</h3>
@@ -57,23 +56,21 @@
     </div>
   </div>
 
-  <!-- Furioz Compagnie - SEPARE avec logo -->
-  <div class="shell reveal" style="padding:1.8rem; background:linear-gradient(135deg, rgba(138,92,255,0.08), rgba(0,232,255,0.06)), var(--panel); border:1px solid rgba(138,92,255,0.18)">
+  <div class="shell reveal" style="padding:1.8rem; background:linear-gradient(135deg, rgba(0,102,255,0.10), rgba(255,255,255,0.03)), var(--panel); border:1px solid rgba(0,102,255,0.25)">
     <div style="display:flex; gap:1.2rem; align-items:center; flex-wrap:wrap">
-      <div style="width:72px; height:72px; border-radius:16px; background:rgba(255,255,255,0.06); border:1px solid var(--border); display:grid; place-items:center; font-family:var(--font-mono); font-weight:800; color:#fff; overflow:hidden">
-        <img src="assets/furioz-logo.webp" alt="Furioz Compagnie" style="width:100%; height:100%; object-fit:cover" onerror="this.style.display='none'; this.parentElement.textContent='FZ'">
+      <div style="width:140px; height:72px; border-radius:12px; background:#fff; border:1px solid var(--border); display:grid; place-items:center; overflow:hidden; padding:6px">
+        <img src="assets/furioz-logo.webp" alt="Furioz Compagnie" style="width:100%; height:100%; object-fit:contain; display:block">
       </div>
       <div>
-        <span class="kicker">Collectif</span>
+        <span class="kicker" style="color:#0066ff">Collectif</span>
         <h3 style="margin:0.3rem 0; font-size:1.6rem">Furioz Compagnie</h3>
         <p style="margin:0; color:var(--muted); font-size:0.95rem">Mon collectif de stream / WebTV - projets communs, events, lives multi</p>
       </div>
       <div style="margin-left:auto; display:flex; gap:0.6rem; flex-wrap:wrap">
-        <a href="https://www.twitch.tv/furiozcompagnie" target="_blank" class="btn btn-primary" style="text-decoration:none">Twitch Furioz</a>
+        <a href="https://www.twitch.tv/furiozcompagnie" target="_blank" class="btn btn-primary" style="text-decoration:none; background:#0066ff; border-color:#0066ff">Twitch Furioz</a>
         <a href="https://discord.com/invite/nKj9NFDyxj" target="_blank" class="btn" style="text-decoration:none">Discord Furioz</a>
       </div>
     </div>
-    <p style="margin:0.8rem 0 0; font-family:var(--font-mono); font-size:0.75rem; color:var(--muted)">Logo : ajoute ton logo dans assets/furioz-logo.webp (carré 512x512)</p>
   </div>
 </section>
 
