@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reddice HUB V2 // Accueil</title>
-<meta name="description" content="Accueil Reddice HUB V2">
-<link rel="icon" type="image/webp" href="assets/icon-r.webp">
+<meta name="description" content="Site de Reddice - Stream, Furioz Compagnie, communauté">
+<link rel="icon" type="image/png" href="assets/icon-r.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
@@ -12,7 +12,7 @@
 <body data-page="home">
 <header class="hub-header">
   <div class="hub-brand">
-    <a href="index.html" aria-label="Accueil"><img src="assets/logo-main.webp" alt="Reddice Logo" class="hub-logo-main"></a>
+    <a href="index.html" aria-label="Accueil"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
     <span class="hub-overline">Système en ligne - V2</span>
     <p class="hub-subtitle">Le point d'accès central au live, à la communauté et à tout l'univers.</p>
   </div>
@@ -36,32 +36,40 @@
 
 <section class="shell reveal">
   <span class="kicker">Live center</span>
-  <h2 style="font-size:clamp(2.2rem,4vw,3.2rem); margin:0.6rem 0 0.4rem">Bienvenue dans l'univers RedDice</h2>
-  <p class="lead">Streamer, cosplayeur et fondateur de Furioz Compagnie. Retrouve ici le live, le planning de la semaine, les dernières VODs et la communauté.</p>
+  <h2 style="font-size:clamp(2.2rem,4vw,3.2rem); margin:0.6rem 0 0.4rem">Bienvenue sur le site de Reddice</h2>
+  <p class="lead">Le point d'accès central au live, à la communauté, au collectif Furioz Compagnie et à tout mon univers. Live Twitch direct + chat intégré.</p>
   <div class="grid-2" style="margin-top:1.4rem">
     <div class="player-box"><iframe id="twitch-player" allowfullscreen title="Twitch Player"></iframe></div>
     <div class="player-box"><iframe id="twitch-chat" title="Twitch Chat"></iframe></div>
   </div>
 </section>
 
-<section class="grid-2" style="margin-top:1.5rem">
-  <div class="shell reveal">
+<section style="margin-top:1.5rem; display:grid; gap:1.2rem">
+  <div class="shell reveal" style="padding:1.8rem">
     <span class="kicker">Réseaux</span>
-    <h3>Rester connecté</h3>
-    <div style="display:grid; gap:0.7rem; margin-top:1rem">
-      <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="card" style="text-decoration:none; display:block"><strong style="color:#fff">Twitch</strong><br><small style="color:var(--muted)">Chaîne principale</small></a>
-      <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="card" style="text-decoration:none; display:block"><strong style="color:#fff">Discord</strong><br><small style="color:var(--muted)">La communauté</small></a>
-      <a href="https://www.youtube.com/@reddice_geek9473" target="_blank" class="card" style="text-decoration:none; display:block"><strong style="color:#fff">YouTube</strong><br><small style="color:var(--muted)">Archives et vidéos</small></a>
+    <h3 style="font-size:1.8rem; margin:0.6rem 0">Rester connecté</h3>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:1rem; margin-top:1.2rem">
+      <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="card" style="text-decoration:none; display:block; padding:1.4rem"><strong style="color:#fff; font-size:1.15rem">Twitch</strong><br><small style="color:var(--muted); font-size:0.95rem">Chaîne principale - Live</small></a>
+      <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="card" style="text-decoration:none; display:block; padding:1.4rem"><strong style="color:#fff; font-size:1.15rem">Discord</strong><br><small style="color:var(--muted); font-size:0.95rem">Ma communauté perso</small></a>
+      <a href="https://www.youtube.com/@reddice_geek9473" target="_blank" class="card" style="text-decoration:none; display:block; padding:1.4rem"><strong style="color:#fff; font-size:1.15rem">YouTube</strong><br><small style="color:var(--muted); font-size:0.95rem">Archives et vidéos</small></a>
     </div>
   </div>
-  <div class="shell reveal">
-    <span class="kicker">Explorer</span>
-    <h3>Le hub</h3>
-    <div class="grid-2" style="margin-top:1rem">
-      <a href="bio.html" class="card" style="text-decoration:none"><strong style="color:#fff">Bio</strong><p style="color:var(--muted); font-size:0.9rem">Parcours, cosplay, évolution</p></a>
-      <a href="planning.html" class="card" style="text-decoration:none"><strong style="color:#fff">Planning</strong><p style="color:var(--muted); font-size:0.9rem">Horaires & dernières VODs</p></a>
-      <a href="livre-or.html" class="card" style="text-decoration:none"><strong style="color:#fff">Livre d'or</strong><p style="color:var(--muted); font-size:0.9rem">Laisse ton avis</p></a>
-</div>
+
+  <div class="shell reveal" style="padding:1.8rem; background:linear-gradient(135deg, rgba(0,102,255,0.10), rgba(255,255,255,0.03)), var(--panel); border:1px solid rgba(0,102,255,0.25)">
+    <div style="display:flex; gap:1.5rem; align-items:center; flex-wrap:wrap">
+      <div style="width:200px; min-width:160px; height:84px; border-radius:12px; background:#ffffff; border:1px solid rgba(0,0,0,0.08); display:flex; align-items:center; justify-content:center; overflow:hidden; padding:8px 12px; flex-shrink:0">
+        <img src="assets/furioz-logo.png" alt="Furioz Compagnie" style="max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; object-position:center; display:block">
+      </div>
+      <div style="flex:1; min-width:220px">
+        <span class="kicker" style="color:#0066ff">Collectif</span>
+        <h3 style="margin:0.3rem 0; font-size:1.6rem">Furioz Compagnie</h3>
+        <p style="margin:0; color:var(--muted); font-size:0.95rem; line-height:1.4">Mon collectif de stream / WebTV - projets communs, events, lives multi. Rejoins-nous sur Twitch et Discord.</p>
+      </div>
+      <div style="display:flex; gap:0.6rem; flex-wrap:wrap; flex-shrink:0">
+        <a href="https://www.twitch.tv/furiozcompagnie" target="_blank" class="btn btn-primary" style="text-decoration:none; background:#0066ff; border-color:#0066ff; color:#fff; padding:0.7rem 1.1rem">Twitch Furioz</a>
+        <a href="https://discord.com/invite/nKj9NFDyxj" target="_blank" class="btn" style="text-decoration:none; padding:0.7rem 1.1rem; background:rgba(255,255,255,0.06)">Discord Furioz</a>
+      </div>
+    </div>
   </div>
 </section>
 
