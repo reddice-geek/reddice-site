@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reddice HUB V2 // Planning</title>
-<meta name="description" content="Planning Reddice">
-<link rel="icon" type="image/webp" href="assets/icon-r.webp">
+<meta name="description" content="Planning éditable + archives">
+<link rel="icon" type="image/png" href="assets/icon-r.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
@@ -12,7 +12,7 @@
 <body data-page="planning">
 <header class="hub-header">
   <div class="hub-brand">
-    <a href="index.html" aria-label="Accueil"><img src="assets/logo-main.webp" alt="Reddice Logo" class="hub-logo-main"></a>
+    <a href="index.html" aria-label="Accueil"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
     <span class="hub-overline">Système en ligne - V2</span>
     <p class="hub-subtitle">Le point d'accès central au live, à la communauté et à tout l'univers.</p>
   </div>
@@ -36,13 +36,15 @@
 <main class="container">
 
 <section class="shell reveal">
-  <span class="kicker">Planning</span>
-  <h2>Planning de la semaine</h2>
-  <div id="planning-editable" class="grid-3" style="margin-top:1.2rem"></div>
+  <span class="kicker">Planning V2</span>
+  <h2>Rythme de la semaine</h2>
+  <p class="lead" id="planning-status">Chargement du planning éditable...</p>
+  <div class="planning-toolbar"><span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--muted)">Modifie /data/planning.json dans GitHub pour changer les horaires. Push = live instant sur Vercel.</span></div>
+  <div id="planning-editable" class="grid-3"></div>
 </section>
 <section class="shell reveal" style="margin-top:1.5rem">
-  <span class="kicker">Replay</span>
-  <h3>Archives streams</h3>
+  <span class="kicker">Archives Twitch</span>
+  <h3>Derniers streams (API Twitch)</h3>
   <div id="planning-archives" class="grid-3" style="margin-top:1rem"></div>
 </section>
 
