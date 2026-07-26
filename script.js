@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", async ()=>{
   initReveal(); initActiveNav(); initTwitchEmbeds(); initStreamStatus(); initPlanningV2(); initGuestbook(); setYear();
 });
