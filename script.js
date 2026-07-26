@@ -1,6 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", async ()=>{
-  initReveal(); initActiveNav(); initTwitchEmbeds(); initStreamStatus(); initPlanningV2(); initGuestbook(); initContact(); setYear();
+  initReveal(); initActiveNav(); initTwitchEmbeds(); initStreamStatus(); initPlanningV2(); initGuestbook(); setYear();
 });
 function initReveal(){
   const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:0.08});
@@ -71,44 +71,123 @@ async function initGuestbook(){
   const form=document.getElementById("guestbook-form");
   const list=document.getElementById("guestbook-list");
   const status=document.getElementById("guestbook-status");
+  const countEl=document.getElementById("guestbook-count");
+  const pagination=document.getElementById("guestbook-pagination");
   const ratingInput=document.getElementById("guestbook-rating");
   if(!form||!list) return;
-  let items=[]; let current=5;
+  let items=[]; let current=5; let currentPage=1; const perPage=10;
+  const STORAGE_KEY="reddice_guestbook_auto_v2";
+
   const stars=document.querySelectorAll("[data-rating-value]");
   const paint=v=>stars.forEach(s=>s.classList.toggle("active", Number(s.dataset.ratingValue)<=v));
   paint(5);
   stars.forEach(s=>s.addEventListener("click",()=>{current=Number(s.dataset.ratingValue); ratingInput.value=current; paint(current)}));
+
+  const saveLocal=()=>{ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }catch{} };
+  const loadLocal=()=>{ try{ const raw=localStorage.getItem(STORAGE_KEY); if(raw){ const arr=JSON.parse(raw); if(Array.isArray(arr)) return arr; } }catch{} return []; };
+
   const render=()=>{
-    list.innerHTML=items.length?"":"<p class='lead'>Aucun avis, sois le premier.</p>";
-    items.forEach(e=>{
+    const total=items.length;
+    if(countEl) countEl.textContent=`${total} avis • Page ${currentPage}/${Math.max(1,Math.ceil(total/perPage))}`;
+    if(total===0){ list.innerHTML="<p class='lead'>Aucun avis, sois le premier. Ton avis s'affiche instantanément !</p>"; if(pagination) pagination.innerHTML=""; return; }
+    const start=(currentPage-1)*perPage;
+    const pageItems=items.slice(start, start+perPage);
+    list.innerHTML="";
+    pageItems.forEach(e=>{
       const d=document.createElement("div");
       d.className="card reveal visible";
-      d.innerHTML=`<div style="display:flex; justify-content:space-between; align-items:center"><strong>${esc(e.name)}</strong><small style="color:var(--muted)">${new Date(e.created_at).toLocaleDateString('fr-FR')}</small></div><div style="color:var(--gold); letter-spacing:2px">${"★".repeat(e.rating)}${"☆".repeat(5-e.rating)}</div>${e.title?`<h4 style="margin:0.4rem 0">${esc(e.title)}</h4>`:""}<p style="color:var(--muted)">${esc(e.message)}</p>${location.search.includes('admin')?`<button class="btn" onclick="deleteEntry('${e.id}')">Supprimer</button>`:""}`;
+      d.innerHTML=`<div style="display:flex; justify-content:space-between; align-items:center"><strong>${esc(e.name)}</strong><small style="color:var(--muted)">${new Date(e.created_at).toLocaleDateString('fr-FR')}</small></div><div style="color:var(--gold); letter-spacing:2px">${"★".repeat(e.rating||5)}${"☆".repeat(5-(e.rating||5))}</div>${e.title?`<h4 style="margin:0.4rem 0">${esc(e.title)}</h4>`:""}<p style="color:var(--muted)">${esc(e.message)}</p>${location.search.includes('admin')?`<button class="btn" onclick="deleteEntry('${e.id}')">Supprimer</button>`:""}`;
       list.appendChild(d);
     });
+    // pagination
+    if(pagination){
+      const totalPages=Math.ceil(total/perPage);
+      pagination.innerHTML="";
+      if(totalPages>1){
+        const mkBtn=(label,page,disabled=false,active=false)=>{
+          const b=document.createElement("button");
+          b.textContent=label;
+          b.className="btn"+(active?" btn-primary":"");
+          b.disabled=disabled;
+          b.style.opacity=disabled?"0.4":"1";
+          b.onclick=()=>{ currentPage=page; render(); window.scrollTo({top:list.offsetTop-120, behavior:"smooth"}); };
+          return b;
+        };
+        pagination.appendChild(mkBtn("◀", Math.max(1,currentPage-1), currentPage===1));
+        for(let p=1;p<=totalPages;p++){
+          if(totalPages>7 && Math.abs(p-currentPage)>2 && p!==1 && p!==totalPages){
+            if(p===2 || p===totalPages-1){ const sep=document.createElement("span"); sep.textContent="…"; sep.style.padding="0.5rem"; pagination.appendChild(sep); }
+            continue;
+          }
+          pagination.appendChild(mkBtn(String(p), p, false, p===currentPage));
+        }
+        pagination.appendChild(mkBtn("▶", Math.min(totalPages,currentPage+1), currentPage===totalPages));
+      }
+    }
   };
-  const load=async()=>{ try{ const r=await fetch("/api/guestbook"); const j=await r.json(); items=j.items||[]; render(); }catch{} };
+
+  const load=async()=>{
+    try{
+      const r=await fetch("/api/guestbook",{cache:"no-store"});
+      if(r.ok){
+        const j=await r.json();
+        if(j.items && j.items.length){
+          items=j.items;
+          saveLocal();
+          currentPage=1;
+          render();
+          return;
+        }
+      }
+    }catch{}
+    // fallback local
+    const local=loadLocal();
+    if(local.length){ items=local; }
+    render();
+  };
+
   form.addEventListener("submit", async ev=>{
     ev.preventDefault();
     const fd=new FormData(form);
     const payload={name:String(fd.get("name")||"").trim(), title:String(fd.get("title")||"").trim(), message:String(fd.get("message")||"").trim(), rating:Number(fd.get("rating")||5), website:String(fd.get("website")||"").trim()};
-    if(!payload.name||!payload.message){ status.textContent="Pseudo + message obligatoires"; status.className="card"; return;}
-    try{ status.textContent="Publication..."; const r=await fetch("/api/guestbook",{method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)}); const j=await r.json(); if(!r.ok) throw new Error(j.error); if(j.item) items.unshift(j.item); form.reset(); current=5; ratingInput.value=5; paint(5); status.textContent="Publié !"; render(); }catch(e){ status.textContent=e.message; }
+    if(!payload.name||!payload.message){ status.textContent="Pseudo + message obligatoires"; return;}
+    const newItem={id:"local_"+Date.now(), name:payload.name, title:payload.title, message:payload.message, rating:payload.rating, created_at:new Date().toISOString()};
+    // Optimistic UI - paf direct
+    items.unshift(newItem);
+    saveLocal();
+    currentPage=1;
+    render();
+    status.textContent="Publié instantanément !";
+    form.reset(); current=5; ratingInput.value=5; paint(5);
+    // Try server in background
+    try{
+      const r=await fetch("/api/guestbook",{method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
+      const j=await r.json();
+      if(r.ok && j.item){
+        // Replace optimistic with real server item
+        items[0]=j.item;
+        saveLocal();
+        render();
+        status.textContent="Publié et sauvegardé sur le serveur !";
+      }
+    }catch(e){
+      status.textContent="Publié en local (serveur indisponible, visible uniquement sur ce navigateur).";
+    }
   });
+
   await load();
-  window.deleteEntry=async(id)=>{ if(!confirm("Supprimer cet avis ?")) return; await fetch(`/api/guestbook?id=${id}`,{method:"DELETE"}); items=items.filter(i=>i.id!==id); render(); };
+  window.deleteEntry=async(id)=>{
+    if(!confirm("Supprimer cet avis ?")) return;
+    items=items.filter(i=>i.id!==id);
+    saveLocal();
+    // Adjust page if empty
+    const totalPages=Math.max(1,Math.ceil(items.length/perPage));
+    if(currentPage>totalPages) currentPage=totalPages;
+    render();
+    try{ await fetch(`/api/guestbook?id=${id}`,{method:"DELETE"}); }catch{}
+  };
 }
-async function initContact(){
-  const form=document.getElementById("contact-form");
-  const status=document.getElementById("contact-status");
-  if(!form) return;
-  form.addEventListener("submit", async e=>{
-    e.preventDefault();
-    const fd=new FormData(form);
-    const payload={name:String(fd.get("name")||"").trim(), email:String(fd.get("email")||"").trim(), subject:String(fd.get("subject")||"").trim(), message:String(fd.get("message")||"").trim(), website:String(fd.get("website")||"").trim()};
-    if(!payload.name||!payload.email||!payload.subject||!payload.message){ status.textContent="Tous les champs obligatoires"; return; }
-    try{ status.textContent="Envoi..."; const r=await fetch("/api/contact",{method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)}); const j=await r.json(); if(!r.ok) throw new Error(j.error); form.reset(); status.textContent="Message envoyé !"; }catch(err){ status.textContent=err.message; }
-  });
-}
+
+async function initContact(){ /* removed - contact broken */ }
 function setYear(){ const n=document.getElementById("current-year"); if(n) n.textContent=new Date().getFullYear(); }
 function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
