@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Reddice HUB V2 // Livre d'or</title>
-<meta name="description" content="Livre d'or auto - avis instantanés">
+<meta name="description" content="Livre d'or">
 <link rel="icon" type="image/webp" href="assets/icon-r.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -13,8 +13,8 @@
 <header class="hub-header">
   <div class="hub-brand">
     <a href="index.html" aria-label="Accueil"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
-    <span class="hub-overline">Système en ligne - V2 • Livre d'or auto</span>
-    <p class="hub-subtitle">Avis instantané - Paf ça s'affiche direct. 10 par page, auto-pagination.</p>
+    <span class="hub-overline">Système en ligne - V2</span>
+    <p class="hub-subtitle">Le point d'accès central au live, à la communauté et à tout l'univers.</p>
   </div>
 </header>
 <nav class="hub-nav-shell">
@@ -24,50 +24,42 @@
       <li><a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a></li>
       <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
       <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
-    </ul>
+</ul>
     <div class="hub-nav-right">
       <span class="stream-badge is-loading" data-stream-status>Checking</span>
       <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop">Shop</a>
       <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
+      <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick hub-quick-tiktok">TikTok</a>
     </div>
   </div>
 </nav>
 <main class="container">
+
 <section class="shell reveal">
-  <span class="kicker">Livre d'or • Auto</span>
-  <h2>Laisse ton avis - Publication instantanée</h2>
-  <p class="lead">Tu postes, paf ça apparaît. 10 avis par page, pagination auto si >10.</p>
+  <span class="kicker">Livre d'or</span>
+  <h2>Laisse ton avis</h2>
+  <p class="lead">Avis réel avec note sur 5. Modération possible avec ?admin à la fin de l'URL.</p>
   <div class="grid-2" style="margin-top:1.2rem">
     <div class="card">
       <h3 style="margin-top:0">Publier</h3>
       <form id="guestbook-form" style="display:grid; gap:0.8rem">
-        <input type="text" name="name" placeholder="Pseudo" required maxlength="80">
-        <input type="text" name="title" placeholder="Titre (optionnel)" maxlength="120">
-        <textarea name="message" rows="6" placeholder="Ton message..." required maxlength="1200"></textarea>
+        <input type="text" name="name" placeholder="Pseudo" required>
+        <input type="text" name="title" placeholder="Titre (optionnel)">
+        <textarea name="message" rows="6" placeholder="Ton message..." required></textarea>
         <input type="hidden" id="guestbook-rating" name="rating" value="5">
-        <div style="display:flex; gap:0.3rem; align-items:center">
-          <small style="color:var(--muted); font-family:var(--font-mono)">Note:</small>
-          <button type="button" class="btn" data-rating-value="1">★</button>
-          <button type="button" class="btn" data-rating-value="2">★</button>
-          <button type="button" class="btn" data-rating-value="3">★</button>
-          <button type="button" class="btn" data-rating-value="4">★</button>
-          <button type="button" class="btn" data-rating-value="5">★</button>
-        </div>
+        <div style="display:flex; gap:0.3rem"><button type="button" class="btn" data-rating-value="1">★</button><button type="button" class="btn" data-rating-value="2">★</button><button type="button" class="btn" data-rating-value="3">★</button><button type="button" class="btn" data-rating-value="4">★</button><button type="button" class="btn" data-rating-value="5">★</button></div>
         <input type="text" name="website" style="position:absolute; left:-9999px" tabindex="-1" autocomplete="off">
-        <button type="submit" class="btn btn-primary">Publier instantanément</button>
+        <button type="submit" class="btn btn-primary">Publier l'avis</button>
       </form>
       <div id="guestbook-status" style="margin-top:0.8rem; font-family:var(--font-mono); font-size:0.8rem; color:var(--muted)"></div>
     </div>
     <div>
-      <div style="display:flex; justify-content:space-between; align-items:center">
-        <h3 style="margin-top:0">Avis publiés</h3>
-        <span id="guestbook-count" style="font-family:var(--font-mono); font-size:.75rem; color:var(--muted)"></span>
-      </div>
+      <h3 style="margin-top:0">Avis publiés</h3>
       <div id="guestbook-list" style="display:grid; gap:0.8rem"></div>
-      <div id="guestbook-pagination" style="display:flex; gap:.4rem; flex-wrap:wrap; justify-content:center; margin-top:1rem"></div>
     </div>
   </div>
 </section>
+
 </main>
 <footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)"><small><a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a><br>Reddice HUB V2 • <span id="current-year"></span></small></footer>
 <script src="script.js"></script>
