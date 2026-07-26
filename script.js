@@ -49,8 +49,8 @@ async function initPlanningV2(){
       div.innerHTML=`<div style="display:flex; gap:0.5rem; flex-wrap:wrap"><span class="mini-chip">${item.day}</span><span class="mini-chip">${item.time}</span><span class="mini-chip">${item.tag}</span></div><strong style="color:#fff; margin-top:0.3rem">${item.title}</strong>`;
       editableNode.appendChild(div);
     });
-    if(statusNode) statusNode.textContent=`Planning éditable chargé depuis /data/planning.json (${planning.length} créneaux)`;
-  }catch(e){ if(statusNode) statusNode.textContent="Impossible de charger /data/planning.json"; }
+    if(statusNode) statusNode.textContent=`Planning à jour • ${planning.length} créneaux cette semaine`;
+  }catch(e){ if(statusNode) statusNode.textContent="Planning indisponible pour le moment"; }
 
   // archives Twitch
   if(!archiveNode) return;
@@ -99,7 +99,6 @@ async function initGuestbook(){
       d.innerHTML=`<div style="display:flex; justify-content:space-between; align-items:center"><strong>${esc(e.name)}</strong><small style="color:var(--muted)">${new Date(e.created_at).toLocaleDateString('fr-FR')}</small></div><div style="color:var(--gold); letter-spacing:2px">${"★".repeat(e.rating||5)}${"☆".repeat(5-(e.rating||5))}</div>${e.title?`<h4 style="margin:0.4rem 0">${esc(e.title)}</h4>`:""}<p style="color:var(--muted)">${esc(e.message)}</p>${location.search.includes('admin')?`<button class="btn" onclick="deleteEntry('${e.id}')">Supprimer</button>`:""}`;
       list.appendChild(d);
     });
-    // pagination
     if(pagination){
       const totalPages=Math.ceil(total/perPage);
       pagination.innerHTML="";
@@ -140,7 +139,6 @@ async function initGuestbook(){
         }
       }
     }catch{}
-    // fallback local
     const local=loadLocal();
     if(local.length){ items=local; }
     render();
@@ -152,26 +150,23 @@ async function initGuestbook(){
     const payload={name:String(fd.get("name")||"").trim(), title:String(fd.get("title")||"").trim(), message:String(fd.get("message")||"").trim(), rating:Number(fd.get("rating")||5), website:String(fd.get("website")||"").trim()};
     if(!payload.name||!payload.message){ status.textContent="Pseudo + message obligatoires"; return;}
     const newItem={id:"local_"+Date.now(), name:payload.name, title:payload.title, message:payload.message, rating:payload.rating, created_at:new Date().toISOString()};
-    // Optimistic UI - paf direct
     items.unshift(newItem);
     saveLocal();
     currentPage=1;
     render();
     status.textContent="Publié instantanément !";
     form.reset(); current=5; ratingInput.value=5; paint(5);
-    // Try server in background
     try{
       const r=await fetch("/api/guestbook",{method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
       const j=await r.json();
       if(r.ok && j.item){
-        // Replace optimistic with real server item
         items[0]=j.item;
         saveLocal();
         render();
-        status.textContent="Publié et sauvegardé sur le serveur !";
+        status.textContent="Publié et sauvegardé !";
       }
     }catch(e){
-      status.textContent="Publié en local (serveur indisponible, visible uniquement sur ce navigateur).";
+      status.textContent="Publié en local (serveur indisponible).";
     }
   });
 
@@ -180,7 +175,6 @@ async function initGuestbook(){
     if(!confirm("Supprimer cet avis ?")) return;
     items=items.filter(i=>i.id!==id);
     saveLocal();
-    // Adjust page if empty
     const totalPages=Math.max(1,Math.ceil(items.length/perPage));
     if(currentPage>totalPages) currentPage=totalPages;
     render();
@@ -188,6 +182,7 @@ async function initGuestbook(){
   };
 }
 
-async function initContact(){ /* removed - contact broken */ }
+async function initContact(){ /* contact removed */ }
+
 function setYear(){ const n=document.getElementById("current-year"); if(n) n.textContent=new Date().getFullYear(); }
 function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
