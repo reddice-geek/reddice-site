@@ -47,7 +47,18 @@
         <input type="text" name="title" placeholder="Titre (optionnel)">
         <textarea name="message" rows="6" placeholder="Ton message..." required></textarea>
         <input type="hidden" id="guestbook-rating" name="rating" value="5">
-        <div style="display:flex; gap:0.3rem"><button type="button" class="btn" data-rating-value="1">★</button><button type="button" class="btn" data-rating-value="2">★</button><button type="button" class="btn" data-rating-value="3">★</button><button type="button" class="btn" data-rating-value="4">★</button><button type="button" class="btn" data-rating-value="5">★</button></div>
+        <div class="guestbook-rating-wrap">
+          <div class="guestbook-rating-label">
+            Ta note : <strong id="guestbook-rating-text">5/5</strong>
+          </div>
+          <div class="guestbook-stars" id="guestbook-stars" role="radiogroup" aria-label="Note sur 5">
+            <button type="button" class="guestbook-star is-active" data-rating-value="1" role="radio" aria-checked="false" aria-label="1 étoile">★</button>
+            <button type="button" class="guestbook-star is-active" data-rating-value="2" role="radio" aria-checked="false" aria-label="2 étoiles">★</button>
+            <button type="button" class="guestbook-star is-active" data-rating-value="3" role="radio" aria-checked="false" aria-label="3 étoiles">★</button>
+            <button type="button" class="guestbook-star is-active" data-rating-value="4" role="radio" aria-checked="false" aria-label="4 étoiles">★</button>
+            <button type="button" class="guestbook-star is-active" data-rating-value="5" role="radio" aria-checked="true" aria-label="5 étoiles">★</button>
+          </div>
+        </div>
         <input type="text" name="website" style="position:absolute; left:-9999px" tabindex="-1" autocomplete="off">
         <button type="submit" class="btn btn-primary">Publier l'avis</button>
       </form>
@@ -62,6 +73,118 @@
 
 </main>
 <footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)"><small><a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a><br>Reddice HUB V2 • <span id="current-year"></span></small></footer>
+
+<style>
+  .guestbook-rating-wrap{
+    display:grid;
+    gap:.35rem;
+  }
+  .guestbook-rating-label{
+    font-family:var(--font-mono);
+    font-size:.86rem;
+    color:var(--muted);
+  }
+  .guestbook-rating-label strong{
+    color:var(--text);
+  }
+  .guestbook-stars{
+    display:flex;
+    align-items:center;
+    gap:.3rem;
+  }
+  .guestbook-star{
+    appearance:none;
+    border:0;
+    background:transparent;
+    padding:.08rem .12rem;
+    font-size:2rem;
+    line-height:1;
+    cursor:pointer;
+    color:#555;
+    opacity:.55;
+    transform:scale(1);
+    transition:color .12s ease, opacity .12s ease, transform .12s ease, text-shadow .12s ease;
+  }
+  .guestbook-star.is-active{
+    color:#ffd54a;
+    opacity:1;
+    text-shadow:0 0 10px rgba(255,213,74,.42);
+  }
+  .guestbook-star:hover,
+  .guestbook-star:focus-visible{
+    transform:scale(1.12);
+    outline:none;
+  }
+  .guestbook-star:focus-visible{
+    box-shadow:0 0 0 2px rgba(255,213,74,.5);
+    border-radius:.25rem;
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const ratingInput = document.getElementById('guestbook-rating');
+  const ratingText = document.getElementById('guestbook-rating-text');
+  const starsBox = document.getElementById('guestbook-stars');
+  const stars = Array.from(document.querySelectorAll('[data-rating-value]'))
+    .filter(btn => btn.closest('#guestbook-stars'));
+
+  if (!ratingInput || !ratingText || !starsBox || !stars.length) return;
+
+  const clampRating = (value) => Math.max(1, Math.min(5, Number(value) || 5));
+
+  const paintStars = (value, commit = false) => {
+    const rating = clampRating(value);
+
+    stars.forEach((star) => {
+      const starValue = Number(star.dataset.ratingValue);
+      star.classList.toggle('is-active', starValue <= rating);
+      if (commit) {
+        star.setAttribute('aria-checked', starValue === rating ? 'true' : 'false');
+      }
+    });
+
+    if (commit) {
+      ratingInput.value = String(rating);
+      ratingText.textContent = rating + '/5';
+    }
+  };
+
+  paintStars(ratingInput.value, true);
+
+  stars.forEach((star) => {
+    const value = Number(star.dataset.ratingValue);
+
+    star.addEventListener('mouseenter', () => paintStars(value, false));
+    star.addEventListener('focus', () => paintStars(value, false));
+
+    star.addEventListener('click', () => {
+      paintStars(value, true);
+    });
+
+    star.addEventListener('keydown', (event) => {
+      let next = clampRating(ratingInput.value);
+
+      if (event.key === 'ArrowRight' || event.key === 'ArrowUp') next++;
+      else if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') next--;
+      else return;
+
+      event.preventDefault();
+      next = clampRating(next);
+      paintStars(next, true);
+      stars[next - 1]?.focus();
+    });
+  });
+
+  starsBox.addEventListener('mouseleave', () => paintStars(ratingInput.value, false));
+  starsBox.addEventListener('focusout', (event) => {
+    if (!starsBox.contains(event.relatedTarget)) {
+      paintStars(ratingInput.value, false);
+    }
+  });
+});
+</script>
+
 <script src="script.js"></script>
 </body>
 </html>
