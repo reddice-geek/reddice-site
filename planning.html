@@ -2,53 +2,92 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reddice HUB V2 // Planning</title>
-<meta name="description" content="Planning éditable + archives">
-<link rel="icon" type="image/webp" href="assets/icon-r.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>Reddice HUB V3 // Planning</title>
+<link rel="icon" type="image/png" href="assets/icon-r.png">
 <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="planning">
+
 <header class="hub-header">
   <div class="hub-brand">
     <a href="index.html" aria-label="Accueil"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
-    <span class="hub-overline">Système en ligne - V2</span>
-    <p class="hub-subtitle">Le point d'accès central au live, à la communauté et à tout l'univers.</p>
+    <span class="hub-overline">Système en ligne - V3 // HOLO-GLASS</span>
+    <p class="hub-subtitle">Point d'accès central au live, à la communauté et à tout l'univers Furioz.</p>
   </div>
 </header>
 <nav class="hub-nav-shell">
-  <div class="container hub-nav-layout" style="max-width:1280px; margin:0 auto; padding-inline:1rem">
+  <div class="container hub-nav-layout">
+    <div class="hub-nav-left">
+      <span class="stream-badge is-loading" data-stream-status>Checking</span>
+    </div>
     <ul class="hub-nav">
       <li><a href="index.html" class="hub-link-v2" data-nav="home">Accueil</a></li>
       <li><a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a></li>
       <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
       <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
-</ul>
+      <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
+    </ul>
     <div class="hub-nav-right">
-      <span class="stream-badge is-loading" data-stream-status>Checking</span>
+      <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
       <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop">Shop</a>
       <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
       <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick hub-quick-tiktok">TikTok</a>
+      <a href="https://www.youtube.com/@reddice-geek9473" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
     </div>
   </div>
 </nav>
+
 <main class="container">
 
 <section class="shell reveal">
-  <span class="kicker">Planning V2</span>
-  <h2>Rythme de la semaine</h2>
+  <span class="kicker">Planning V3 // Datapad Agenda</span>
+  <h2>Agenda Holographique</h2>
   <p class="lead" id="planning-status">Chargement du planning...</p>
-  <div id="planning-editable" class="grid-3"></div>
-</section>
-<section class="shell reveal" style="margin-top:1.5rem">
-  <span class="kicker">Archives Twitch</span>
-  <h3>Derniers streams</h3>
-  <div id="planning-archives" class="grid-3" style="margin-top:1rem"></div>
 </section>
 
+<div style="display:grid; grid-template-columns: 1.1fr .9fr; gap:6px; margin-top:1rem">
+  <section class="shell reveal">
+    <span class="kicker">Stream passés // Archives Twitch</span>
+    <h3 style="margin:.6rem 0">Dernier stream & VODs</h3>
+    <div id="planning-archives" class="grid-2" style="margin-top:1rem"></div>
+  </section>
+  <section class="shell reveal">
+    <span class="kicker">Stream à venir // Uplink</span>
+    <h3 style="margin:.6rem 0">Agenda</h3>
+    <div id="planning-upcoming" class="grid-2" style="margin-top:1rem"></div>
+    <div id="planning-editable" style="display:none"></div>
+  </section>
+</div>
+
+<section class="shell reveal" style="margin-top:6px">
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.8rem">
+    <div><span class="kicker">Events Spéciaux</span><h3 style="margin:.4rem 0">Soirées & Collectifs</h3></div>
+    <a href="admin.html" class="btn btn-small">Panel Admin → Ajouter un event</a>
+  </div>
+  <div id="planning-special" class="grid-3" style="margin-top:1rem"></div>
+</section>
+
+<div style="display:grid; grid-template-columns: 1fr 360px; gap:6px; margin-top:6px">
+  <section class="shell reveal">
+    <span class="kicker">REAC CATCH // WWE AEW RAW SmackDown NXT PLE</span>
+    <h3 style="margin:.6rem 0">Catch Reac - Derniers lives</h3>
+    <p class="lead">Filtre automatique sur les titres contenant WWE, AEW, RAW, SmackDown, NXT, PLE, Catch.</p>
+    <div id="planning-catch" class="grid-3" style="margin-top:1rem"></div>
+  </section>
+  <section class="shell reveal">
+    <span class="kicker">Stats Twitch // Mois en cours</span>
+    <h3 style="margin:.6rem 0">Tableau de bord</h3>
+    <div id="planning-stats" class="stat-row" style="grid-template-columns:1fr 1fr; margin-top:1rem"></div>
+    <div class="card" style="margin-top:1rem">
+      <span class="mini-chip">Auto-sync</span>
+      <p style="color:var(--muted); font-size:.85rem; line-height:1.4; margin:.6rem 0 0">Stats calculées depuis l'historique VOD du mois. Followers / Subs remontés si /api/twitch-stats disponible.</p>
+    </div>
+  </section>
+</div>
+
 </main>
-<footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)"><small><a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a><br>Reddice HUB V2 • <span id="current-year"></span></small></footer>
+<footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)"><small>Reddice HUB V3 • <span id="current-year"></span></small></footer>
 <script src="script.js"></script>
 </body>
 </html>
