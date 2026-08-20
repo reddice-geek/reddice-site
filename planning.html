@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Planning - Reddice HUB V3</title>
+  <link rel="icon" type="image/png" href="assets/icon-r.png">
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="planning">
+  <header class="hub-header">
+    <div class="hub-brand">
+      <a href="index.html"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
+      <span class="hub-overline">Système en ligne - V3 // PLANNING</span>
+      <p class="hub-subtitle">Agenda Holographique - Streams à venir & archives</p>
+    </div>
+  </header>
+  <nav class="hub-nav-shell">
+    <div class="container hub-nav-layout">
+      <div class="hub-nav-left"><span class="stream-badge is-loading" data-stream-status>Checking</span></div>
+      <ul class="hub-nav">
+        <li><a href="index.html" class="hub-link-v2" data-nav="home">Accueil</a></li>
+        <li class="has-sub"><a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a><ul class="submenu"><li><a href="setup.html">Setup PCB RGB</a></li></ul></li>
+        <li><a href="planning.html" class="hub-link-v2 active" data-nav="planning">Planning</a></li>
+        <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
+        <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
+      </ul>
+      <div class="hub-nav-right">
+        <div class="quick-socials" style="display:flex; gap:.45rem; align-items:center">
+          <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
+          <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
+          <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
+          <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick hub-quick-tiktok">TikTok</a>
+        </div>
+        <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop" style="margin-left:10px">Shop</a>
+      </div>
+    </div>
+  </nav>
+  <main class="container">
+    <section class="shell reveal visible">
+      <span class="kicker">Planning V3</span>
+      <h2>Agenda Holographique</h2>
+      <p class="lead" id="planning-status">Chargement...</p>
+    </section>
+    <div style="display:grid; grid-template-columns:1.1fr .9fr; gap:6px; margin-top:1rem">
+      <section class="shell reveal"><span class="kicker">Archives Twitch</span><div id="planning-archives" class="grid-2" style="margin-top:1rem"></div></section>
+      <section class="shell reveal"><span class="kicker">À venir</span><div id="planning-upcoming" class="grid-2" style="margin-top:1rem"></div></section>
+    </div>
+    <section class="shell reveal" style="margin-top:6px"><span class="kicker">Events Spéciaux</span><div id="planning-special" class="grid-3" style="margin-top:1rem"></div></section>
+    <div style="display:grid; grid-template-columns:1fr 360px; gap:6px; margin-top:6px">
+      <section class="shell reveal"><span class="kicker">REAC CATCH WWE/AEW</span><div id="planning-catch" class="grid-3" style="margin-top:1rem"></div></section>
+      <section class="shell reveal"><span class="kicker">Stats Twitch</span><div id="planning-stats" class="stat-row" style="grid-template-columns:1fr 1fr"></div></section>
+    </div>
+  </main>
+  <footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)">
+    <small>
+      <a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a> • <a href="contact.html">Contact</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>
+      Reddice HUB V3 Holo-Glass • <span id="current-year"></span>
+    </small>
+  </footer>
+  <div id="legal-modal" class="legal-modal">
+    <div class="legal-modal-bg" data-legal-close></div>
+    <div class="legal-modal-box shell">
+      <button class="legal-close btn btn-small" data-legal-close>✕ Fermer</button>
+      <span class="kicker">Légal</span>
+      <h2>Mentions légales</h2>
+      <div style="color:var(--muted); font-size:.9rem; line-height:1.6">
+        <p><strong style="color:#fff">Éditeur:</strong> Reddice / Cédric Detrez</p>
+        <p><strong style="color:#fff">Hébergement:</strong> Vercel + Supabase</p>
+        <p><strong style="color:#fff">Données:</strong> Pas de vente. Suppression sur demande.</p>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
