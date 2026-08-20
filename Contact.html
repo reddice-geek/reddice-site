@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reddice HUB V3 // Contact</title>
+<link rel="icon" type="image/png" href="assets/icon-r.png">
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="contact">
+
+<header class="hub-header">
+  <div class="hub-brand">
+    <a href="index.html" aria-label="Accueil"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
+    <span class="hub-overline">Système en ligne - V3 // HOLO-GLASS</span>
+    <p class="hub-subtitle">Point d'accès central au live, à la communauté et à tout l'univers Furioz.</p>
+  </div>
+</header>
+<nav class="hub-nav-shell">
+  <div class="container hub-nav-layout">
+    <div class="hub-nav-left">
+      <span class="stream-badge is-loading" data-stream-status>Checking</span>
+    </div>
+    <ul class="hub-nav">
+      <li><a href="index.html" class="hub-link-v2" data-nav="home">Accueil</a></li>
+      <li><a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a></li>
+      <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
+      <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
+      <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
+    </ul>
+    <div class="hub-nav-right">
+      <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
+      <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop">Shop</a>
+      <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
+      <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick hub-quick-tiktok">TikTok</a>
+      <a href="https://www.youtube.com/@reddice-geek9473" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+
+<section class="shell reveal">
+  <span class="kicker">Contact // Boîte de réception Holo</span>
+  <h2>Me contacter</h2>
+  <p class="lead">Collab, event Furioz, cosplay, shop, ou juste dire bonjour. Réponse rapide sur datapad.</p>
+  <div class="contact-grid" style="margin-top:1.2rem">
+    <div class="card">
+      <h3 style="margin-top:0">Envoyer un message</h3>
+      <form id="contact-form" style="display:grid; gap:.8rem">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:.8rem">
+          <input type="text" name="name" placeholder="Ton pseudo / nom" required>
+          <input type="email" name="email" placeholder="Email" required>
+        </div>
+        <input type="text" name="subject" placeholder="Sujet (collab, event, autre...)">
+        <textarea name="message" rows="7" placeholder="Ton message..." required></textarea>
+        <input type="text" name="website" style="position:absolute; left:-9999px" tabindex="-1" autocomplete="off">
+        <button type="submit" class="btn btn-primary">Transmettre le message</button>
+      </form>
+      <div id="contact-status" style="margin-top:.8rem; font-family:var(--font-mono); font-size:.8rem; color:var(--muted)"></div>
+    </div>
+    <div style="display:grid; gap:.8rem">
+      <div class="card"><span class="kicker">Fast</span><h4>Discord</h4><p style="color:var(--muted); font-size:.9rem">Le plus rapide pour me joindre. Communauté active H24.</p><a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="btn btn-small">Rejoindre Discord</a></div>
+      <div class="card"><span class="kicker">Shop</span><h4>Reddice Shop</h4><p style="color:var(--muted); font-size:.9rem">Pour les commandes / SAV.</p><a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="btn btn-small">Shop</a></div>
+      <div class="card" style="background:rgba(0,234,255,0.06)"><span class="kicker">Admin</span><h4>Boîte mail intégrée</h4><p style="color:var(--muted); font-size:.9rem">Tous les messages arrivent dans le panel admin → Contacts. Accessible via login unique.</p><a href="admin.html" class="btn btn-small btn-ghost">Ouvrir Admin</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)"><small>Reddice HUB V3 • <span id="current-year"></span></small></footer>
+<script src="script.js"></script>
+</body>
+</html>
