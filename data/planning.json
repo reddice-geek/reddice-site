@@ -1,30 +1,52 @@
 [
   {
+    "id": "evt_1",
     "day": "Mardi",
+    "date": "2026-08-26",
     "time": "20:30",
     "title": "Star Citizen - Mining & Chill",
     "tag": "Live principal",
-    "active": true
+    "active": true,
+    "type": "upcoming"
   },
   {
+    "id": "evt_2",
     "day": "Jeudi",
+    "date": "2026-08-28",
     "time": "20:30",
     "title": "Variété / Découverte communauté",
     "tag": "Live commu",
-    "active": true
+    "active": true,
+    "type": "upcoming"
   },
   {
+    "id": "evt_3",
     "day": "Samedi",
+    "date": "2026-08-30",
     "time": "21:00",
-    "title": "Grosse soirée - Events",
+    "title": "Grosse soirée - Events Furioz",
     "tag": "Gros live",
-    "active": true
+    "active": true,
+    "type": "upcoming"
   },
   {
+    "id": "evt_4",
     "day": "Dimanche",
+    "date": "2026-08-31",
     "time": "Off",
     "title": "Repos / Rediff",
     "tag": "Off",
-    "active": false
+    "active": false,
+    "type": "upcoming"
+  },
+  {
+    "id": "special_1",
+    "day": "Vendredi",
+    "date": "2026-09-12",
+    "time": "21:00",
+    "title": "Soirée Catch REAC - WWE / AEW Watch Party",
+    "tag": "Event spécial",
+    "active": true,
+    "type": "special"
   }
 ]
