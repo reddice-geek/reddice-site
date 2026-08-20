@@ -1,115 +1,159 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reddice HUB V3 // Admin Panel</title>
-<link rel="icon" type="image/png" href="assets/icon-r.png">
-<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reddice HUB V3 // Admin Panel</title>
+  <link rel="icon" type="image/png" href="assets/icon-r.png">
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="admin">
 
-<header class="hub-header">
-  <div class="hub-brand">
-    <a href="index.html" aria-label="Accueil"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
-    <span class="hub-overline">Système en ligne - V3 // HOLO-GLASS</span>
-    <p class="hub-subtitle">Point d'accès central au live, à la communauté et à tout l'univers Furioz.</p>
-  </div>
-</header>
-<nav class="hub-nav-shell">
-  <div class="container hub-nav-layout">
-    <div class="hub-nav-left">
-      <span class="stream-badge is-loading" data-stream-status>Checking</span>
+  <header class="hub-header">
+    <div class="hub-brand">
+      <a href="index.html" aria-label="Accueil">
+        <img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main">
+      </a>
+      <span class="hub-overline">Système en ligne - V3 // HOLO-GLASS</span>
+      <p class="hub-subtitle">Point d'accès central au live, à la communauté et à tout l'univers Furioz.</p>
     </div>
-    <ul class="hub-nav">
-      <li><a href="index.html" class="hub-link-v2" data-nav="home">Accueil</a></li>
-      <li><a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a></li>
-      <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
-      <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
-      <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
-    </ul>
-    
-    <div class="hub-nav-right">
-      <div class="quick-socials" style="display:flex; gap:.45rem; align-items:center">
-        <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
-        <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
-        <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
-        <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick hub-quick-tiktok">TikTok</a>
+  </header>
+
+  <nav class="hub-nav-shell">
+    <div class="container hub-nav-layout">
+      <div class="hub-nav-left">
+        <span class="stream-badge is-loading" data-stream-status>Checking</span>
       </div>
-      <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop" style="margin-left:10px">Shop</a>
-    </div>
 
-  </div>
-</nav>
+      <ul class="hub-nav">
+        <li><a href="index.html" class="hub-link-v2" data-nav="home">Accueil</a></li>
+        <li class="has-sub">
+          <a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a>
+          <ul class="submenu">
+            <li><a href="setup.html">Setup PCB RGB</a></li>
+          </ul>
+        </li>
+        <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
+        <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
+        <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
+      </ul>
 
-<main class="container">
-
-<section id="admin-login-block" class="shell reveal admin-login">
-  <span class="kicker">Admin // Secure Datapad Access</span>
-  <h2>Accès admin</h2>
-  <p class="lead">Identifiant unique + mot de passe unique. Change les valeurs ADMIN_USER / ADMIN_PASS dans script.js ligne 230.</p>
-  <form id="admin-login-form" style="display:grid; gap:.8rem; margin-top:1rem">
-    <input type="text" name="username" placeholder="Identifiant unique" required>
-    <input type="password" name="password" placeholder="Mot de passe unique" required>
-    <button type="submit" class="btn btn-primary">Déverrouiller</button>
-  </form>
-  <div id="admin-login-status" style="margin-top:.8rem; font-family:var(--font-mono); font-size:.8rem; color:#ff8da2"></div>
-</section>
-
-<section id="admin-panel" class="admin-panel" style="display:none">
-  <div class="shell reveal">
-    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.8rem">
-      <div><span class="kicker">Panel Admin V3</span><h2 style="margin:.4rem 0">Gestion complète</h2></div>
-      <button id="admin-logout" class="btn btn-small">Déconnexion</button>
-    </div>
-    <div class="admin-tabs" style="margin-top:1rem">
-      <button class="btn btn-small btn-primary" data-admin-tab="planning">Planning</button>
-      <button class="btn btn-small" data-admin-tab="contacts">Contacts (Boîte mail)</button>
-      <button class="btn btn-small" data-admin-tab="guestbook">Livre d'or</button>
-      <button class="btn btn-small" data-admin-tab="export">Export / Tools</button>
-    </div>
-  </div>
-
-  <div id="admin-section-planning" class="admin-section" style="margin-top:6px">
-    <section class="shell">
-      <div style="display:flex; gap:.6rem; flex-wrap:wrap; margin-bottom:1rem">
-        <button class="btn btn-primary btn-small" onclick="adminAddPlanning()">+ Ajouter event</button>
-        <button class="btn btn-small" onclick="adminExportPlanning()">Exporter planning.json</button>
-        <button class="btn btn-small btn-ghost" onclick="adminResetPlanning()">Reset origine</button>
+      <div class="hub-nav-right">
+        <div class="quick-socials" style="display:flex; gap:.45rem; align-items:center">
+          <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
+          <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
+          <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
+          <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick hub-quick-tiktok">TikTok</a>
+        </div>
+        <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop" style="margin-left:10px">Shop</a>
       </div>
-      <div id="admin-planning-list" class="grid-2"></div>
-      <p style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem; margin-top:1rem">Les modifs sont stockées en localStorage (reddice_planning_override_v3). Pour mettre en prod définitive, exporte et remplace /data/planning.json sur Vercel.</p>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <section id="admin-login-block" class="shell reveal visible admin-login">
+      <span class="kicker">Admin // Secure Datapad Access</span>
+      <h2>Accès admin</h2>
+      <p class="lead">Identifiant : <strong style="color:#fff">reddice</strong> / Mot de passe : <strong style="color:#fff">Furioz_2026_Secure!</strong><br><small style="color:var(--muted)">Change les valeurs ADMIN_USER / ADMIN_PASS dans script.js ligne 342 si tu veux.</small></p>
+      <form id="admin-login-form" style="display:grid; gap:.8rem; margin-top:1rem">
+        <input type="text" name="username" placeholder="Identifiant unique" required autocomplete="username">
+        <input type="password" name="password" placeholder="Mot de passe unique" required autocomplete="current-password">
+        <button type="submit" class="btn btn-primary">Déverrouiller</button>
+      </form>
+      <div id="admin-login-status" style="margin-top:.8rem; font-family:var(--font-mono); font-size:.8rem; color:#ff8da2"></div>
     </section>
+
+    <section id="admin-panel" class="admin-panel">
+      <div class="shell reveal visible">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.8rem">
+          <div><span class="kicker">Panel Admin V3</span><h2 style="margin:.4rem 0">Gestion complète</h2></div>
+          <button id="admin-logout" class="btn btn-small">Déconnexion</button>
+        </div>
+        <div class="admin-tabs" style="margin-top:1rem">
+          <button class="btn btn-small btn-primary" data-admin-tab="planning">Planning</button>
+          <button class="btn btn-small" data-admin-tab="contacts">Contacts (Boîte mail)</button>
+          <button class="btn btn-small" data-admin-tab="guestbook">Livre d'or</button>
+          <button class="btn btn-small" data-admin-tab="export">Export / Tools</button>
+        </div>
+      </div>
+
+      <div id="admin-section-planning" class="admin-section" style="margin-top:6px">
+        <section class="shell">
+          <div style="display:flex; gap:.6rem; flex-wrap:wrap; margin-bottom:1rem">
+            <button class="btn btn-primary btn-small" onclick="adminAddPlanning()">+ Ajouter event</button>
+            <button class="btn btn-small" onclick="adminExportPlanning()">Exporter planning.json</button>
+            <button class="btn btn-small btn-ghost" onclick="adminResetPlanning()">Reset origine</button>
+          </div>
+          <div id="admin-planning-list" class="grid-2"></div>
+          <p style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem; margin-top:1rem">Modifs stockées en localStorage (reddice_planning_override_v3). Exporte et remplace /data/planning.json sur Vercel pour prod.</p>
+        </section>
+      </div>
+
+      <div id="admin-section-contacts" class="admin-section" style="display:none; margin-top:6px">
+        <section class="shell">
+          <span class="kicker">Boîte de réception</span>
+          <h3>Contacts reçus via /contact</h3>
+          <p class="lead" style="font-size:.9rem">Affiche les messages de l'API si dispo, sinon ceux sauvés en local (reddice_contacts_v3) depuis contact.html</p>
+          <div id="admin-contacts-list" style="display:grid; gap:.8rem; margin-top:1rem"></div>
+        </section>
+      </div>
+
+      <div id="admin-section-guestbook" class="admin-section" style="display:none; margin-top:6px">
+        <section class="shell">
+          <span class="kicker">Modération</span>
+          <h3>Livre d'or</h3>
+          <div id="admin-guestbook-list" style="display:grid; gap:.8rem; margin-top:1rem"></div>
+        </section>
+      </div>
+
+      <div id="admin-section-export" class="admin-section" style="display:none; margin-top:6px">
+        <section class="shell">
+          <span class="kicker">Outils</span>
+          <h3>Infos</h3>
+          <p class="lead">Identifiants à changer dans script.js → ADMIN_USER / ADMIN_PASS ligne 342.</p>
+          <div class="card"><code style="font-family:var(--font-mono); font-size:.8rem">localStorage keys: reddice_planning_override_v3, reddice_contacts_v3, reddice_guestbook_auto_v3, reddice_admin_session</code></div>
+          <div style="margin-top:1rem; display:flex; gap:.5rem; flex-wrap:wrap">
+            <button class="btn btn-small btn-ghost" onclick="localStorage.clear(); location.reload()">Vider tout le localStorage</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)">
+    <small>
+      <a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="planning.html">Planning</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>
+      Reddice HUB V3 Admin • <span id="current-year"></span>
+    </small>
+  </footer>
+
+  <div id="legal-modal" class="legal-modal">
+    <div class="legal-modal-bg" data-legal-close></div>
+    <div class="legal-modal-box shell">
+      <button class="legal-close btn btn-small" data-legal-close>✕ Fermer</button>
+      <span class="kicker">Légal</span>
+      <h2>Mentions légales</h2>
+      <div style="color:var(--muted); font-size:.9rem; line-height:1.6">
+        <p><strong style="color:#fff">Éditeur:</strong> Reddice / Cédric Detrez</p>
+        <p><strong style="color:#fff">Hébergement:</strong> Vercel + Supabase</p>
+        <p><strong style="color:#fff">Données:</strong> Pas de vente. Suppression sur demande.</p>
+      </div>
+    </div>
   </div>
 
-  <div id="admin-section-contacts" class="admin-section" style="display:none; margin-top:6px">
-    <section class="shell">
-      <span class="kicker">Boîte de réception</span>
-      <h3>Contacts reçus via /contact</h3>
-      <div id="admin-contacts-list" style="display:grid; gap:.8rem; margin-top:1rem"></div>
-    </section>
-  </div>
+  <script>
+    // Legal modal local
+    document.querySelectorAll('[data-legal-open]').forEach(b => b.addEventListener('click', e => {
+      e.preventDefault(); document.getElementById('legal-modal').classList.add('is-open');
+    }));
+    document.querySelectorAll('[data-legal-close]').forEach(b => b.addEventListener('click', () => {
+      document.getElementById('legal-modal').classList.remove('is-open');
+    }));
+  </script>
+  <script src="script.js"></script>
 
-  <div id="admin-section-guestbook" class="admin-section" style="display:none; margin-top:6px">
-    <section class="shell">
-      <span class="kicker">Modération</span>
-      <h3>Livre d'or</h3>
-      <div id="admin-guestbook-list" style="display:grid; gap:.8rem; margin-top:1rem"></div>
-    </section>
-  </div>
-
-  <div id="admin-section-export" class="admin-section" style="display:none; margin-top:6px">
-    <section class="shell">
-      <span class="kicker">Outils</span>
-      <h3>Infos</h3>
-      <p class="lead">Identifiants à changer dans script.js → ADMIN_USER / ADMIN_PASS. Pas de hash côté client, protège via Vercel password si besoin pro.</p>
-      <div class="card"><code style="font-family:var(--font-mono); font-size:.8rem">localStorage keys: reddice_planning_override_v3, reddice_contacts_v3, reddice_guestbook_auto_v3, reddice_admin_session</code></div>
-    </section>
-  </div>
-</section>
-
-</main>
-<footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)"><small>Reddice HUB V3 Admin • <span id="current-year"></span></small></footer>
-<script src="script.js"></script>
 </body>
 </html>
