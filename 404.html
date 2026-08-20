@@ -1,1 +1,77 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>404 - Netrunner Flatlined</title><link rel="icon" type="image/png" href="assets/icon-r.png"><link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"></head><body data-page="notfound" style="background:#05070d"><main class="container" style="min-height:80vh;display:grid;place-items:center"><section class="shell" style="max-width:720px;text-align:center;border-color:rgba(255,59,141,0.4)"><span class="kicker" style="background:rgba(255,59,141,0.12);color:#ffb3c8">BLACK ICE // 404</span><h1 style="font-size:5rem;color:#ff3b8d">404</h1><h2 style="font-family:Share Tech Mono">Tu t'es fait griller par le Black ICE, choom.</h2><p class="lead">T'as voulu jack-in dans une page qui n'existe pas. Ton cyberdeck a surchauffé, ta RAM est en PLS, et Arasaka vient de tracer ton IP.<br><br><span style="color:var(--cyan)">// Blague Netrunner :</span> Pourquoi le netrunner ne trouve jamais la page 404 ? Parce qu'il a oublié de payer Shadow PC et il mine de l'AUEC sur un grille-pain.</p><div style="display:flex;gap:.6rem;justify-content:center;margin-top:1.4rem"><a href="index.html" class="btn btn-primary">Jack-out vers Accueil</a><a href="sitemap.html" class="btn">Sitemap</a></div><div style="margin-top:1rem;font-family:monospace;font-size:.7rem;color:var(--muted)">TRACE: <span id="p"></span> • ICE_BREAK_FAIL_404</div></section></main><script>document.getElementById('p').textContent=location.pathname</script><script src="script.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 - Netrunner Flatlined | Reddice HUB V3</title>
+  <link rel="icon" type="image/png" href="assets/icon-r.png">
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="notfound">
+
+  <header class="hub-header">
+    <div class="hub-brand">
+      <a href="index.html"><img src="assets/logo-main.png" alt="Reddice"></a>
+      <span class="hub-overline">Système hors ligne - V3 // BLACK ICE</span>
+    </div>
+  </header>
+
+  <nav class="hub-nav-shell">
+    <div class="container hub-nav-layout">
+      <div class="hub-nav-left"><span class="stream-badge is-loading" data-stream-status>Checking</span></div>
+      <ul class="hub-nav">
+        <li><a href="index.html" class="hub-link-v2">Accueil</a></li>
+        <li class="has-sub">
+          <a href="bio.html" class="hub-link-v2">Bio</a>
+          <ul class="submenu">
+            <li><a href="setup.html">Setup PCB RGB</a></li>
+          </ul>
+        </li>
+        <li><a href="planning.html" class="hub-link-v2">Planning</a></li>
+        <li><a href="livre-or.html" class="hub-link-v2">Livre d'or</a></li>
+        <li><a href="contact.html" class="hub-link-v2">Contact</a></li>
+      </ul>
+      <div class="hub-nav-right">
+        <div class="quick-socials" style="display:flex; gap:.45rem">
+          <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
+          <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
+          <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
+          <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick hub-quick-tiktok">TikTok</a>
+        </div>
+        <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop">Shop</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="min-height:78vh; display:grid; place-items:center">
+    <section class="shell reveal visible" style="max-width:760px; text-align:center; border-color:rgba(255,59,141,0.38)">
+      <span class="kicker" style="background:rgba(255,59,141,0.12); color:#ffb3c8">BLACK ICE // 404 - FLATLINED</span>
+      <h1 style="font-size:5rem; color:#ff3b8d">404</h1>
+      <h2 style="font-family:var(--font-mono)">Tu t'es fait griller par le Black ICE, choom.</h2>
+      <p class="lead">
+        T'as voulu jack-in dans une page qui n'existe pas. Ton cyberdeck a surchauffé, ta RAM est en PLS, et Arasaka vient de tracer ton IP.<br><br>
+        <span style="color:var(--cyan)">// Blague :</span> Pourquoi le netrunner ne trouve jamais la 404 ? Parce qu'il a oublié de payer Shadow PC et il mine de l'AUEC sur un grille-pain.
+      </p>
+      <div style="display:flex; gap:.6rem; justify-content:center; margin-top:1.4rem">
+        <a href="index.html" class="btn btn-primary">▶ Jack-out vers Accueil</a>
+        <a href="sitemap.html" class="btn btn-ghost">Sitemap</a>
+      </div>
+      <div style="margin-top:1rem; font-family:monospace; font-size:.7rem; color:var(--muted)">TRACE: <span id="trace-path"></span> • ICE_BREAK_FAIL_404</div>
+    </section>
+  </main>
+
+  <footer class="container" style="text-align:center; padding:2.5rem 0">
+    <small><a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a> • <span id="current-year"></span></small>
+  </footer>
+
+  <div id="legal-modal" class="legal-modal"><div class="legal-modal-bg" data-legal-close></div><div class="legal-modal-box shell"><button data-legal-close>✕ Fermer</button><h2>Mentions légales</h2></div></div>
+
+  <script>
+    document.getElementById('trace-path').textContent = location.pathname;
+    document.querySelectorAll('[data-legal-open]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();document.getElementById('legal-modal').classList.add('is-open');}));
+    document.querySelectorAll('[data-legal-close]').forEach(b=>b.addEventListener('click',()=>document.getElementById('legal-modal').classList.remove('is-open')));
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
