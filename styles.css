@@ -275,3 +275,15 @@ input:focus,textarea:focus,select:focus{outline:none; border-color:var(--cyan) !
   .grid-3,.grid-2,.grid-4{grid-template-columns:1fr}
   .stat-row{grid-template-columns:1fr}
 }
+
+
+/* NAV FIX V3.2 - socials inline + shop far right */
+.hub-nav-right{display:flex; align-items:center; gap:.5rem; justify-content:flex-end}
+.quick-socials{display:flex; gap:.45rem; align-items:center; flex-wrap:nowrap}
+.hub-quick-shop{margin-left:14px; position:relative}
+.hub-quick-shop::before{content:""; position:absolute; left:-10px; top:50%; transform:translateY(-50%); width:1px; height:18px; background:rgba(255,255,255,0.12)}
+@media(max-width:1100px){
+  .hub-nav-right{flex-wrap:wrap; justify-content:center}
+  .hub-quick-shop{margin-left:0}
+  .hub-quick-shop::before{display:none}
+}
