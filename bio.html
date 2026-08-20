@@ -2,70 +2,96 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reddice HUB V2 // Bio</title>
-<meta name="description" content="Bio Reddice">
+<title>Reddice HUB V3 // Bio</title>
+<meta name="description" content="Bio de Reddice">
 <link rel="icon" type="image/png" href="assets/icon-r.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="bio">
+
 <header class="hub-header">
   <div class="hub-brand">
     <a href="index.html" aria-label="Accueil"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
-    <span class="hub-overline">Système en ligne - V2</span>
-    <p class="hub-subtitle">Le point d'accès central au live, à la communauté et à tout l'univers.</p>
+    <span class="hub-overline">Système en ligne - V3 // HOLO-GLASS</span>
+    <p class="hub-subtitle">Point d'accès central au live, à la communauté et à tout l'univers Furioz.</p>
   </div>
 </header>
 <nav class="hub-nav-shell">
-  <div class="container hub-nav-layout" style="max-width:1280px; margin:0 auto; padding-inline:1rem">
+  <div class="container hub-nav-layout">
+    <div class="hub-nav-left">
+      <span class="stream-badge is-loading" data-stream-status>Checking</span>
+    </div>
     <ul class="hub-nav">
       <li><a href="index.html" class="hub-link-v2" data-nav="home">Accueil</a></li>
       <li><a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a></li>
       <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
       <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
-</ul>
+      <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
+    </ul>
     <div class="hub-nav-right">
-      <span class="stream-badge is-loading" data-stream-status>Checking</span>
+      <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
       <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop">Shop</a>
       <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
       <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick hub-quick-tiktok">TikTok</a>
+      <a href="https://www.youtube.com/@reddice-geek9473" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
     </div>
   </div>
 </nav>
+
 <main class="container">
 
 <section class="shell reveal">
-  <span class="kicker">Bio</span>
-  <div style="display:grid; grid-template-columns: 320px 1fr; gap:2rem; align-items:start; margin-top:1rem">
-    <div style="position:relative">
-      <div style="border-radius:20px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.03); aspect-ratio:3/4">
-        <img src="assets/bio-photo.png" alt="Reddice" style="width:100%; height:100%; object-fit:cover; display:block" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid'">
-        <div style="display:none; place-items:center; height:100%; color:var(--muted); font-family:var(--font-mono); font-size:0.8rem; text-align:center; padding:1rem">Ajoute ta photo ici :<br>assets/bio-photo.png</div>
-      </div>
-      <div style="margin-top:0.8rem; display:flex; gap:0.5rem; flex-wrap:wrap">
-        <span style="display:inline-flex; padding:0.3rem 0.7rem; border-radius:999px; background:rgba(255,255,255,0.06); border:1px solid var(--border); font-family:var(--font-mono); font-size:0.7rem">Streamer</span>
-        <span style="display:inline-flex; padding:0.3rem 0.7rem; border-radius:999px; background:rgba(255,255,255,0.06); border:1px solid var(--border); font-family:var(--font-mono); font-size:0.7rem">Cosplayeur</span>
-        <span style="display:inline-flex; padding:0.3rem 0.7rem; border-radius:999px; background:rgba(0,232,255,0.12); border:1px solid rgba(0,232,255,0.2); font-family:var(--font-mono); font-size:0.7rem">Furioz Compagnie</span>
-      </div>
+  <span class="kicker">Identité // Origine FR</span>
+  <div class="bio-hero" style="margin-top:1rem">
+    <div class="bio-photo-wrap">
+      <img src="assets/bio-photo.png" alt="Reddice Photo" onerror="this.src='assets/logo-main.png'">
+      <div class="bio-flag" title="Origine Française - Rouen / Normandie"></div>
+      <div style="position:absolute; bottom:10px; left:10px; background:rgba(0,0,0,0.75); border:1px solid rgba(0,234,255,0.3); padding:.3rem .5rem; font-family:var(--font-mono); font-size:.7rem; color:var(--cyan)">🇫🇷 ORIGINE: FRANCE // NORMANDIE</div>
     </div>
     <div>
-      <h2 style="margin-top:0; font-size:clamp(2rem,4vw,3rem)">Moi c'est Reddice</h2>
-      <p class="lead" style="color:var(--muted)">Gaming depuis gamin, YouTube à 16 ans, stream depuis Justin.tv, Twitch full time depuis 2018. Aujourd'hui cosplay, collectif Furioz Compagnie et communauté.</p>
-      <p style="color:var(--muted); line-height:1.6">J'ai commencé sur YouTube vers mes 16 ans, plus actif vers 20 ans sous HasukeGames. Le stream arrive vers 21/22 ans sur Justin.tv avec du Pokémon Jaune, puis passage full Twitch en 2018. En 2021 je prends le nom Reddice pour une identité plus claire, et je fonde Furioz Company en 2022 parce que j'aime créer à plusieurs.</p>
-      <p style="color:var(--muted); line-height:1.6">Le cosplay arrive en 2020 : Darth Revan, Kirito, Shadow, Chica FNAF. C'est devenu une autre façon d'exprimer mon univers à côté du gaming.</p>
+      <h2 style="margin:.2rem 0">Cédric // Reddice</h2>
+      <p class="lead" style="margin-top:.2rem">Streamer, cosplayer, créateur d'univers geek - Normand, passionné par Star Citizen, le catch et la culture pop. Membre fondateur de Furioz Compagnie.</p>
+      <div class="bio-stats">
+        <span class="mini-chip">🎮 Star Citizen Main</span>
+        <span class="mini-chip">🤼 Catch REAC WWE / AEW</span>
+        <span class="mini-chip">👘 Cosplay</span>
+        <span class="mini-chip">🇫🇷 Rouen</span>
+        <span class="mini-chip">🛰️ Furioz Compagnie</span>
+      </div>
+      <div style="margin-top:1.2rem; display:grid; gap:.8rem">
+        <div class="card">
+          <span class="kicker">Parcours</span>
+          <h3 style="margin:.4rem 0">De la passion au live</h3>
+          <p style="color:var(--muted); font-size:.95rem; line-height:1.5">Plusieurs années à construire une communauté soudée autour du gaming, du partage et de la bonne humeur. Mon objectif : créer un espace où on se marre, on découvre, on mine de l'AUEC sur Stanton et on vibre devant les PLE.</p>
+        </div>
+        <div class="card" style="border-color:rgba(138,92,255,0.25)">
+          <span class="kicker">Ce que tu trouves ici</span>
+          <ul style="margin:.6rem 0; padding-left:1rem; color:var(--muted); line-height:1.6; font-family:var(--font-mono); font-size:.9rem">
+            <li>Live chill mais pro - Overlay datapad holo</li>
+            <li>Events Furioz Compagnie - Multi-stream</li>
+            <li>REAC Catch chaque semaine - RAW, SmackDown, NXT, PLE</li>
+            <li>Cosplay et créations Reddice Shop</li>
+          </ul>
+        </div>
+      </div>
+      <div style="display:flex; gap:.6rem; margin-top:1rem; flex-wrap:wrap">
+        <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="btn btn-primary">Voir le live</a>
+        <a href="planning.html" class="btn">Planning complet</a>
+        <a href="contact.html" class="btn btn-ghost">Me contacter</a>
+      </div>
     </div>
-  </div>
-  <div class="grid-2" style="margin-top:2rem">
-    <div class="card"><strong style="color:#fff">Les débuts</strong><p style="color:var(--muted)">YouTube HasukeGames vers 20 ans, puis Justin.tv vers 21/22 ans.</p></div>
-    <div class="card"><strong style="color:#fff">Passage Twitch</strong><p style="color:var(--muted)">2017/2018 full stream. WebTV, events, Japan Expo / PGW en vlogs.</p></div>
-    <div class="card"><strong style="color:#fff">Identité Reddice</strong><p style="color:var(--muted)">2021/2022 nouveau nom, 2022 création Furioz Company.</p></div>
-    <div class="card"><strong style="color:#fff">Cosplay</strong><p style="color:var(--muted)">Depuis 2020 : Revan, Kirito, Shadow, Chica.</p></div>
   </div>
 </section>
 
+<section style="margin-top:1rem" class="grid-3">
+  <div class="shell reveal"><span class="kicker">Setup</span><h3>Mon datapad</h3><p class="lead">Glass Vista translucide, néons cyan/violet, scanlines. Optimisé pour le mining longue durée.</p></div>
+  <div class="shell reveal"><span class="kicker">Communauté</span><h3>Furioz + Reddice</h3><p class="lead">Deux Discords, une même vibe. Entraide, events, et délires jusqu'à pas d'heure.</p></div>
+  <div class="shell reveal"><span class="kicker">Catch</span><h3>REAC Family</h3><p class="lead">WWE - AEW - PLE - On réagit, on débat, on kiffe. Rejoins les lives du vendredi.</p></div>
+</section>
+
 </main>
-<footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)"><small><a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a><br>Reddice HUB V2 • <span id="current-year"></span></small></footer>
+<footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)"><small>Reddice HUB V3 • <span id="current-year"></span></small></footer>
 <script src="script.js"></script>
 </body>
 </html>
