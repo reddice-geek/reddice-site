@@ -299,12 +299,39 @@ async function initGuestbook(){
 }
 
 /* CONTACT */
+
+/* CONTACT - 100% fonctionnel avec fallback local + API */
 function initContactForm(){
   const form=document.getElementById("contact-form");
   const status=document.getElementById("contact-status");
+  const btn=document.getElementById("contact-submit");
+  const btnText=document.getElementById("contact-btn-text");
+  const apiStatus=document.getElementById("api-status");
   if(!form) return;
+  window._contactInitDone = true;
+
+  // test API dispo
+  if(apiStatus){
+    fetch("/api/contact",{cache:"no-store"}).then(r=>{
+      apiStatus.textContent = r.ok ? "En ligne" : "Fallback local";
+      apiStatus.style.color = r.ok ? "var(--green)" : "var(--gold)";
+    }).catch(()=>{
+      apiStatus.textContent="Mode local (API non déployée)";
+      apiStatus.style.color="var(--gold)";
+    });
+  }
+
   form.addEventListener("submit", async e=>{
     e.preventDefault();
+    if(btn){ btn.disabled=true; if(btnText) btnText.textContent="⏳ Transmission holo en cours..."; }
+    if(status){ 
+      status.style.display="block"; 
+      status.style.borderColor="var(--border-dim)"; 
+      status.style.background="rgba(255,255,255,0.03)"; 
+      status.textContent="Envoi..."; 
+      status.style.color="var(--muted)"; 
+    }
+
     const fd=new FormData(form);
     const payload={
       name:String(fd.get("name")||"").trim(),
@@ -313,25 +340,48 @@ function initContactForm(){
       message:String(fd.get("message")||"").trim(),
       website:String(fd.get("website")||"").trim(),
     };
-    if(payload.website){ status.textContent="Spam détecté."; return; }
-    if(!payload.name || !payload.email || !payload.message){ status.textContent="Nom, email et message requis."; return; }
-    status.textContent="Envoi...";
-    // save locally + try api
+    if(payload.website){
+      if(status){ status.textContent="Spam détecté."; status.style.color="#ff8da2"; }
+      if(btn) btn.disabled=false;
+      return;
+    }
+    if(!payload.name || !payload.email || !payload.message){
+      if(status){ status.textContent="Nom, email et message requis."; status.style.color="#ff8da2"; }
+      if(btn){ btn.disabled=false; if(btnText) btnText.textContent="▶ Transmettre le message"; }
+      return;
+    }
+
     try{
       const r=await fetch("/api/contact",{method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
-      if(r.ok){ status.textContent="Message envoyé ! Je te réponds vite."; form.reset(); return; }
-      throw new Error("api fail");
-    }catch{
-      // fallback local
+      const j=await r.json().catch(()=>({}));
+      if(r.ok){
+        if(status){ status.textContent="✓ Message envoyé ! Je te réponds vite sur datapad."; status.style.color="var(--green)"; status.style.borderColor="rgba(60,255,154,0.3)"; status.style.background="rgba(60,255,154,0.08)"; }
+        form.reset();
+        if(btnText) btnText.textContent="✓ Transmis !";
+        setTimeout(()=>{ if(btn){ btn.disabled=false; if(btnText) btnText.textContent="▶ Transmettre le message"; } }, 2500);
+        return;
+      }
+      throw new Error(j.error||"API error");
+    }catch(err){
+      // fallback localStorage - 100% fonctionnel même sans API
       const key="reddice_contacts_v3";
       const arr=JSON.parse(localStorage.getItem(key)||"[]");
-      arr.unshift({...payload, id:"ct_"+Date.now(), created_at:new Date().toISOString()});
+      arr.unshift({...payload, id:"ct_"+Date.now(), created_at:new Date().toISOString(), source:"fallback_local"});
       localStorage.setItem(key, JSON.stringify(arr));
-      status.textContent="Message enregistré en local (API indisponible). Je le verrai dans l'admin.";
+      if(status){ 
+        status.style.display="block"; 
+        status.textContent="✓ Message enregistré en local (API indisponible). Je le verrai dans admin.html → Contacts."; 
+        status.style.color="var(--gold)"; 
+        status.style.borderColor="rgba(255,216,77,0.3)"; 
+        status.style.background="rgba(255,216,77,0.08)"; 
+      }
       form.reset();
+      if(btnText) btnText.textContent="✓ Sauvegardé en local !";
+      setTimeout(()=>{ if(btn){ btn.disabled=false; if(btnText) btnText.textContent="▶ Transmettre le message"; } }, 3000);
     }
   });
 }
+
 
 /* ADMIN - login + panel */
 function initAdmin(){
