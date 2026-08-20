@@ -26,7 +26,7 @@
       <li><a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a></li>
       <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
       <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
-      <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
+      <li><a href="Contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
     </ul>
     <div class="hub-nav-right">
       <div class="quick-socials" style="display:flex; gap:.45rem; align-items:center">
@@ -115,72 +115,133 @@
 
 <script src="script.js"></script>
 <script>
-// Fallback direct si script.js ne charge pas - rend le form fonctionnel même en local
-document.addEventListener("DOMContentLoaded", ()=>{
-  const form=document.getElementById("contact-form");
-  const status=document.getElementById("contact-status");
-  const btn=document.getElementById("contact-submit");
-  const btnText=document.getElementById("contact-btn-text");
-  const apiStatus=document.getElementById("api-status");
-  
-  // test API
-  fetch("/api/contact").then(r=>{
-    if(apiStatus) apiStatus.textContent = r.ok ? "En ligne" : "Fallback local";
-    if(apiStatus) apiStatus.style.color = r.ok ? "var(--green)" : "var(--gold)";
-  }).catch(()=>{
-    if(apiStatus) { apiStatus.textContent="Mode local (API non déployée)"; apiStatus.style.color="var(--gold)"; }
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("contact-form");
+  const status = document.getElementById("contact-status");
+  const btn = document.getElementById("contact-submit");
+  const btnText = document.getElementById("contact-btn-text");
+  const apiStatus = document.getElementById("api-status");
 
-  if(!form) return;
-  // Si initContactForm existe déjà dans script.js, on laisse faire
-  if(window._contactInitDone) return;
+  if (window._contactInitDone) return;
+  window._contactInitDone = true;
 
-  form.addEventListener("submit", async (e)=>{
-    e.preventDefault();
-    if(btn) { btn.disabled=true; if(btnText) btnText.textContent="⏳ Transmission holo en cours..."; }
-    if(status){ status.style.display="block"; status.style.borderColor="var(--border-dim)"; status.style.background="rgba(255,255,255,0.03)"; status.textContent="Envoi..."; status.style.color="var(--muted)"; }
-
-    const fd=new FormData(form);
-    const payload={
-      name:String(fd.get("name")||"").trim(),
-      email:String(fd.get("email")||"").trim(),
-      subject:String(fd.get("subject")||"").trim(),
-      message:String(fd.get("message")||"").trim(),
-      website:String(fd.get("website")||"").trim(),
+  const resetButton = (label = "▶ Transmettre le message", delay = 0) => {
+    const apply = () => {
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = label;
     };
-    if(payload.website){
-      if(status){ status.textContent="Spam détecté."; status.style.color="#ff8da2"; }
-      if(btn) btn.disabled=false;
-      return;
-    }
-    if(!payload.name || !payload.email || !payload.message){
-      if(status){ status.textContent="Nom, email et message requis."; status.style.color="#ff8da2"; }
-      if(btn){ btn.disabled=false; if(btnText) btnText.textContent="▶ Transmettre le message"; }
+    if (delay) setTimeout(apply, delay);
+    else apply();
+  };
+
+  const showStatus = (message, color, border, background) => {
+    if (!status) return;
+    status.style.display = "block";
+    status.textContent = message;
+    status.style.color = color || "var(--muted)";
+    status.style.borderColor = border || "var(--border-dim)";
+    status.style.background = background || "rgba(255,255,255,0.03)";
+  };
+
+  fetch("/api/contact", { method: "GET", cache: "no-store" })
+    .then((r) => {
+      if (!apiStatus) return;
+      const exists = r.status !== 404;
+      apiStatus.textContent = exists ? "Disponible" : "Mode local";
+      apiStatus.style.color = exists ? "var(--green)" : "var(--gold)";
+    })
+    .catch(() => {
+      if (!apiStatus) return;
+      apiStatus.textContent = "Mode local";
+      apiStatus.style.color = "var(--gold)";
+    });
+
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    if (btn) btn.disabled = true;
+    if (btnText) btnText.textContent = "⏳ Transmission en cours...";
+    showStatus("Envoi...", "var(--muted)");
+
+    const fd = new FormData(form);
+    const payload = {
+      name: String(fd.get("name") || "").trim(),
+      email: String(fd.get("email") || "").trim(),
+      subject: String(fd.get("subject") || "").trim(),
+      message: String(fd.get("message") || "").trim(),
+      website: String(fd.get("website") || "").trim()
+    };
+
+    if (payload.website) {
+      showStatus("Spam détecté.", "#ff8da2");
+      resetButton();
       return;
     }
 
-    try{
-      const r=await fetch("/api/contact",{method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
-      const j=await r.json().catch(()=>({}));
-      if(r.ok){
-        if(status){ status.textContent="✓ Message envoyé ! Je te réponds vite sur datapad."; status.style.color="var(--green)"; status.style.borderColor="rgba(60,255,154,0.3)"; status.style.background="rgba(60,255,154,0.08)"; }
-        form.reset();
-        // confetti effect
-        if(btnText) btnText.textContent="✓ Transmis !";
-        setTimeout(()=>{ if(btn){ btn.disabled=false; if(btnText) btnText.textContent="▶ Transmettre le message"; } }, 2500);
-        return;
-      }
-      throw new Error(j.error||"API error");
-    }catch(err){
-      // fallback localStorage
-      const key="reddice_contacts_v3";
-      const arr=JSON.parse(localStorage.getItem(key)||"[]");
-      arr.unshift({...payload, id:"ct_"+Date.now(), created_at:new Date().toISOString(), source:"fallback_local"});
-      localStorage.setItem(key, JSON.stringify(arr));
-      if(status){ status.style.display="block"; status.textContent="✓ Message enregistré en local (API indisponible). Je le verrai dans admin.html → Contacts."; status.style.color="var(--gold)"; status.style.borderColor="rgba(255,216,77,0.3)"; status.style.background="rgba(255,216,77,0.08)"; }
+    if (!payload.name || !payload.email || !payload.message) {
+      showStatus("Nom, email et message requis.", "#ff8da2");
+      resetButton();
+      return;
+    }
+
+    try {
+      const r = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(j.error || `HTTP ${r.status}`);
+
+      showStatus(
+        "✓ Message envoyé !",
+        "var(--green)",
+        "rgba(60,255,154,0.3)",
+        "rgba(60,255,154,0.08)"
+      );
+
       form.reset();
-      if(btnText) btnText.textContent="✓ Sauvegardé en local !";
-      setTimeout(()=>{ if(btn){ btn.disabled=false; if(btnText) btnText.textContent="▶ Transmettre le message"; } }, 3000);
+      if (btnText) btnText.textContent = "✓ Transmis !";
+      resetButton("▶ Transmettre le message", 2500);
+
+    } catch (err) {
+      let arr = [];
+      try {
+        const raw = localStorage.getItem("reddice_contacts_v3");
+        const parsed = raw ? JSON.parse(raw) : [];
+        arr = Array.isArray(parsed) ? parsed : [];
+      } catch (_) {
+        arr = [];
+      }
+
+      arr.unshift({
+        ...payload,
+        id: "ct_" + Date.now(),
+        created_at: new Date().toISOString(),
+        source: "fallback_local"
+      });
+
+      try {
+        localStorage.setItem("reddice_contacts_v3", JSON.stringify(arr));
+        showStatus(
+          "✓ Message enregistré en local. Il sera visible dans admin.html → Contacts.",
+          "var(--gold)",
+          "rgba(255,216,77,0.3)",
+          "rgba(255,216,77,0.08)"
+        );
+        form.reset();
+        if (btnText) btnText.textContent = "✓ Sauvegardé en local !";
+        resetButton("▶ Transmettre le message", 3000);
+      } catch (_) {
+        showStatus("Impossible d'envoyer ou d'enregistrer le message.", "#ff8da2");
+        resetButton();
+      }
     }
   });
 });
