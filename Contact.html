@@ -1,1 +1,100 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Contact - Reddice</title><link rel="stylesheet" href="styles.css"><link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet"></head><body data-page="contact"><header class="hub-header"><div class="hub-brand"><a href="index.html"><img src="assets/logo-main.png" alt="Reddice" class="hub-logo-main"></a><span class="hub-overline">Contact</span></div></header><nav class="hub-nav-shell"><div class="container hub-nav-layout"><ul class="hub-nav"><li><a href="index.html" class="hub-link-v2">Accueil</a></li><li class="has-sub"><a href="bio.html" class="hub-link-v2">Bio</a><ul class="submenu"><li><a href="setup.html">Setup</a></li></ul></li><li><a href="contact.html" class="hub-link-v2 active">Contact</a></li></ul><div class="hub-nav-right"><a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a><a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop">Shop</a></div></div></nav><main class="container"><section class="shell"><h2>Contact - Fonctionnel</h2><form id="contact-form" style="display:grid;gap:.8rem"><input name="name" placeholder="Pseudo" required><input name="email" type="email" placeholder="Email" required><textarea name="message" rows="6" placeholder="Message" required></textarea><input name="website" style="position:absolute;left:-9999px"><button class="btn btn-primary">Envoyer</button><div id="contact-status" style="display:none"></div></form></section></main><footer class="container" style="text-align:center"><small><a href="sitemap.html">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a></small></footer><div id="legal-modal" class="legal-modal"><div class="legal-modal-bg" data-legal-close></div><div class="legal-modal-box shell"><button data-legal-close>X</button><h2>Mentions légales</h2><p>Éditeur: Reddice - Hébergement Vercel</p></div></div><script src="script.js"></script><script>document.getElementById('contact-form').addEventListener('submit',async e=>{e.preventDefault();const fd=new FormData(e.target);const payload={name:fd.get('name'),email:fd.get('email'),message:fd.get('message'),subject:fd.get('subject')||'',website:fd.get('website')};try{const r=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});if(r.ok){document.getElementById('contact-status').style.display='block';document.getElementById('contact-status').textContent='✓ Envoyé !';e.target.reset();return}throw 0}catch{const arr=JSON.parse(localStorage.getItem('reddice_contacts_v3')||'[]');arr.unshift({...payload,id:'ct_'+Date.now(),created_at:new Date().toISOString()});localStorage.setItem('reddice_contacts_v3',JSON.stringify(arr));document.getElementById('contact-status').style.display='block';document.getElementById('contact-status').textContent='✓ Sauvegardé local - admin.html';e.target.reset();}});document.querySelectorAll('[data-legal-open]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();document.getElementById('legal-modal').classList.add('is-open');}));document.querySelectorAll('[data-legal-close]').forEach(b=>b.addEventListener('click',()=>document.getElementById('legal-modal').classList.remove('is-open')));</script></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact - Reddice</title>
+  <link rel="icon" type="image/png" href="assets/icon-r.png">
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="contact">
+
+  <header class="hub-header">
+    <div class="hub-brand">
+      <a href="index.html"><img src="assets/logo-main.png" alt="Reddice" class="hub-logo-main"></a>
+      <span class="hub-overline">Contact // Holo-Mailbox</span>
+      <p class="hub-subtitle">Point d'accès central au live et à la communauté.</p>
+    </div>
+  </header>
+
+  <nav class="hub-nav-shell">
+    <div class="container hub-nav-layout">
+      <div class="hub-nav-left"><span class="stream-badge is-loading" data-stream-status>Checking</span></div>
+      <ul class="hub-nav">
+        <li><a href="index.html" class="hub-link-v2" data-nav="home">Accueil</a></li>
+        <li class="has-sub">
+          <a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a>
+          <ul class="submenu">
+            <li><a href="setup.html">Setup PCB RGB</a></li>
+          </ul>
+        </li>
+        <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
+        <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
+        <li><a href="contact.html" class="hub-link-v2 active" data-nav="contact">Contact</a></li>
+      </ul>
+      <div class="hub-nav-right">
+        <div class="quick-socials" style="display:flex;gap:.45rem">
+          <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
+          <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
+          <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
+          <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick hub-quick-tiktok">TikTok</a>
+        </div>
+        <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop" style="margin-left:10px">Shop</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="shell reveal visible">
+      <span class="kicker">Contact // Fonctionnel</span>
+      <h2>Me contacter - Anti-404</h2>
+      <p class="lead">Si /api/contact n'existe pas, pas de 404 affiché : sauvegarde automatique en local.</p>
+      
+      <form id="contact-form" style="display:grid;gap:.8rem" novalidate>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem">
+          <input type="text" name="name" placeholder="Pseudo" required>
+          <input type="email" name="email" placeholder="Email" required>
+        </div>
+        <input type="text" name="subject" placeholder="Sujet">
+        <textarea name="message" rows="7" placeholder="Message..." required></textarea>
+        <input type="text" name="website" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off">
+        <button type="submit" id="contact-submit" class="btn btn-primary">▶ Transmettre</button>
+        <div id="contact-status" style="display:none;font-family:var(--font-mono)"></div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="container" style="text-align:center;padding:2.5rem 0;color:var(--muted)">
+    <small><a href="sitemap.html">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a> • <span id="current-year"></span></small>
+  </footer>
+
+  <div id="legal-modal" class="legal-modal"><div class="legal-modal-bg" data-legal-close></div><div class="legal-modal-box shell"><button data-legal-close>X</button><h2>Mentions légales</h2></div></div>
+
+  <script src="script.js"></script>
+  <script>
+    // Anti-404 : try API, sinon localStorage
+    document.getElementById('contact-form').addEventListener('submit', async e=>{
+      e.preventDefault();
+      const fd=new FormData(e.target);
+      const p={name:fd.get('name'),email:fd.get('email'),subject:fd.get('subject')||'',message:fd.get('message'),website:fd.get('website')};
+      if(p.website) return; // honeypot
+      const status=document.getElementById('contact-status');
+      status.style.display='block';
+      status.textContent='Envoi...';
+      try{
+        const r=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});
+        if(r.ok){status.textContent='✓ Envoyé !'; e.target.reset(); return;}
+        throw new Error('api '+r.status);
+      }catch{
+        // Fallback -> pas de 404 pour l'utilisateur
+        const arr=JSON.parse(localStorage.getItem('reddice_contacts_v3')||'[]');
+        arr.unshift({...p,id:'ct_'+Date.now(),created_at:new Date().toISOString()});
+        localStorage.setItem('reddice_contacts_v3',JSON.stringify(arr));
+        status.textContent='✓ Sauvegardé en local - visible dans admin.html (pas de 404)';
+        e.target.reset();
+      }
+    });
+  </script>
+</body>
+</html>
