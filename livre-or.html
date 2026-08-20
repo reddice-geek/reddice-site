@@ -9,30 +9,19 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="guestbook">
-
   <header class="hub-header">
     <div class="hub-brand">
-      <a href="index.html" aria-label="Accueil">
-        <img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main">
-      </a>
+      <a href="index.html"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
       <span class="hub-overline">Système en ligne - V3 // HOLO-GLASS</span>
-      <p class="hub-subtitle">Point d'accès central au live, à la communauté et à tout l'univers Furioz.</p>
+      <p class="hub-subtitle">Livre d'or holo-feed - Avis communautaire.</p>
     </div>
   </header>
-
   <nav class="hub-nav-shell">
     <div class="container hub-nav-layout">
-      <div class="hub-nav-left">
-        <span class="stream-badge is-loading" data-stream-status>Checking</span>
-      </div>
+      <div class="hub-nav-left"><span class="stream-badge is-loading" data-stream-status>Checking</span></div>
       <ul class="hub-nav">
         <li><a href="index.html" class="hub-link-v2" data-nav="home">Accueil</a></li>
-        <li class="has-sub">
-          <a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a>
-          <ul class="submenu">
-            <li><a href="setup.html">Setup PCB RGB</a></li>
-          </ul>
-        </li>
+        <li class="has-sub"><a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a><ul class="submenu"><li><a href="setup.html">Setup PCB RGB</a></li></ul></li>
         <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
         <li><a href="livre-or.html" class="hub-link-v2 active" data-nav="guestbook">Livre d'or</a></li>
         <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
@@ -48,7 +37,6 @@
       </div>
     </div>
   </nav>
-
   <main class="container">
     <section class="shell reveal visible">
       <span class="kicker">Holo-Feed // Avis communautaire</span>
@@ -56,8 +44,7 @@
         <h2 style="margin:0">Livre d'or - Dynamique V3</h2>
         <span id="guestbook-count" class="mini-chip">Chargement...</span>
       </div>
-      <p class="lead">Avis réel avec note sur 5 - Effet glass, apparition holo.</p>
-
+      <p class="lead">Avis réel avec note sur 5 - Effet glass, apparition holo. Modération via panel admin.</p>
       <div class="guestbook-grid" style="margin-top:1.2rem">
         <div class="card" style="position:sticky; top:90px">
           <h3 style="margin-top:0">Publier // Transmettre</h3>
@@ -67,50 +54,37 @@
             <textarea name="message" rows="6" placeholder="Ton message holo..." required></textarea>
             <input type="hidden" id="guestbook-rating" name="rating" value="5">
             <div class="guestbook-rating-wrap">
-              <div style="font-family:var(--font-mono); font-size:.86rem; color:var(--muted)">
-                Ta note : <strong id="guestbook-rating-text" style="color:var(--text)">5/5</strong>
-              </div>
-              <div class="guestbook-stars" id="guestbook-stars">
-                <button type="button" class="guestbook-star is-active" data-rating-value="1">★</button>
-                <button type="button" class="guestbook-star is-active" data-rating-value="2">★</button>
-                <button type="button" class="guestbook-star is-active" data-rating-value="3">★</button>
-                <button type="button" class="guestbook-star is-active" data-rating-value="4">★</button>
-                <button type="button" class="guestbook-star is-active" data-rating-value="5">★</button>
-              </div>
+              <div style="font-family:var(--font-mono); font-size:.86rem; color:var(--muted)">Ta note : <strong id="guestbook-rating-text" style="color:var(--text)">5/5</strong></div>
+              <div class="guestbook-stars" id="guestbook-stars"><button type="button" class="guestbook-star is-active" data-rating-value="1">★</button><button type="button" class="guestbook-star is-active" data-rating-value="2">★</button><button type="button" class="guestbook-star is-active" data-rating-value="3">★</button><button type="button" class="guestbook-star is-active" data-rating-value="4">★</button><button type="button" class="guestbook-star is-active" data-rating-value="5">★</button></div>
             </div>
             <input type="text" name="website" style="position:absolute; left:-9999px" tabindex="-1" autocomplete="off">
             <button type="submit" class="btn btn-primary">Publier en holo-feed</button>
           </form>
           <div id="guestbook-status" style="margin-top:0.8rem; font-family:var(--font-mono); font-size:0.8rem; color:var(--muted)"></div>
         </div>
-        <div>
-          <div id="guestbook-list" style="display:grid; gap:.8rem"></div>
-          <div id="guestbook-pagination" style="display:flex; gap:.4rem; flex-wrap:wrap; margin-top:1rem"></div>
-        </div>
+        <div><div id="guestbook-list" style="display:grid; gap:.8rem"></div><div id="guestbook-pagination" style="display:flex; gap:.4rem; flex-wrap:wrap; margin-top:1rem"></div></div>
       </div>
     </section>
   </main>
-
   <footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)">
     <small>
-      <a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="planning.html">Planning</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>
-      Reddice HUB V3 • <span id="current-year"></span>
+      <a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a> • <a href="contact.html">Contact</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>
+      Reddice HUB V3 Holo-Glass • <span id="current-year"></span>
     </small>
   </footer>
-
   <div id="legal-modal" class="legal-modal">
     <div class="legal-modal-bg" data-legal-close></div>
     <div class="legal-modal-box shell">
       <button class="legal-close btn btn-small" data-legal-close>✕ Fermer</button>
       <span class="kicker">Légal</span>
       <h2>Mentions légales</h2>
-      <div style="color:var(--muted); font-size:.9rem">
+      <div style="color:var(--muted); font-size:.9rem; line-height:1.6">
         <p><strong style="color:#fff">Éditeur:</strong> Reddice / Cédric Detrez</p>
         <p><strong style="color:#fff">Hébergement:</strong> Vercel + Supabase</p>
+        <p><strong style="color:#fff">Données:</strong> Pas de vente. Suppression sur demande.</p>
       </div>
     </div>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
