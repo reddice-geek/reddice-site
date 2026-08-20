@@ -394,8 +394,8 @@ function initAdmin(){
   const panel=document.getElementById("admin-panel");
   if(!loginForm) return;
   // CHANGE ICI TES IDENTIFIANTS UNIQUES
-  const ADMIN_USER="reddice"; // <-- change
-  const ADMIN_PASS="Furioz_2026_Secure!"; // <-- change
+  const ADMIN_USER="reddice";
+  const ADMIN_PASS="Xboxone49Angers*";
 
   const checkSession=()=> localStorage.getItem("reddice_admin_session")==="ok";
   const setSession=()=>{ localStorage.setItem("reddice_admin_session","ok"); panel.classList.add("is-open"); loginForm.parentElement.style.display="none"; loadAdminData(); };
