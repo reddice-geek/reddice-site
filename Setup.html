@@ -1,63 +1,103 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reddice HUB V3 // Setup - Cyberdeck & Implants</title>
-<link rel="icon" type="image/png" href="assets/icon-r.png">
-<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-<style>
-body[data-page="setup"]{background:#070a13; position:relative}
-.pcb-bg{position:fixed; inset:0; z-index:-2; opacity:0.22; background:
-  linear-gradient(90deg, transparent 48%, rgba(0,234,255,0.10) 49%, rgba(0,234,255,0.10) 51%, transparent 52%),
-  linear-gradient(0deg, transparent 48%, rgba(138,92,255,0.08) 49%, rgba(138,92,255,0.08) 51%, transparent 52%),
-  radial-gradient(circle at 1px 1px, rgba(0,234,255,0.18) 1px, transparent 0);
-  background-size:120px 120px, 120px 120px, 22px 22px;
-}
-.setup-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:1.4rem}
-.setup-card{position:relative; overflow:hidden; min-height:240px}
-.pcb-trace{position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg, var(--cyan), var(--violet), var(--pink), var(--cyan)); background-size:200% 100%; animation:pcbMove 2s linear infinite}
-@keyframes pcbMove{0%{background-position:0%}100%{background-position:200%}}
-.ventirad-outer{width:132px; height:132px; border-radius:50%; border:2px solid rgba(255,255,255,0.08); display:grid; place-items:center; background:radial-gradient(circle, #121a2e 28%, #070a13 72%)}
-.ventirad-blades{width:100px; height:100px; border-radius:50%; background:conic-gradient(from 0deg,#151515 0 20%,#2a2a2a 20% 40%,#151515 40% 60%,#333 60% 80%,#151515 80% 100%); animation:spin 0.9s linear infinite}
-.ventirad-center{position:absolute; width:58px; height:58px; background:#070a13; border:1px solid var(--cyan); border-radius:50%; display:grid; place-items:center; color:var(--cyan); font-family:var(--font-mono); font-weight:800}
-@keyframes spin{to{transform:rotate(360deg)}}
-.gpu-fans{display:flex; gap:1.1rem; justify-content:center; margin-top:1.2rem}
-.gpu-fan{width:96px; height:96px; border-radius:50%; background:#0e1322; border:2px solid rgba(255,255,255,0.06); display:grid; place-items:center; position:relative}
-.fan-blades{width:74px; height:74px; border-radius:50%; background:conic-gradient(from 0deg,#1c1c1c 0 12%,#2e2e2e 12% 24%,#1c1c1c 24% 36%,#3a3a3a 36% 48%,#1c1c1c 48% 60%,#2e2e2e 60% 72%,#1c1c1c 72% 84%,#333 84% 96%,#1c1c1c 96% 100%); animation:spin 0.55s linear infinite reverse}
-.ram-sticks{display:flex; gap:1.2rem; justify-content:center; margin-top:1rem}
-.ram-bar{width:20px; height:110px; background:rgba(255,255,255,0.05); border:1px solid var(--border-dim); display:flex; align-items:flex-end}
-.ram-fill{width:100%; background:linear-gradient(180deg, var(--cyan), var(--violet)); box-shadow:0 0 12px rgba(0,234,255,0.6)}
-.has-sub{position:relative}.submenu{position:absolute; top:100%; left:0; background:rgba(5,7,13,0.96); border:1px solid var(--border-dim); padding:.45rem; min-width:190px; display:none; z-index:200}.has-sub:hover .submenu{display:grid}
-.legal-modal{position:fixed; inset:0; display:none; z-index:9999; place-items:center}.legal-modal.is-open{display:grid}.legal-modal-bg{position:absolute; inset:0; background:rgba(0,0,0,0.72); backdrop-filter:blur(6px)}
-@media(max-width:1100px){.setup-grid{grid-template-columns:1fr 1fr}}@media(max-width:600px){.setup-grid{grid-template-columns:1fr}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reddice HUB V3 // Setup - Cyberdeck & Implants</title>
+  <link rel="icon" type="image/png" href="assets/icon-r.png">
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .pcb-bg{position:fixed; inset:0; z-index:-2; opacity:0.22;
+      background:linear-gradient(90deg, transparent 48%, rgba(0,234,255,0.10) 49% 51%, transparent 52%),
+                linear-gradient(0deg, transparent 48%, rgba(138,92,255,0.08) 49% 51%, transparent 52%),
+                radial-gradient(circle at 1px 1px, rgba(0,234,255,0.18) 1px, transparent 0);
+      background-size:120px 120px, 120px 120px, 22px 22px;
+    }
+    .setup-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:1.4rem}
+    .setup-card{position:relative; overflow:hidden; min-height:260px}
+    .pcb-trace{position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg, var(--cyan), var(--violet), var(--pink), var(--cyan));
+      background-size:200% 100%; animation:pcbMove 2s linear infinite}
+    @keyframes pcbMove{0%{background-position:0%}100%{background-position:200%}}
+    .ventirad-outer{width:132px; height:132px; border-radius:50%; border:2px solid rgba(255,255,255,0.08);
+      display:grid; place-items:center; background:radial-gradient(circle, #121a2e 28%, #070a13 72%)}
+    .ventirad-blades{width:100px; height:100px; border-radius:50%;
+      background:conic-gradient(from 0deg,#151515 0 20%,#2a2a2a 20% 40%,#151515 40% 60%,#333 60% 80%,#151515 80% 100%);
+      animation:spin 0.9s linear infinite}
+    .ventirad-center{position:absolute; width:58px; height:58px; background:#070a13; border:1px solid var(--cyan);
+      border-radius:50%; display:grid; place-items:center; color:var(--cyan); font-family:var(--font-mono)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .gpu-fans{display:flex; gap:1.1rem; justify-content:center; margin-top:1.2rem}
+    .gpu-fan{width:96px; height:96px; border-radius:50%; background:#0e1322; border:2px solid rgba(255,255,255,0.06);
+      display:grid; place-items:center}
+    .fan-blades{width:74px; height:74px; border-radius:50%;
+      background:conic-gradient(from 0deg,#1c1c1c 0 12%,#2e2e2e 12% 24%,#1c1c1c 24% 36%,#3a3a3a 36% 48%,#1c1c1c 48% 60%,#2e2e2e 60% 72%,#1c1c1c 72% 84%,#333 84% 96%,#1c1c1c 96% 100%);
+      animation:spin 0.55s linear infinite reverse}
+  </style>
 </head>
 <body data-page="setup">
-<header class="hub-header"><div class="hub-brand"><a href="index.html"><img src="assets/logo-main.png" alt="Reddice" class="hub-logo-main"></a><span class="hub-overline">CYBERDECK & IMPLANTS - RGB PCB</span><p class="hub-subtitle">Setup en évolution, reçu tout frais ! ^-^</p></div></header>
-<nav class="hub-nav-shell"><div class="container hub-nav-layout"><div class="hub-nav-left"><span class="stream-badge is-loading" data-stream-status>Checking</span></div>
-<ul class="hub-nav">
-<li><a href="index.html" class="hub-link-v2">Accueil</a></li>
-<li class="has-sub"><a href="bio.html" class="hub-link-v2">Bio</a><ul class="submenu"><li><a href="setup.html">Setup PCB RGB</a></li></ul></li>
-<li><a href="planning.html" class="hub-link-v2">Planning</a></li><li><a href="livre-or.html" class="hub-link-v2">Livre d'or</a></li><li><a href="contact.html" class="hub-link-v2">Contact</a></li>
-</ul>
-<div class="hub-nav-right"><a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a><a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop">Shop</a></div></div></nav>
-<main class="container"><div class="pcb-bg"></div>
-<section class="shell reveal visible setup-shell"><span class="kicker">MON SETUP // ASUS ROG STRIX G17 G713IE</span>
-<h2>PC PRINCIPAL - G713IE</h2>
-<p class="lead">CPU Ryzen 7 4800H 2.9GHz [Boost 4.2GHz] | GPU RTX 3050 Laptop 4Go GDDR6 | RAM 16Go DDR4 | SSD 512Go NVMe M.2 | Ecran 17.3" Full HD 144Hz | Shadow PC Ultra | Xbox Elite Series 2 + PS2 Fat - Setup en évolution, reçu tout frais !</p>
-<div class="setup-grid">
-<div class="card"><span class="kicker">CPU // RYZEN 7 4800H</span><h3>2.9GHz [Boost 4.2GHz]</h3><div class="ventirad-wrap"><div class="ventirad-outer"><div class="ventirad-blades" id="cpu-fan"></div><div class="ventirad-center"><span id="cpu-percent">42</span>%</div></div></div></div>
-<div class="card"><span class="kicker">GPU // RTX 3050 4Go GDDR6</span><h3>Double Ventilo RGB</h3><div class="gpu-fans"><div class="gpu-fan"><div class="fan-blades" id="gpu-fan-1"></div></div><div class="gpu-fan"><div class="fan-blades" id="gpu-fan-2"></div></div></div></div>
-<div class="card"><span class="kicker">RAM // 16Go DDR4</span><div style="display:flex;gap:1rem;justify-content:center"><div class="ram-bar"><div class="ram-fill" id="ram-1" style="height:68%"></div></div><div class="ram-bar"><div class="ram-fill" id="ram-2" style="height:54%"></div></div></div><p><span id="ram-pct">68</span>% utilisation</p></div>
-</div></section></main>
-<footer class="container" style="text-align:center"><small><a href="sitemap.html">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a></small></footer>
-<div id="legal-modal" class="legal-modal"><div class="legal-modal-bg" data-legal-close></div><div class="legal-modal-box shell"><button data-legal-close>X</button><h2>Mentions légales</h2></div></div>
-<script src="script.js"></script>
-<script>
-let cpu=42; setInterval(()=>{cpu+=(Math.random()-0.5)*4; document.getElementById('cpu-percent').textContent=Math.round(cpu); const f=document.getElementById('cpu-fan'); if(f) f.style.animationDuration=(1.2/(0.7+cpu/100*2.5))+'s';},120);
-let r=68; setInterval(()=>{r+=0.6*(Math.random()>0.5?1:-1); if(r>92||r<22)r=68; document.getElementById('ram-1').style.height=r+'%'; document.getElementById('ram-2').style.height=(r-10)+'%'; document.getElementById('ram-pct').textContent=Math.round(r);},90);
-document.querySelectorAll('[data-legal-open]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();document.getElementById('legal-modal').classList.add('is-open');}));
-document.querySelectorAll('[data-legal-close]').forEach(b=>b.addEventListener('click',()=>document.getElementById('legal-modal').classList.remove('is-open')));
-</script>
-</body></html>
+
+  <header class="hub-header">
+    <div class="hub-brand">
+      <a href="index.html"><img src="assets/logo-main.png" alt="Reddice"></a>
+      <span class="hub-overline">CYBERDECK & IMPLANTS - RGB PCB</span>
+    </div>
+  </header>
+
+  <nav class="hub-nav-shell">
+    <div class="container hub-nav-layout">
+      <ul class="hub-nav">
+        <li><a href="index.html" class="hub-link-v2">Accueil</a></li>
+        <li class="has-sub">
+          <a href="bio.html" class="hub-link-v2 active">Bio</a>
+          <ul class="submenu">
+            <li><a href="setup.html">Setup PCB RGB</a></li>
+          </ul>
+        </li>
+        <li><a href="planning.html" class="hub-link-v2">Planning</a></li>
+        <li><a href="livre-or.html" class="hub-link-v2">Livre d'or</a></li>
+        <li><a href="contact.html" class="hub-link-v2">Contact</a></li>
+      </ul>
+      <div class="hub-nav-right">
+        <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
+        <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop">Shop</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="pcb-bg"></div>
+    <section class="shell reveal visible">
+      <span class="kicker">MON SETUP // ASUS ROG STRIX G17 G713IE</span>
+      <h2>PC PRINCIPAL - G713IE</h2>
+      <div class="setup-grid">
+        <div class="card"><span class="kicker">CPU // RYZEN 7 4800H</span><h3>2.9GHz [Boost 4.2GHz]</h3>
+          <div class="ventirad-outer"><div class="ventirad-blades" id="cpu-fan"></div><div class="ventirad-center"><span id="cpu-percent">42</span>%</div></div>
+        </div>
+        <div class="card"><span class="kicker">GPU // RTX 3050</span><h3>Double Ventilo RGB</h3>
+          <div class="gpu-fans"><div class="gpu-fan"><div class="fan-blades" id="gpu-fan-1"></div></div><div class="gpu-fan"><div class="fan-blades" id="gpu-fan-2"></div></div></div>
+        </div>
+        <div class="card"><span class="kicker">RAM // 16Go DDR4</span>
+          <div class="ram-sticks"><div class="ram-bar"><div class="ram-fill" id="ram-1" style="height:68%"></div></div><div class="ram-bar"><div class="ram-fill" id="ram-2" style="height:54%"></div></div></div>
+          <p><span id="ram-pct">68</span>% utilisation</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container" style="text-align:center">
+    <small><a href="sitemap.html">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a></small>
+  </footer>
+
+  <div id="legal-modal" class="legal-modal"><div class="legal-modal-bg" data-legal-close></div><div class="legal-modal-box shell"><button data-legal-close>X</button><h2>Mentions légales</h2></div></div>
+
+  <script src="script.js"></script>
+  <script>
+    let cpu=42, dir=1; setInterval(()=>{cpu+=(Math.random()-0.5)*6*dir; if(cpu>85)dir=-1; if(cpu<18)dir=1; document.getElementById('cpu-percent').textContent=Math.round(cpu)},120);
+    let r=68, rdir=1; setInterval(()=>{r+=rdir*0.55; if(r>92)rdir=-1; if(r<24)rdir=1; document.getElementById('ram-1').style.height=r+'%'; document.getElementById('ram-2').style.height=(r-12)+'%' ; document.getElementById('ram-pct').textContent=Math.round(r)},90);
+    document.querySelectorAll('[data-legal-open]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();document.getElementById('legal-modal').classList.add('is-open');}));
+    document.querySelectorAll('[data-legal-close]').forEach(b=>b.addEventListener('click',()=>document.getElementById('legal-modal').classList.remove('is-open')));
+  </script>
+</body>
+</html>
