@@ -302,6 +302,7 @@ async function initGuestbook(){
 
 /* CONTACT - 100% fonctionnel avec fallback local + API */
 function initContactForm(){
+  if(window._contactInitDone) return;
   const form=document.getElementById("contact-form");
   const status=document.getElementById("contact-status");
   const btn=document.getElementById("contact-submit");
@@ -365,7 +366,11 @@ function initContactForm(){
     }catch(err){
       // fallback localStorage - 100% fonctionnel même sans API
       const key="reddice_contacts_v3";
-      const arr=JSON.parse(localStorage.getItem(key)||"[]");
+      let arr=[];
+      try{
+        const parsed=JSON.parse(localStorage.getItem(key)||"[]");
+        arr=Array.isArray(parsed)?parsed:[];
+      }catch(_){ arr=[]; }
       arr.unshift({...payload, id:"ct_"+Date.now(), created_at:new Date().toISOString(), source:"fallback_local"});
       localStorage.setItem(key, JSON.stringify(arr));
       if(status){ 

@@ -1,0 +1,21 @@
+REDDICE SITE - CORRECTIONS
+
+Fichiers renommés pour Vercel/Linux :
+- Contact.html -> contact.html
+- Admin.html -> admin.html
+- Setup.html -> setup.html
+- Sitemap.html -> sitemap.html
+- Sitemap.xml -> sitemap.xml
+- api/Contact.js -> api/contact.js
+- api/Twitch-Stats.js -> api/twitch-stats.js
+
+Corrections supplémentaires :
+- API /api/contact alignée avec api/contact.js
+- API /api/twitch-stats alignée avec api/twitch-stats.js
+- suppression de la rewrite Vercel inutile vers elle-même
+- correction du class HTML du lien Contact
+- protection contre la double initialisation du formulaire Contact
+- fallback localStorage du Contact rendu robuste
+- références locales manquantes détectées : 0
+- erreurs JavaScript : 0
+- noms API invalides restants : 0

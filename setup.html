@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reddice HUB V3 // Setup - Cyberdeck & Implants</title>
+  <link rel="icon" type="image/png" href="assets/icon-r.png">
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="setup">
+  <header class="hub-header">
+    <div class="hub-brand">
+      <a href="index.html"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
+      <span class="hub-overline">CYBERDECK & IMPLANTS - RGB PCB</span>
+      <p class="hub-subtitle">Setup en évolution, reçu tout frais ! ^-^</p>
+    </div>
+  </header>
+  <nav class="hub-nav-shell">
+    <div class="container hub-nav-layout">
+      <div class="hub-nav-left"><span class="stream-badge is-loading" data-stream-status>Checking</span></div>
+      <ul class="hub-nav">
+        <li><a href="index.html" class="hub-link-v2" data-nav="home">Accueil</a></li>
+        <li class="has-sub"><a href="bio.html" class="hub-link-v2 active" data-nav="bio">Bio</a><ul class="submenu"><li><a href="setup.html">Setup PCB RGB</a></li></ul></li>
+        <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
+        <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
+        <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
+      </ul>
+      <div class="hub-nav-right">
+        <div class="quick-socials" style="display:flex; gap:.45rem; align-items:center">
+          <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
+          <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
+          <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
+          <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick hub-quick-tiktok">TikTok</a>
+        </div>
+        <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop" style="margin-left:10px">Shop</a>
+      </div>
+    </div>
+  </nav>
+  <main class="container">
+    <div class="pcb-bg"></div>
+    <section class="shell reveal visible">
+      <span class="kicker">MON SETUP // ASUS ROG STRIX G17 G713IE</span>
+      <h2>PC PRINCIPAL - G713IE</h2>
+      <p class="lead">CPU Ryzen 7 4800H 2.9GHz [Boost 4.2GHz] | GPU RTX 3050 Laptop 4Go GDDR6 | RAM 16Go DDR4 | SSD 512Go NVMe M.2 | Ecran 17.3" Full HD 144Hz | Shadow PC Ultra | Xbox Elite Series 2 + PS2 Fat</p>
+      <div class="setup-grid">
+        <div class="card setup-card">
+          <div class="pcb-trace"></div>
+          <span class="kicker">CPU // RYZEN 7 4800H</span>
+          <h3>2.9GHz [Boost 4.2GHz]</h3>
+          <div class="ventirad-wrap"><div class="ventirad-outer"><div class="ventirad-blades" id="cpu-fan"></div><div class="ventirad-center"><span id="cpu-percent">42</span>%</div></div></div>
+          <p style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem; text-align:center; margin-top:.8rem">Ventirad qui accélère selon charge</p>
+        </div>
+        <div class="card setup-card">
+          <div class="pcb-trace"></div>
+          <span class="kicker">GPU // RTX 3050 4Go GDDR6</span>
+          <h3>Double Ventilo RGB</h3>
+          <div class="gpu-fans"><div class="gpu-fan"><div class="fan-blades" id="gpu-fan-1"></div></div><div class="gpu-fan"><div class="fan-blades" id="gpu-fan-2"></div></div></div>
+          <div style="margin-top:1rem; height:3px; background:linear-gradient(90deg,var(--cyan),var(--pink)); box-shadow:0 0 10px rgba(0,234,255,0.4)"></div>
+        </div>
+        <div class="card setup-card">
+          <div class="pcb-trace"></div>
+          <span class="kicker">RAM // 16Go DDR4</span>
+          <h3>Barrettes qui chargent/déchargent</h3>
+          <div class="ram-sticks">
+            <div class="ram-stick"><div class="ram-label">DIMM 1</div><div class="ram-bar"><div class="ram-fill" id="ram-1" style="height:68%"></div></div></div>
+            <div class="ram-stick"><div class="ram-label">DIMM 2</div><div class="ram-bar"><div class="ram-fill" id="ram-2" style="height:54%"></div></div></div>
+          </div>
+          <p style="font-family:var(--font-mono); text-align:center; margin-top:.8rem"><span id="ram-pct">68</span>% utilisation</p>
+        </div>
+        <div class="card">
+          <span class="kicker">SSD 512Go NVMe + Ecran 17.3" 144Hz</span>
+          <h3>Stockage & Display</h3>
+          <div class="ssd-bar"><div class="ssd-fill" style="width:62%"></div></div>
+          <p style="color:var(--muted); font-size:.9rem; margin-top:.5rem">62% utilisé - 144Hz Full HD</p>
+        </div>
+        <div class="card" style="grid-column:span 2">
+          <span class="kicker">CLOUD + PERIPH</span>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem">
+            <div><h3>Shadow PC Ultra</h3><p style="color:var(--muted); font-size:.9rem">Pousse les gros jeux en ultra</p></div>
+            <div><h3>Xbox Elite Series 2 + PS2 Fat</h3><p style="color:var(--muted); font-size:.9rem">La légende toujours branchée</p></div>
+          </div>
+          <div class="card" style="margin-top:1rem; background:rgba(0,234,255,0.06); border-color:rgba(0,234,255,0.18)"><p style="margin:0; color:var(--cyan); font-family:var(--font-mono)">Setup en évolution, reçu tout frais ! ^-^</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)">
+    <small>
+      <a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a> • <a href="contact.html">Contact</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>
+      Reddice HUB V3 Holo-Glass • <span id="current-year"></span>
+    </small>
+  </footer>
+  <div id="legal-modal" class="legal-modal">
+    <div class="legal-modal-bg" data-legal-close></div>
+    <div class="legal-modal-box shell">
+      <button class="legal-close btn btn-small" data-legal-close>✕ Fermer</button>
+      <span class="kicker">Légal</span>
+      <h2>Mentions légales</h2>
+      <div style="color:var(--muted); font-size:.9rem; line-height:1.6">
+        <p><strong style="color:#fff">Éditeur:</strong> Reddice / Cédric Detrez</p>
+        <p><strong style="color:#fff">Hébergement:</strong> Vercel + Supabase</p>
+        <p><strong style="color:#fff">Données:</strong> Pas de vente. Suppression sur demande.</p>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+  <script>
+    let cpu=42, dir=1;
+    setInterval(function(){
+      cpu+=(Math.random()-0.5)*6*dir;
+      if(cpu>85) dir=-1;
+      if(cpu<18) dir=1;
+      cpu=Math.max(15,Math.min(92,cpu));
+      document.getElementById('cpu-percent').textContent=Math.round(cpu);
+      var f=document.getElementById('cpu-fan');
+      if(f) f.style.animationDuration=(1.4/(0.5+cpu/50))+'s';
+    },120);
+    var r=68, rdir=1;
+    setInterval(function(){
+      r+=rdir*0.55;
+      if(r>92) rdir=-1;
+      if(r<24) rdir=1;
+      document.getElementById('ram-1').style.height=r+'%';
+      document.getElementById('ram-2').style.height=(r-12+Math.sin(Date.now()/600)*7)+'%';
+      document.getElementById('ram-pct').textContent=Math.round(r);
+    },90);
+  </script>
+</body>
+</html>
