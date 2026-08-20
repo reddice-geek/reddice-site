@@ -3,46 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reddice HUB V3 // Accueil</title>
+  <title>Reddice HUB V3 // Accueil - Holo Glass</title>
+  <meta name="description" content="Site de Reddice - Stream, Furioz Compagnie, communauté - V3 Holo Glass">
   <link rel="icon" type="image/png" href="assets/icon-r.png">
   <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="home">
-
   <header class="hub-header">
     <div class="hub-brand">
-      <a href="index.html">
-        <img src="assets/logo-main.png" alt="Reddice" class="hub-logo-main">
-      </a>
-      <span class="hub-overline">Système en ligne - V3 HOLO-GLASS</span>
+      <a href="index.html" aria-label="Accueil"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
+      <span class="hub-overline">Système en ligne - V3 // HOLO-GLASS</span>
       <p class="hub-subtitle">Point d'accès central au live, à la communauté et à tout l'univers Furioz.</p>
     </div>
   </header>
-
   <nav class="hub-nav-shell">
     <div class="container hub-nav-layout">
-      <div class="hub-nav-left">
-        <span class="stream-badge is-loading" data-stream-status>Checking</span>
-      </div>
-
+      <div class="hub-nav-left"><span class="stream-badge is-loading" data-stream-status>Checking</span></div>
       <ul class="hub-nav">
-        <li>
-          <a href="index.html" class="hub-link-v2 active" data-nav="home">Accueil</a>
-        </li>
-        <li class="has-sub">
-          <a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a>
-          <ul class="submenu">
-            <li><a href="setup.html">Setup PCB RGB</a></li>
-          </ul>
-        </li>
+        <li><a href="index.html" class="hub-link-v2 active" data-nav="home">Accueil</a></li>
+        <li class="has-sub"><a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a><ul class="submenu"><li><a href="setup.html">Setup PCB RGB</a></li></ul></li>
         <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
         <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
         <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
       </ul>
-
       <div class="hub-nav-right">
-        <div class="quick-socials" style="display:flex; gap:.45rem">
+        <div class="quick-socials" style="display:flex; gap:.45rem; align-items:center">
           <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
           <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
           <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
@@ -56,23 +42,40 @@
   <main class="container">
     <section class="shell reveal visible">
       <span class="kicker">Live Center // Holo-Feed</span>
-      <h2>Bienvenue dans le datapad de Reddice</h2>
-      <p class="lead">Live Twitch direct + chat séparés de 1.5mm - glass Vista.</p>
+      <h2 style="margin:0.6rem 0 0.4rem">Bienvenue dans le datapad de Reddice</h2>
+      <p class="lead">Live Twitch direct + chat intégré en deux fenêtres séparées de 1.5mm - design datapad cassé, glass translucide Vista.</p>
       <div class="twitch-layout">
-        <div class="player-box"><iframe id="twitch-player" allowfullscreen></iframe></div>
-        <div class="player-box"><iframe id="twitch-chat"></iframe></div>
+        <div class="player-box"><iframe id="twitch-player" allowfullscreen title="Twitch Player"></iframe></div>
+        <div class="player-box"><iframe id="twitch-chat" title="Twitch Chat"></iframe></div>
       </div>
     </section>
 
     <section style="margin-top:1.2rem; display:grid; gap:1rem">
       <div class="shell reveal" style="padding:1.6rem">
-        <span class="kicker">Réseaux</span>
-        <h3>Rester connecté</h3>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:.8rem; margin-top:1rem">
-          <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="card"><strong style="color:#fff">Twitch</strong></a>
-          <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="card"><strong style="color:#fff">YouTube</strong><br><small>@reddice-geek</small></a>
-          <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="card"><strong>Discord</strong></a>
-          <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="card"><strong>TikTok</strong></a>
+        <span class="kicker">Réseaux // Uplinks</span>
+        <h3 style="font-size:1.6rem; margin:0.6rem 0">Rester connecté</h3>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:.8rem; margin-top:1rem">
+          <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="card" style="text-decoration:none"><strong style="color:#fff">Twitch</strong><br><small style="color:var(--muted)">Chaîne principale - Live</small></a>
+          <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="card" style="text-decoration:none"><strong style="color:#fff">Discord</strong><br><small style="color:var(--muted)">Ma communauté perso</small></a>
+          <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="card" style="text-decoration:none"><strong style="color:#fff">YouTube @reddice-geek</strong><br><small style="color:var(--muted)">Archives et vidéos</small></a>
+          <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="card" style="text-decoration:none"><strong style="color:#fff">TikTok @reddice.geek</strong><br><small style="color:var(--muted)">Clips & cosplay</small></a>
+        </div>
+      </div>
+
+      <div class="shell reveal" style="padding:1.6rem; background:linear-gradient(135deg, rgba(0,102,255,0.10), rgba(255,255,255,0.03)), var(--panel); border-color:rgba(0,102,255,0.25)">
+        <div style="display:flex; gap:1.5rem; align-items:center; flex-wrap:wrap">
+          <div style="width:200px; min-width:160px; height:84px; background:#fff; border:1px solid rgba(0,0,0,0.08); display:flex; align-items:center; justify-content:center; overflow:hidden; padding:8px 12px; flex-shrink:0; clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))">
+            <img src="assets/furioz-logo.png" alt="Furioz Compagnie" style="max-width:100%; max-height:100%; object-fit:contain" onerror="this.style.display='none'">
+          </div>
+          <div style="flex:1; min-width:220px">
+            <span class="kicker" style="color:#0066ff">Collectif</span>
+            <h3 style="margin:0.3rem 0; font-size:1.5rem">Furioz Compagnie</h3>
+            <p style="margin:0; color:var(--muted); font-size:0.95rem">Mon collectif de stream / WebTV - projets communs, events, lives multi.</p>
+          </div>
+          <div style="display:flex; gap:0.6rem; flex-wrap:wrap">
+            <a href="https://www.twitch.tv/furiozcompagnie" target="_blank" class="btn btn-primary">Twitch Furioz</a>
+            <a href="https://discord.com/invite/nKj9NFDyxj" target="_blank" class="btn">Discord Furioz</a>
+          </div>
         </div>
       </div>
     </section>
@@ -80,8 +83,8 @@
 
   <footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)">
     <small>
-      <a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="planning.html">Planning</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>
-      Reddice HUB V3 • <span id="current-year"></span>
+      <a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a> • <a href="contact.html">Contact</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>
+      Reddice HUB V3 Holo-Glass • <span id="current-year"></span>
     </small>
   </footer>
 
@@ -91,22 +94,13 @@
       <button class="legal-close btn btn-small" data-legal-close>✕ Fermer</button>
       <span class="kicker">Légal</span>
       <h2>Mentions légales</h2>
-      <div style="color:var(--muted); font-size:.9rem">
-        <p><strong style="color:#fff">Éditeur:</strong> Reddice / Cédric Detrez</p>
+      <div style="color:var(--muted); font-size:.9rem; line-height:1.6">
+        <p><strong style="color:#fff">Éditeur:</strong> Reddice / Cédric Detrez - Contact via contact.html</p>
         <p><strong style="color:#fff">Hébergement:</strong> Vercel + Supabase</p>
-        <p><strong style="color:#fff">Données:</strong> Pas de vente. Suppression sur demande via contact.html</p>
+        <p><strong style="color:#fff">Données:</strong> Pas de vente. Suppression sur demande.</p>
       </div>
     </div>
   </div>
-
-  <script>
-    document.querySelectorAll('[data-legal-open]').forEach(b => b.addEventListener('click', e => {
-      e.preventDefault(); document.getElementById('legal-modal').classList.add('is-open');
-    }));
-    document.querySelectorAll('[data-legal-close]').forEach(b => b.addEventListener('click', () => {
-      document.getElementById('legal-modal').classList.remove('is-open');
-    }));
-  </script>
   <script src="script.js"></script>
 </body>
 </html>
