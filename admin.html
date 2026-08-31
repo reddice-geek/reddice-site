@@ -74,60 +74,19 @@
         </section>
       </div>
       <div id="admin-section-contacts" class="admin-section" style="display:none; margin-top:6px">
-        <section class="shell">
-          <span class="kicker">Boîte de réception</span>
-          <h3>Contacts reçus via /contact</h3>
-          <p class="lead" style="font-size:.9rem">Affiche les messages de l'API si dispo, sinon ceux sauvés en local (reddice_contacts_v3) depuis contact.html</p>
-          <div id="admin-contacts-list" style="display:grid; gap:.8rem; margin-top:1rem"></div>
-        </section>
+        <section class="shell"><span class="kicker">Boîte de réception</span><h3>Contacts reçus via /contact</h3><p class="lead" style="font-size:.9rem">Affiche les messages de l'API si dispo, sinon ceux sauvés en local (reddice_contacts_v3) depuis contact.html</p><div id="admin-contacts-list" style="display:grid; gap:.8rem; margin-top:1rem"></div></section>
       </div>
       <div id="admin-section-guestbook" class="admin-section" style="display:none; margin-top:6px">
-        <section class="shell">
-          <span class="kicker">Modération</span>
-          <h3>Livre d'or</h3>
-          <div id="admin-guestbook-list" style="display:grid; gap:.8rem; margin-top:1rem"></div>
-        </section>
+        <section class="shell"><span class="kicker">Modération</span><h3>Livre d'or</h3><div id="admin-guestbook-list" style="display:grid; gap:.8rem; margin-top:1rem"></div></section>
       </div>
       <div id="admin-section-export" class="admin-section" style="display:none; margin-top:6px">
-        <section class="shell">
-          <span class="kicker">Outils</span>
-          <h3>Infos système</h3>
-          <p class="lead" style="font-size:.9rem">Session locale sécurisée • Pas de mot de passe affiché en clair.</p>
-          <div class="card"><code style="font-family:var(--font-mono); font-size:.8rem">localStorage keys: reddice_planning_override_v3, reddice_contacts_v3, reddice_guestbook_auto_v3, reddice_admin_session</code></div>
-          <div style="margin-top:1rem; display:flex; gap:.5rem; flex-wrap:wrap">
-            <button class="btn btn-small btn-ghost" onclick="localStorage.clear(); location.reload()">Vider tout le localStorage</button>
-          </div>
-        </section>
+        <section class="shell"><span class="kicker">Outils</span><h3>Infos système</h3><p class="lead" style="font-size:.9rem">Session locale sécurisée • Pas de mot de passe affiché en clair.</p><div class="card"><code style="font-family:var(--font-mono); font-size:.8rem">localStorage keys: reddice_planning_override_v3, reddice_contacts_v3, reddice_guestbook_auto_v3, reddice_admin_session</code></div><div style="margin-top:1rem; display:flex; gap:.5rem; flex-wrap:wrap"><button class="btn btn-small btn-ghost" onclick="localStorage.clear(); location.reload()">Vider tout le localStorage</button></div></section>
       </div>
     </section>
   </main>
-  <footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)">
-    <small>
-      <a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="planning.html">Planning</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>
-      Reddice HUB V3 Admin • <span id="current-year"></span>
-    </small>
-  </footer>
-  <div id="legal-modal" class="legal-modal">
-    <div class="legal-modal-bg" data-legal-close></div>
-    <div class="legal-modal-box shell">
-      <button class="legal-close btn btn-small" data-legal-close>✕ Fermer</button>
-      <span class="kicker">Légal</span>
-      <h2>Mentions légales</h2>
-      <div style="color:var(--muted); font-size:.9rem; line-height:1.6">
-        <p><strong style="color:#fff">Éditeur:</strong> Reddice / Cédric Detrez</p>
-        <p><strong style="color:#fff">Hébergement:</strong> Vercel + Supabase</p>
-        <p><strong style="color:#fff">Données:</strong> Pas de vente. Suppression sur demande.</p>
-      </div>
-    </div>
-  </div>
-  <script>
-    document.querySelectorAll('[data-legal-open]').forEach(b => b.addEventListener('click', e => {
-      e.preventDefault(); document.getElementById('legal-modal').classList.add('is-open');
-    }));
-    document.querySelectorAll('[data-legal-close]').forEach(b => b.addEventListener('click', () => {
-      document.getElementById('legal-modal').classList.remove('is-open');
-    }));
-  </script>
+  <footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)"><small><a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="planning.html">Planning</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>Reddice HUB V3 Admin • <span id="current-year"></span></small></footer>
+  <div id="legal-modal" class="legal-modal"><div class="legal-modal-bg" data-legal-close></div><div class="legal-modal-box shell"><button class="legal-close btn btn-small" data-legal-close>✕ Fermer</button><span class="kicker">Légal</span><h2>Mentions légales</h2><div style="color:var(--muted); font-size:.9rem; line-height:1.6"><p><strong style="color:#fff">Éditeur:</strong> Reddice / Cédric Detrez</p><p><strong style="color:#fff">Hébergement:</strong> Vercel + Supabase</p><p><strong style="color:#fff">Données:</strong> Pas de vente. Suppression sur demande.</p></div></div></div>
+  <script>document.querySelectorAll('[data-legal-open]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); document.getElementById('legal-modal').classList.add('is-open'); }));document.querySelectorAll('[data-legal-close]').forEach(b => b.addEventListener('click', () => { document.getElementById('legal-modal').classList.remove('is-open'); }));</script>
   <script src="script.js"></script>
 </body>
 </html>
