@@ -37,15 +37,12 @@
       </div>
     </div>
   </nav>
-
   <main class="container">
     <section class="shell motherboard-shell reveal visible">
       <span class="kicker">MOTHERBOARD VIEW // ROG STRIX G17 G713IE - INSIDE</span>
       <h2 style="margin:.5rem 0">ASUS ROG STRIX G17 - Vue carte mère</h2>
       <p class="lead">Ceci est une représentation stylisée de mon PC gaming, avec la config exacte que je possède actuellement : ASUS ROG STRIX G17 G713IE - Ryzen 7 4800H / RTX 3050 4Go / 16Go DDR4 / SSD 512Go NVMe / 17.3" 144Hz.</p>
-
       <div class="motherboard" style="margin-top:1.2rem">
-        <!-- CPU CARRE -->
         <div class="mobo-block mobo-cpu">
           <div class="pcb-trace"></div>
           <span class="kicker">CPU // SOCKET AM4 - CARRÉ</span>
@@ -55,8 +52,6 @@
           <h3 style="margin:.8rem 0 0; text-align:center">Ryzen 7 4800H<br><small style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem">2.9GHz [Boost 4.2GHz]</small></h3>
           <p style="color:var(--muted); font-family:var(--font-mono); font-size:.72rem; text-align:center; margin-top:.4rem">Ventirad PWM - accélère selon charge</p>
         </div>
-
-        <!-- CHIPSET + VRM -->
         <div class="mobo-block mobo-chipset">
           <span class="kicker">CHIPSET // B550 - VRM</span>
           <h3>Alim & Contrôleurs</h3>
@@ -69,132 +64,48 @@
           <p style="color:var(--muted); font-size:.85rem; margin-top:.6rem">VRM 8 phases - refroidi</p>
           <div class="card" style="margin-top:.8rem; padding:.6rem; background:rgba(0,234,255,0.06)"><small style="color:var(--cyan); font-family:var(--font-mono)">Shadow PC Ultra • Cloud boost</small></div>
         </div>
-
-        <!-- RAM VERTICALE -->
         <div class="mobo-block mobo-ram">
           <span class="kicker">RAM // 16Go DDR4 - VERTICAL</span>
           <h3 style="margin:.2rem 0">DIMM Vertical</h3>
           <div class="mobo-ram-stack" style="margin-top:.6rem; flex:1">
-            <div class="ram-stick-v">
-              <div style="font-family:var(--font-mono); font-size:.65rem; color:var(--gold)">DIMM_A1</div>
-              <div class="ram-bar-v"><div class="ram-fill-v" id="ram-1" style="height:68%"></div></div>
-              <small style="font-family:var(--font-mono); font-size:.65rem; margin-top:6px; color:var(--muted)">8Go</small>
-            </div>
-            <div class="ram-stick-v">
-              <div style="font-family:var(--font-mono); font-size:.65rem; color:var(--gold)">DIMM_B1</div>
-              <div class="ram-bar-v"><div class="ram-fill-v" id="ram-2" style="height:54%"></div></div>
-              <small style="font-family:var(--font-mono); font-size:.65rem; margin-top:6px; color:var(--muted)">8Go</small>
-            </div>
+            <div class="ram-stick-v"><div style="font-family:var(--font-mono); font-size:.65rem; color:var(--gold)">DIMM_A1</div><div class="ram-bar-v"><div class="ram-fill-v" id="ram-1" style="height:68%"></div></div><small style="font-family:var(--font-mono); font-size:.65rem; margin-top:6px; color:var(--muted)">8Go</small></div>
+            <div class="ram-stick-v"><div style="font-family:var(--font-mono); font-size:.65rem; color:var(--gold)">DIMM_B1</div><div class="ram-bar-v"><div class="ram-fill-v" id="ram-2" style="height:54%"></div></div><small style="font-family:var(--font-mono); font-size:.65rem; margin-top:6px; color:var(--muted)">8Go</small></div>
           </div>
           <p style="font-family:var(--font-mono); text-align:center; margin-top:.8rem; font-size:.85rem"><span id="ram-pct">68</span>% utilisation • Dual Channel</p>
         </div>
-
-        <!-- SSD -->
         <div class="mobo-block mobo-ssd">
           <span class="kicker">SSD M.2 NVMe 512Go</span>
           <h3>Stockage</h3>
           <div style="display:flex; align-items:center; gap:10px; margin-top:.6rem">
             <div style="width:36px; height:90px; background:linear-gradient(180deg,#0f1832,#0a0f1e); border:1px solid rgba(0,234,255,0.15); display:grid; place-items:center"><span style="writing-mode:vertical-rl; font-family:var(--font-mono); font-size:.6rem; color:var(--cyan)">M.2_1</span></div>
-            <div style="flex:1">
-              <div class="ssd-bar"><div class="ssd-fill" style="width:62%"></div></div>
-              <p style="color:var(--muted); font-size:.8rem; margin-top:.4rem">62% utilisé • 3500 MB/s</p>
-            </div>
+            <div style="flex:1"><div class="ssd-bar"><div class="ssd-fill" style="width:62%"></div></div><p style="color:var(--muted); font-size:.8rem; margin-top:.4rem">62% utilisé • 3500 MB/s</p></div>
           </div>
         </div>
-
-        <!-- IO / ECRAN -->
         <div class="mobo-block mobo-io">
           <span class="kicker">DISPLAY // 17.3" 144Hz</span>
           <h3>Full HD - 144Hz</h3>
-          <div style="height:46px; border:1px dashed rgba(0,234,255,0.18); margin-top:.6rem; display:grid; place-items:center; background:rgba(0,0,0,0.2)">
-            <small style="font-family:var(--font-mono); color:var(--muted)">144Hz • 3ms • IPS</small>
-          </div>
+          <div style="height:46px; border:1px dashed rgba(0,234,255,0.18); margin-top:.6rem; display:grid; place-items:center; background:rgba(0,0,0,0.2)"><small style="font-family:var(--font-mono); color:var(--muted)">144Hz • 3ms • IPS</small></div>
           <p style="color:var(--muted); font-size:.8rem; margin-top:.5rem">ROG Strix G17</p>
         </div>
-
-        <!-- GPU HORIZONTAL -->
         <div class="mobo-block mobo-gpu">
           <div class="gpu-board">
-            <div style="flex:1">
-              <span class="kicker">GPU // RTX 3050 4Go GDDR6 - HORIZONTAL</span>
-              <h3 style="margin:.2rem 0">Carte graphique PCIe - Format horizontal</h3>
-              <div class="gpu-fans-h" style="margin-top:.6rem">
-                <div class="gpu-fan-h"><div class="fan-blades-h" id="gpu-fan-1"></div></div>
-                <div class="gpu-fan-h"><div class="fan-blades-h" id="gpu-fan-2"></div></div>
-              </div>
-            </div>
-            <div style="display:grid; gap:8px">
-              <div style="font-family:var(--font-mono); font-size:.7rem; color:var(--muted)">4Go GDDR6 • 128-bit</div>
-              <div style="height:4px; background:linear-gradient(90deg,var(--cyan),var(--pink)); box-shadow:0 0 10px rgba(0,234,255,0.4)"></div>
-              <div style="font-family:var(--font-mono); font-size:.65rem; color:var(--gold)">+ Xbox Elite S2 + PS2 Fat</div>
-            </div>
+            <div style="flex:1"><span class="kicker">GPU // RTX 3050 4Go GDDR6 - HORIZONTAL</span><h3 style="margin:.2rem 0">Carte graphique PCIe - Format horizontal</h3><div class="gpu-fans-h" style="margin-top:.6rem"><div class="gpu-fan-h"><div class="fan-blades-h" id="gpu-fan-1"></div></div><div class="gpu-fan-h"><div class="fan-blades-h" id="gpu-fan-2"></div></div></div></div>
+            <div style="display:grid; gap:8px"><div style="font-family:var(--font-mono); font-size:.7rem; color:var(--muted)">4Go GDDR6 • 128-bit</div><div style="height:4px; background:linear-gradient(90deg,var(--cyan),var(--pink)); box-shadow:0 0 10px rgba(0,234,255,0.4)"></div><div style="font-family:var(--font-mono); font-size:.65rem; color:var(--gold)">+ Xbox Elite S2 + PS2 Fat</div></div>
           </div>
-          <div class="card" style="background:rgba(138,92,255,0.08); border-color:rgba(138,92,255,0.18)">
-            <span class="kicker">PERIPH</span>
-            <h4 style="margin:.2rem 0">Contrôleurs</h4>
-            <p style="color:var(--muted); font-size:.8rem">Elite Series 2 • PS2 Fat • USB Hub RGB</p>
-          </div>
+          <div class="card" style="background:rgba(138,92,255,0.08); border-color:rgba(138,92,255,0.18)"><span class="kicker">PERIPH</span><h4 style="margin:.2rem 0">Contrôleurs</h4><p style="color:var(--muted); font-size:.8rem">Elite Series 2 • PS2 Fat • USB Hub RGB</p></div>
         </div>
-
       </div>
-
-      <div class="card" style="margin-top:1rem; background:rgba(0,234,255,0.06); border-color:rgba(0,234,255,0.18)">
-        <p style="margin:0; color:var(--cyan); font-family:var(--font-mono); font-size:.9rem">Setup en évolution, reçu tout frais ! ^-^ — Cette page est unique : CPU carré, RAM verticale, GPU horizontale, comme dans un vrai boîtier ouvert.</p>
-      </div>
+      <div class="card" style="margin-top:1rem; background:rgba(0,234,255,0.06); border-color:rgba(0,234,255,0.18)"><p style="margin:0; color:var(--cyan); font-family:var(--font-mono); font-size:.9rem">Setup en évolution, reçu tout frais ! ^-^ — Page unique : CPU carré, RAM verticale, GPU horizontale, comme dans un vrai boîtier ouvert.</p></div>
     </section>
   </main>
-
-  <footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)">
-    <small>
-      <a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a> • <a href="contact.html">Contact</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>
-      Reddice HUB V3 Holo-Glass • <span id="current-year"></span>
-    </small>
-  </footer>
-
-  <div id="legal-modal" class="legal-modal">
-    <div class="legal-modal-bg" data-legal-close></div>
-    <div class="legal-modal-box shell">
-      <button class="legal-close btn btn-small" data-legal-close>✕ Fermer</button>
-      <span class="kicker">Légal</span>
-      <h2>Mentions légales</h2>
-      <div style="color:var(--muted); font-size:.9rem; line-height:1.6">
-        <p><strong style="color:#fff">Éditeur:</strong> Reddice / Cédric Detrez</p>
-        <p><strong style="color:#fff">Hébergement:</strong> Vercel + Supabase</p>
-        <p><strong style="color:#fff">Données:</strong> Pas de vente. Suppression sur demande.</p>
-      </div>
-    </div>
-  </div>
+  <footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)"><small><a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a> • <a href="contact.html">Contact</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>Reddice HUB V3 Holo-Glass • <span id="current-year"></span></small></footer>
+  <div id="legal-modal" class="legal-modal"><div class="legal-modal-bg" data-legal-close></div><div class="legal-modal-box shell"><button class="legal-close btn btn-small" data-legal-close>✕ Fermer</button><span class="kicker">Légal</span><h2>Mentions légales</h2><div style="color:var(--muted); font-size:.9rem; line-height:1.6"><p><strong style="color:#fff">Éditeur:</strong> Reddice / Cédric Detrez</p><p><strong style="color:#fff">Hébergement:</strong> Vercel + Supabase</p><p><strong style="color:#fff">Données:</strong> Pas de vente. Suppression sur demande.</p></div></div></div>
   <script src="script.js"></script>
   <script>
-    // CPU fan speed reacts to load
     let cpu=42, dir=1;
-    setInterval(function(){
-      cpu+=(Math.random()-0.5)*6*dir;
-      if(cpu>85) dir=-1;
-      if(cpu<18) dir=1;
-      cpu=Math.max(15,Math.min(92,cpu));
-      const el=document.getElementById('cpu-percent');
-      if(el) el.textContent=Math.round(cpu);
-      const f=document.getElementById('cpu-fan');
-      if(f) f.style.animationDuration=(1.4/(0.5+cpu/50))+'s';
-      const gf1=document.getElementById('gpu-fan-1');
-      const gf2=document.getElementById('gpu-fan-2');
-      if(gf1) gf1.style.animationDuration=(1.2/(0.4+cpu/60))+'s';
-      if(gf2) gf2.style.animationDuration=(1.1/(0.5+cpu/70))+'s';
-    },120);
-    // RAM vertical fill
+    setInterval(function(){ cpu+=(Math.random()-0.5)*6*dir; if(cpu>85) dir=-1; if(cpu<18) dir=1; cpu=Math.max(15,Math.min(92,cpu)); const el=document.getElementById('cpu-percent'); if(el) el.textContent=Math.round(cpu); const f=document.getElementById('cpu-fan'); if(f) f.style.animationDuration=(1.4/(0.5+cpu/50))+'s'; const gf1=document.getElementById('gpu-fan-1'); const gf2=document.getElementById('gpu-fan-2'); if(gf1) gf1.style.animationDuration=(1.2/(0.4+cpu/60))+'s'; if(gf2) gf2.style.animationDuration=(1.1/(0.5+cpu/70))+'s'; },120);
     let r=68, rdir=1;
-    setInterval(function(){
-      r+=rdir*0.55;
-      if(r>92) rdir=-1;
-      if(r<24) rdir=1;
-      const r1=document.getElementById('ram-1');
-      const r2=document.getElementById('ram-2');
-      const pct=document.getElementById('ram-pct');
-      if(r1) r1.style.height=r+'%';
-      if(r2) r2.style.height=(r-12+Math.sin(Date.now()/600)*7)+'%';
-      if(pct) pct.textContent=Math.round(r);
-    },90);
+    setInterval(function(){ r+=rdir*0.55; if(r>92) rdir=-1; if(r<24) rdir=1; const r1=document.getElementById('ram-1'); const r2=document.getElementById('ram-2'); const pct=document.getElementById('ram-pct'); if(r1) r1.style.height=r+'%'; if(r2) r2.style.height=(r-12+Math.sin(Date.now()/600)*7)+'%'; if(pct) pct.textContent=Math.round(r); },90);
   </script>
 </body>
 </html>
