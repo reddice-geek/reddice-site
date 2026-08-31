@@ -466,17 +466,126 @@ async function loadAdminData(){
     try{
       const r=await fetch("/api/guestbook",{cache:"no-store"});
       const j=await r.json();
-      const items=j.items||JSON.parse(localStorage.getItem("reddice_guestbook_auto_v3")||"[]");
+
+      const items=Array.isArray(j.items)
+        ? j.items
+        : JSON.parse(
+            localStorage.getItem("reddice_guestbook_auto_v3") || "[]"
+          );
+
       guestbookAdmin.innerHTML="";
+
+      if(!items.length){
+        guestbookAdmin.innerHTML="<p class='lead'>Aucun avis.</p>";
+      }
+
       items.slice(0,50).forEach(e=>{
         const d=document.createElement("div");
         d.className="card";
-        d.innerHTML=`<strong>${esc(e.name)}</strong> - ${e.rating}/5<br><small>${esc(e.title||"")}</small><p>${esc(e.message)}</p><button class="btn btn-small" onclick="deleteEntry('${e.id}')">Supprimer</button>`;
+
+        d.innerHTML=`
+          <strong>${esc(e.name)}</strong> - ${Number(e.rating||5)}/5
+          <br>
+          <small>${esc(e.title||"")}</small>
+          <p>${esc(e.message)}</p>
+
+          <button
+            class="btn btn-small"
+            data-guestbook-delete="${esc(e.id)}"
+            type="button"
+          >
+            Supprimer
+          </button>
+        `;
+
+        const deleteButton=d.querySelector("[data-guestbook-delete]");
+
+        if(deleteButton){
+          deleteButton.addEventListener("click", async ()=>{
+            await adminDeleteGuestbook(e.id, deleteButton);
+          });
+        }
+
         guestbookAdmin.appendChild(d);
       });
-    }catch{}
+
+    }catch(error){
+      console.error("Erreur chargement livre d'or admin :", error);
+      guestbookAdmin.innerHTML="<p class='lead'>Impossible de charger les avis.</p>";
+    }
   }
 }
+
+
+/* SUPPRESSION LIVRE D'OR DEPUIS LE PANEL ADMIN */
+async function adminDeleteGuestbook(id, button){
+  if(!id) return;
+
+  if(!confirm("Supprimer définitivement cet avis ?")){
+    return;
+  }
+
+  const oldText=button ? button.textContent : "";
+
+  if(button){
+    button.disabled=true;
+    button.textContent="Suppression...";
+  }
+
+  try{
+    const r=await fetch(
+      `/api/guestbook?id=${encodeURIComponent(id)}`,
+      {
+        method:"DELETE",
+        headers:{
+          "Accept":"application/json"
+        },
+        cache:"no-store"
+      }
+    );
+
+    let j={};
+
+    try{
+      j=await r.json();
+    }catch{}
+
+    if(!r.ok || j.ok===false){
+      throw new Error(
+        j.error ||
+        `Erreur suppression (${r.status})`
+      );
+    }
+
+    // Nettoie aussi le fallback local du navigateur
+    try{
+      const key="reddice_guestbook_auto_v3";
+      const local=JSON.parse(localStorage.getItem(key)||"[]");
+
+      if(Array.isArray(local)){
+        const cleaned=local.filter(item=>String(item.id)!==String(id));
+        localStorage.setItem(key, JSON.stringify(cleaned));
+      }
+    }catch{}
+
+    // Recharge la liste admin pour vérifier côté serveur
+    await loadAdminData();
+
+  }catch(error){
+    console.error("Erreur suppression avis :", error);
+    alert(
+      "La suppression a échoué : " +
+      (error.message || "erreur inconnue")
+    );
+
+    if(button){
+      button.disabled=false;
+      button.textContent=oldText || "Supprimer";
+    }
+  }
+}
+
+window.adminDeleteGuestbook=adminDeleteGuestbook;
 
 
 /* === SEASONAL AUTO SYSTEM V3.5 === */
