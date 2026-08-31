@@ -1,7 +1,13 @@
 
 document.addEventListener("DOMContentLoaded", async ()=>{
-  initReveal(); initActiveNav(); initTwitchEmbeds(); initStreamStatus(); initPlanningV2(); initGuestbook(); initContactForm(); initAdmin(); setYear();
+  initSeasonal();
+  initReveal(); initLegalModal(); initActiveNav(); initTwitchEmbeds(); initStreamStatus(); initPlanningV2(); initGuestbook(); initContactForm(); initAdmin(); setYear();
 });
+function initLegalModal(){
+  document.querySelectorAll('[data-legal-open]').forEach(function(b){ b.addEventListener('click', function(e){ e.preventDefault(); var m=document.getElementById('legal-modal'); if(m) m.classList.add('is-open'); }); });
+  document.querySelectorAll('[data-legal-close]').forEach(function(b){ b.addEventListener('click', function(){ var m=document.getElementById('legal-modal'); if(m) m.classList.remove('is-open'); }); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ var m=document.getElementById('legal-modal'); if(m) m.classList.remove('is-open'); } });
+}
 function initReveal(){
   const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:0.08});
   document.querySelectorAll(".reveal").forEach(el=>obs.observe(el));
@@ -299,40 +305,12 @@ async function initGuestbook(){
 }
 
 /* CONTACT */
-
-/* CONTACT - 100% fonctionnel avec fallback local + API */
 function initContactForm(){
-  if(window._contactInitDone) return;
   const form=document.getElementById("contact-form");
   const status=document.getElementById("contact-status");
-  const btn=document.getElementById("contact-submit");
-  const btnText=document.getElementById("contact-btn-text");
-  const apiStatus=document.getElementById("api-status");
   if(!form) return;
-  window._contactInitDone = true;
-
-  // test API dispo
-  if(apiStatus){
-    fetch("/api/contact",{cache:"no-store"}).then(r=>{
-      apiStatus.textContent = r.ok ? "En ligne" : "Fallback local";
-      apiStatus.style.color = r.ok ? "var(--green)" : "var(--gold)";
-    }).catch(()=>{
-      apiStatus.textContent="Mode local (API non déployée)";
-      apiStatus.style.color="var(--gold)";
-    });
-  }
-
   form.addEventListener("submit", async e=>{
     e.preventDefault();
-    if(btn){ btn.disabled=true; if(btnText) btnText.textContent="⏳ Transmission holo en cours..."; }
-    if(status){ 
-      status.style.display="block"; 
-      status.style.borderColor="var(--border-dim)"; 
-      status.style.background="rgba(255,255,255,0.03)"; 
-      status.textContent="Envoi..."; 
-      status.style.color="var(--muted)"; 
-    }
-
     const fd=new FormData(form);
     const payload={
       name:String(fd.get("name")||"").trim(),
@@ -341,52 +319,25 @@ function initContactForm(){
       message:String(fd.get("message")||"").trim(),
       website:String(fd.get("website")||"").trim(),
     };
-    if(payload.website){
-      if(status){ status.textContent="Spam détecté."; status.style.color="#ff8da2"; }
-      if(btn) btn.disabled=false;
-      return;
-    }
-    if(!payload.name || !payload.email || !payload.message){
-      if(status){ status.textContent="Nom, email et message requis."; status.style.color="#ff8da2"; }
-      if(btn){ btn.disabled=false; if(btnText) btnText.textContent="▶ Transmettre le message"; }
-      return;
-    }
-
+    if(payload.website){ status.textContent="Spam détecté."; return; }
+    if(!payload.name || !payload.email || !payload.message){ status.textContent="Nom, email et message requis."; return; }
+    status.textContent="Envoi...";
+    // save locally + try api
     try{
       const r=await fetch("/api/contact",{method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
-      const j=await r.json().catch(()=>({}));
-      if(r.ok){
-        if(status){ status.textContent="✓ Message envoyé ! Je te réponds vite sur datapad."; status.style.color="var(--green)"; status.style.borderColor="rgba(60,255,154,0.3)"; status.style.background="rgba(60,255,154,0.08)"; }
-        form.reset();
-        if(btnText) btnText.textContent="✓ Transmis !";
-        setTimeout(()=>{ if(btn){ btn.disabled=false; if(btnText) btnText.textContent="▶ Transmettre le message"; } }, 2500);
-        return;
-      }
-      throw new Error(j.error||"API error");
-    }catch(err){
-      // fallback localStorage - 100% fonctionnel même sans API
+      if(r.ok){ status.textContent="Message envoyé ! Je te réponds vite."; form.reset(); return; }
+      throw new Error("api fail");
+    }catch{
+      // fallback local
       const key="reddice_contacts_v3";
-      let arr=[];
-      try{
-        const parsed=JSON.parse(localStorage.getItem(key)||"[]");
-        arr=Array.isArray(parsed)?parsed:[];
-      }catch(_){ arr=[]; }
-      arr.unshift({...payload, id:"ct_"+Date.now(), created_at:new Date().toISOString(), source:"fallback_local"});
+      const arr=JSON.parse(localStorage.getItem(key)||"[]");
+      arr.unshift({...payload, id:"ct_"+Date.now(), created_at:new Date().toISOString()});
       localStorage.setItem(key, JSON.stringify(arr));
-      if(status){ 
-        status.style.display="block"; 
-        status.textContent="✓ Message enregistré en local (API indisponible). Je le verrai dans admin.html → Contacts."; 
-        status.style.color="var(--gold)"; 
-        status.style.borderColor="rgba(255,216,77,0.3)"; 
-        status.style.background="rgba(255,216,77,0.08)"; 
-      }
+      status.textContent="Message enregistré en local (API indisponible). Je le verrai dans l'admin.";
       form.reset();
-      if(btnText) btnText.textContent="✓ Sauvegardé en local !";
-      setTimeout(()=>{ if(btn){ btn.disabled=false; if(btnText) btnText.textContent="▶ Transmettre le message"; } }, 3000);
     }
   });
 }
-
 
 /* ADMIN - login + panel */
 function initAdmin(){
@@ -394,8 +345,8 @@ function initAdmin(){
   const panel=document.getElementById("admin-panel");
   if(!loginForm) return;
   // CHANGE ICI TES IDENTIFIANTS UNIQUES
-  const ADMIN_USER="reddice";
-  const ADMIN_PASS="Xboxone49Angers*";
+  const ADMIN_USER="reddice"; // <-- change
+  const ADMIN_PASS="Xboxone49Angers*"; // <-- change
 
   const checkSession=()=> localStorage.getItem("reddice_admin_session")==="ok";
   const setSession=()=>{ localStorage.setItem("reddice_admin_session","ok"); panel.classList.add("is-open"); loginForm.parentElement.style.display="none"; loadAdminData(); };
@@ -525,6 +476,87 @@ async function loadAdminData(){
       });
     }catch{}
   }
+}
+
+
+/* === SEASONAL AUTO SYSTEM V3.5 === */
+function isDateInRange(m,d, sm,sd, em,ed){
+  const cur = m*100 + d;
+  const start = sm*100 + sd;
+  const end = em*100 + ed;
+  if(start <= end){ return cur >= start && cur <= end; }
+  else { return cur >= start || cur <= end; } // wraps year
+}
+function getCurrentSeason(date = new Date()){
+  const m = date.getMonth()+1;
+  const d = date.getDate();
+  // Priorité fêtes spéciales
+  if(isDateInRange(m,d,6,21,6,21)) return "fete-musique";
+  if(isDateInRange(m,d,2,12,2,15)) return "saint-valentin";
+  if(isDateInRange(m,d,10,20,11,2)) return "halloween";
+  if(isDateInRange(m,d,12,1,12,26)) return "noel";
+  if(isDateInRange(m,d,12,27,1,5)) return "nouvel-an";
+  // Saisons
+  if(isDateInRange(m,d,3,20,6,20)) return "printemps";
+  if(isDateInRange(m,d,6,22,9,21)) return "ete";
+  if(isDateInRange(m,d,9,22,11,30)) return "automne";
+  if(isDateInRange(m,d,1,6,3,19)) return "hiver";
+  return "hiver";
+}
+function getSeasonConfig(season){
+  const cfg={
+    "saint-valentin":{ name:"Saint-Valentin", emoji:"💘", msg:"💘 Saint-Valentin — Love is in the air, choom ! Cupidon a hacké le datapad 💘", particles:["💘","❤️","💕","💖","💝"], count:22 },
+    "printemps":{ name:"Printemps", emoji:"🌸", msg:"🌸 Printemps — Bloom & Chill — Le datacenter fleurit 🌸", particles:["🌸","🌺","🌷","🍃","✨"], count:24 },
+    "fete-musique":{ name:"Fête de la Musique", emoji:"🎵", msg:"🎵 Fête de la Musique — 21 Juin — Pousse le son à fond, stream en live ! 🎶", particles:["🎵","🎶","🎧","🎸","🎤"], count:28 },
+    "ete":{ name:"Été", emoji:"☀️", msg:"☀️ Été — Mode soleil activé — Shadow PC au frais, toi au soleil ☀️", particles:["☀️","✨","🌊","😎","🌴"], count:20 },
+    "automne":{ name:"Automne", emoji:"🍂", msg:"🍂 Automne — Feuilles qui tombent, cosplay qui chauffe 🍁", particles:["🍂","🍁","🍃","🧡","✨"], count:26 },
+    "halloween":{ name:"Halloween", emoji:"🎃", msg:"🎃 Halloween — Beware the Black ICE... Les netrunners se déguisent 🎃", particles:["🎃","👻","🦇","🕷️","💀"], count:30 },
+    "noel":{ name:"Noël", emoji:"🎄", msg:"🎄 Joyeux Noël de la part de Reddice & Furioz Compagnie ! 🎄", particles:["❄️","🎄","🎁","✨","⛄"], count:32 },
+    "nouvel-an":{ name:"Nouvel An", emoji:"🎆", msg:"🎆 Nouvel An — Bonne année ! Que tes streams pètent le score ! 🎇", particles:["🎆","🎇","✨","🥂","🎉"], count:30 },
+    "hiver":{ name:"Hiver", emoji:"❄️", msg:"❄️ Hiver — Stay cozy, stream au chaud — Chocolat chaud + Star Citizen ❄️", particles:["❄️","🌨️","✨","🧣","☃️"], count:28 },
+  };
+  return cfg[season] || { name:season, emoji:"✨", msg: "✨ Saison "+season+" ✨", particles:["✨"], count:15 };
+}
+function initSeasonal(){
+  try{
+    const season = getCurrentSeason();
+    const cfg = getSeasonConfig(season);
+    document.body.dataset.season = season;
+    // Banner
+    let banner = document.getElementById("seasonal-banner");
+    if(!banner){
+      banner = document.createElement("div");
+      banner.id = "seasonal-banner";
+      document.body.prepend(banner);
+      // Push content down a bit
+      document.body.style.paddingTop = "28px";
+    }
+    banner.textContent = cfg.msg;
+    banner.title = "Saison auto: "+cfg.name+" - Change automatiquement selon la date";
+    // Particles
+    let cont = document.getElementById("seasonal-particles");
+    if(!cont){
+      cont = document.createElement("div");
+      cont.id = "seasonal-particles";
+      document.body.appendChild(cont);
+    }
+    cont.innerHTML = "";
+    for(let i=0;i<cfg.count;i++){
+      const el = document.createElement("div");
+      el.className = "season-particle";
+      el.textContent = cfg.particles[Math.floor(Math.random()*cfg.particles.length)];
+      el.style.left = Math.random()*100 + "vw";
+      el.style.animationDuration = (4 + Math.random()*6) + "s";
+      el.style.animationDelay = (Math.random()*5) + "s";
+      el.style.fontSize = (0.9 + Math.random()*1.1) + "rem";
+      el.style.opacity = (0.6 + Math.random()*0.4).toString();
+      cont.appendChild(el);
+    }
+    console.log("[Seasonal] Saison active:", season, cfg.name);
+    // Expose for debug
+    window._reddiceSeason = season;
+    window._reddiceSeasonConfig = cfg;
+  }catch(e){ console.warn("Seasonal init failed", e); }
 }
 
 function setYear(){ const n=document.getElementById("current-year"); if(n) n.textContent=new Date().getFullYear(); }
