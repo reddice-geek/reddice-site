@@ -417,3 +417,90 @@ input:focus,textarea:focus,select:focus{outline:none; border-color:var(--cyan) !
   .ram-stick-v{ width:50%; height:200px; }
   .mobo-gpu{ grid-template-columns:1fr; }
 }
+
+
+/* === SEASONAL SKINS AUTO - V3.5 === */
+#seasonal-banner{
+  position:fixed; top:0; left:0; right:0; z-index:9998;
+  text-align:center; padding:.35rem .8rem;
+  font-family:var(--font-mono); font-size:.78rem; font-weight:800; letter-spacing:.08em;
+  text-transform:uppercase; pointer-events:none;
+  backdrop-filter: blur(8px) saturate(1.2);
+  border-bottom:1px solid rgba(255,255,255,0.12);
+  animation:seasonalSlide .6s ease;
+}
+@keyframes seasonalSlide{ from{ transform:translateY(-100%); opacity:0 } to{ transform:translateY(0); opacity:1 } }
+
+#seasonal-particles{
+  position:fixed; inset:0; pointer-events:none; z-index:9997; overflow:hidden;
+}
+.season-particle{
+  position:absolute; top:-10%; font-size:1.2rem; line-height:1;
+  animation:particleFall linear infinite;
+  will-change:transform;
+}
+@keyframes particleFall{
+  0%{ transform:translateY(-10vh) translateX(0) rotate(0deg); opacity:0 }
+  10%{ opacity:1 }
+  90%{ opacity:1 }
+  100%{ transform:translateY(110vh) translateX(40px) rotate(360deg); opacity:0 }
+}
+
+/* THEME OVERRIDES PER SEASON */
+body[data-season="printemps"]{
+  --cyan:#2dff8a; --violet:#ff8ad6; --pink:#ff5ca1;
+}
+body[data-season="printemps"] .hub-overline{ background:rgba(45,255,138,0.12); border-color:rgba(45,255,138,0.28); color:#b6ffda; }
+body[data-season="printemps"] #seasonal-banner{ background:linear-gradient(90deg, rgba(45,255,138,0.18), rgba(255,138,214,0.18)); color:#0a2a1a; border-color:rgba(45,255,138,0.35); }
+
+body[data-season="ete"]{
+  --cyan:#ffd84d; --violet:#ff8a3d; --gold:#ffe87a;
+}
+body[data-season="ete"]{ background: radial-gradient(1200px 600px at 70% -10%, rgba(255,216,77,0.14), transparent 60%), radial-gradient(900px 500px at 0% 0%, rgba(255,138,61,0.14), transparent 60%), var(--bg); }
+body[data-season="ete"] .hub-overline{ background:rgba(255,216,77,0.14); border-color:rgba(255,216,77,0.35); color:#fff6b0; }
+body[data-season="ete"] #seasonal-banner{ background:linear-gradient(90deg, rgba(255,216,77,0.22), rgba(255,138,61,0.22)); color:#2a1f00; }
+
+body[data-season="automne"]{
+  --cyan:#ff9a3d; --violet:#c85c14; --pink:#ff6b2d;
+}
+body[data-season="automne"]{ background: radial-gradient(1000px 500px at 20% 0%, rgba(255,154,61,0.12), transparent 60%), radial-gradient(800px 400px at 80% 10%, rgba(200,92,20,0.12), transparent 60%), #0c0704; }
+body[data-season="automne"] #seasonal-banner{ background:linear-gradient(90deg, rgba(255,154,61,0.22), rgba(200,92,20,0.22)); color:#fff; }
+
+body[data-season="hiver"]{
+  --cyan:#7de2ff; --violet:#a5b8ff;
+}
+body[data-season="hiver"]{ background: radial-gradient(1200px 600px at 50% -10%, rgba(125,226,255,0.10), transparent 60%), linear-gradient(180deg, rgba(165,184,255,0.06), transparent 40%), #050a14; }
+body[data-season="hiver"] #seasonal-banner{ background:linear-gradient(90deg, rgba(125,226,255,0.18), rgba(165,184,255,0.18)); color:#06101a; }
+
+body[data-season="halloween"]{
+  --cyan:#ff8a1a; --violet:#8a2cff; --pink:#ff3b1f;
+}
+body[data-season="halloween"]{ background: radial-gradient(900px 500px at 10% 0%, rgba(255,138,26,0.16), transparent 60%), radial-gradient(700px 400px at 90% 0%, rgba(138,44,255,0.18), transparent 60%), #0d0600; }
+body[data-season="halloween"] .hub-logo-main{ filter:drop-shadow(0 0 22px rgba(255,138,26,0.45)) drop-shadow(0 0 14px rgba(138,44,255,0.35)); }
+body[data-season="halloween"] #seasonal-banner{ background:linear-gradient(90deg, rgba(255,138,26,0.28), rgba(138,44,255,0.28)); color:#fff; text-shadow:0 0 8px rgba(0,0,0,0.6); }
+
+body[data-season="noel"]{
+  --cyan:#3cff9a; --violet:#ff3b3b; --green:#3cff9a;
+}
+body[data-season="noel"]{ background: radial-gradient(800px 400px at 30% -10%, rgba(60,255,154,0.12), transparent 60%), radial-gradient(800px 400px at 70% -10%, rgba(255,59,59,0.10), transparent 60%), #05100a; }
+body[data-season="noel"] .hub-overline{ background:rgba(60,255,154,0.12); border-color:rgba(60,255,154,0.28); }
+body[data-season="noel"] #seasonal-banner{ background:linear-gradient(90deg, rgba(60,255,154,0.22), rgba(255,59,59,0.22)); color:#fff; }
+
+body[data-season="nouvel-an"]{
+  --cyan:#ffd84d; --violet:#8a5cff; --gold:#ffe87a;
+}
+body[data-season="nouvel-an"]{ background: radial-gradient(600px 300px at 20% 0%, rgba(255,216,77,0.18), transparent 60%), radial-gradient(600px 300px at 80% 0%, rgba(138,92,255,0.18), transparent 60%), #0a0814; }
+body[data-season="nouvel-an"] #seasonal-banner{ background:linear-gradient(90deg, rgba(255,216,77,0.28), rgba(138,92,255,0.28)); color:#1a1300; }
+
+body[data-season="saint-valentin"]{
+  --cyan:#ff8ab8; --violet:#ff3b8d; --pink:#ff2d6b;
+}
+body[data-season="saint-valentin"]{ background: radial-gradient(800px 400px at 50% -10%, rgba(255,59,141,0.16), transparent 60%), radial-gradient(600px 300px at 0% 0%, rgba(255,138,184,0.14), transparent 60%), #14050a; }
+body[data-season="saint-valentin"] .hub-logo-main{ filter:drop-shadow(0 0 20px rgba(255,59,141,0.45)) drop-shadow(0 0 14px rgba(255,138,184,0.32)); }
+body[data-season="saint-valentin"] #seasonal-banner{ background:linear-gradient(90deg, rgba(255,59,141,0.22), rgba(255,138,184,0.22)); color:#fff; }
+
+body[data-season="fete-musique"]{
+  --cyan:#00eaff; --violet:#ff3b8d; --pink:#ffd84d;
+}
+body[data-season="fete-musique"]{ background: radial-gradient(900px 500px at 20% 0%, rgba(0,234,255,0.14), transparent 60%), radial-gradient(900px 500px at 80% 0%, rgba(255,59,141,0.14), transparent 60%), radial-gradient(600px 300px at 50% 0%, rgba(255,216,77,0.12), transparent 60%), var(--bg); }
+body[data-season="fete-musique"] #seasonal-banner{ background:linear-gradient(90deg, rgba(0,234,255,0.22), rgba(255,59,141,0.22), rgba(255,216,77,0.22)); color:#06101a; font-weight:900; }
