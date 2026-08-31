@@ -26,7 +26,7 @@ async function tryFetchTable(url, headers, table){
 export default async function handler(req,res){
   res.setHeader("Access-Control-Allow-Origin","*");
   res.setHeader("Access-Control-Allow-Methods","GET,POST,DELETE,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers","Content-Type");
+  res.setHeader("Access-Control-Allow-Headers","Content-Type, Accept");
   if(req.method==="OPTIONS") return res.status(200).end();
 
   const {url, hasSupabase, headers} = cfg();
@@ -46,8 +46,31 @@ export default async function handler(req,res){
       }catch(e){ return res.status(200).json({ok:true, source:"memory_error", error:e.message, items:mem}); }
     }
     if(req.method==="DELETE"){
-      const id=req.query.id; mem=mem.filter(i=>i.id!==id);
-      return res.status(200).json({ok:true, source:"memory"});
+      const id=clean(req.query.id,200);
+
+      if(!id){
+        return res.status(400).json({
+          ok:false,
+          error:"id manquant"
+        });
+      }
+
+      const before=mem.length;
+      mem=mem.filter(i=>String(i.id)!==String(id));
+
+      if(before===mem.length){
+        return res.status(404).json({
+          ok:false,
+          error:"Avis introuvable",
+          source:"memory"
+        });
+      }
+
+      return res.status(200).json({
+        ok:true,
+        deleted:id,
+        source:"memory"
+      });
     }
     return res.status(405).json({error:"Method"});
   }
@@ -86,12 +109,89 @@ export default async function handler(req,res){
       return res.status(200).json({ok:true, item, source:"memory_fallback", supabase_response:lastText});
     }
     if(req.method==="DELETE"){
-      const id=req.query.id; if(!id) return res.status(400).json({error:"id manquant"});
-      for(const table of ["guestbook_entries","guestbook"]){
-        await fetch(`${url}/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`,{method:"DELETE", headers});
+      const id=clean(req.query.id,200);
+
+      if(!id){
+        return res.status(400).json({
+          ok:false,
+          error:"id manquant"
+        });
       }
-      mem=mem.filter(i=>i.id!==id);
-      return res.status(200).json({ok:true});
+
+      let deleted=false;
+      let lastError="";
+
+      for(const table of ["guestbook_entries","guestbook"]){
+        try{
+          const r=await fetch(
+            `${url}/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`,
+            {
+              method:"DELETE",
+              headers:{
+                ...headers,
+                Prefer:"return=representation"
+              }
+            }
+          );
+
+          const text=await r.text();
+
+          let rows=[];
+          try{
+            rows=JSON.parse(text);
+          }catch{}
+
+          if(r.ok){
+            if(Array.isArray(rows) && rows.length>0){
+              deleted=true;
+              break;
+            }
+
+            // Certains réglages Supabase renvoient 204 ou [] même si la ligne
+            // a bien été supprimée. On vérifie donc si elle existe encore.
+            const check=await fetch(
+              `${url}/rest/v1/${table}?id=eq.${encodeURIComponent(id)}&select=id`,
+              {headers}
+            );
+
+            const checkText=await check.text();
+
+            let found=[];
+            try{
+              found=JSON.parse(checkText);
+            }catch{}
+
+            if(check.ok && Array.isArray(found) && found.length===0){
+              deleted=true;
+              break;
+            }
+          }else{
+            lastError=text || `HTTP ${r.status}`;
+          }
+        }catch(error){
+          lastError=error.message;
+        }
+      }
+
+      const before=mem.length;
+      mem=mem.filter(i=>String(i.id)!==String(id));
+
+      if(before!==mem.length){
+        deleted=true;
+      }
+
+      if(!deleted){
+        return res.status(404).json({
+          ok:false,
+          error:"Avis introuvable ou suppression refusée",
+          details:lastError
+        });
+      }
+
+      return res.status(200).json({
+        ok:true,
+        deleted:id
+      });
     }
     return res.status(405).json({error:"Method"});
   }catch(e){
