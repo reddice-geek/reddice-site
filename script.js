@@ -599,17 +599,23 @@ function isDateInRange(m,d, sm,sd, em,ed){
 function getCurrentSeason(date = new Date()){
   const m = date.getMonth()+1;
   const d = date.getDate();
-  // Priorité fêtes spéciales
-  if(isDateInRange(m,d,6,21,6,21)) return "fete-musique";
+
+  // Priorité aux fêtes spéciales
   if(isDateInRange(m,d,2,12,2,15)) return "saint-valentin";
+  if(isDateInRange(m,d,4,26,4,26)) return "anniversaire-reddice";
+  if(isDateInRange(m,d,9,5,9,5)) return "anniversaire-stream";
+  if(isDateInRange(m,d,6,21,6,21)) return "fete-musique";
+  if(isDateInRange(m,d,7,14,7,14)) return "fete-nationale";
   if(isDateInRange(m,d,10,20,11,2)) return "halloween";
   if(isDateInRange(m,d,12,1,12,26)) return "noel";
   if(isDateInRange(m,d,12,27,1,5)) return "nouvel-an";
-  // Saisons
-  if(isDateInRange(m,d,3,20,6,20)) return "printemps";
+
+  // Saisons continues : aucune date oubliée
+  if(isDateInRange(m,d,3,20,6,21)) return "printemps";
   if(isDateInRange(m,d,6,22,9,21)) return "ete";
   if(isDateInRange(m,d,9,22,11,30)) return "automne";
-  if(isDateInRange(m,d,1,6,3,19)) return "hiver";
+  if(isDateInRange(m,d,12,1,3,19)) return "hiver";
+
   return "hiver";
 }
 function getSeasonConfig(season){
@@ -617,6 +623,7 @@ function getSeasonConfig(season){
     "saint-valentin":{ name:"Saint-Valentin", emoji:"💘", msg:"💘 Saint-Valentin — Love is in the air, choom ! Cupidon a hacké le datapad 💘", particles:["💘","❤️","💕","💖","💝"], count:22 },
     "printemps":{ name:"Printemps", emoji:"🌸", msg:"🌸 Printemps — Bloom & Chill — Le datacenter fleurit 🌸", particles:["🌸","🌺","🌷","🍃","✨"], count:24 },
     "fete-musique":{ name:"Fête de la Musique", emoji:"🎵", msg:"🎵 Fête de la Musique — 21 Juin — Pousse le son à fond, stream en live ! 🎶", particles:["🎵","🎶","🎧","🎸","🎤"], count:28 },
+    "fete-nationale":{ name:"Fête nationale", emoji:"🇫🇷", msg:"🇫🇷 14 Juillet — Bonne fête nationale ! Feux d'artifice et ambiance tricolore 🎆", particles:["🇫🇷","🎆","🎇","✨","🎉"], count:30 },
     "ete":{ name:"Été", emoji:"☀️", msg:"☀️ Été — Mode soleil activé — Shadow PC au frais, toi au soleil ☀️", particles:["☀️","✨","🌊","😎","🌴"], count:20 },
     "automne":{ name:"Automne", emoji:"🍂", msg:"🍂 Automne — Feuilles qui tombent, cosplay qui chauffe 🍁", particles:["🍂","🍁","🍃","🧡","✨"], count:26 },
     "halloween":{ name:"Halloween", emoji:"🎃", msg:"🎃 Halloween — Beware the Black ICE... Les netrunners se déguisent 🎃", particles:["🎃","👻","🦇","🕷️","💀"], count:30 },
