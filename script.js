@@ -621,6 +621,8 @@ function getCurrentSeason(date = new Date()){
 function getSeasonConfig(season){
   const cfg={
     "saint-valentin":{ name:"Saint-Valentin", emoji:"💘", msg:"💘 Saint-Valentin — Love is in the air, choom ! Cupidon a hacké le datapad 💘", particles:["💘","❤️","💕","💖","💝"], count:22 },
+    "anniversaire-reddice":{ name:"Anniversaire de Reddice", emoji:"🎂", msg:"🎂 26 Avril — Joyeux anniversaire Reddice ! 🎉", particles:["🎂","🎉","🎈","🥳","✨"], count:30 },
+    "anniversaire-stream":{ name:"Anniversaire du stream de Reddice", emoji:"🎮", msg:"🎮 5 Septembre — Joyeux anniversaire au stream de Reddice ! 🎉", particles:["🎮","🎉","🎧","🥳","✨"], count:30 },
     "printemps":{ name:"Printemps", emoji:"🌸", msg:"🌸 Printemps — Bloom & Chill — Le datacenter fleurit 🌸", particles:["🌸","🌺","🌷","🍃","✨"], count:24 },
     "fete-musique":{ name:"Fête de la Musique", emoji:"🎵", msg:"🎵 Fête de la Musique — 21 Juin — Pousse le son à fond, stream en live ! 🎶", particles:["🎵","🎶","🎧","🎸","🎤"], count:28 },
     "fete-nationale":{ name:"Fête nationale", emoji:"🇫🇷", msg:"🇫🇷 14 Juillet — Bonne fête nationale ! Feux d'artifice et ambiance tricolore 🎆", particles:["🇫🇷","🎆","🎇","✨","🎉"], count:30 },
