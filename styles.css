@@ -504,3 +504,55 @@ body[data-season="fete-musique"]{
 }
 body[data-season="fete-musique"]{ background: radial-gradient(900px 500px at 20% 0%, rgba(0,234,255,0.14), transparent 60%), radial-gradient(900px 500px at 80% 0%, rgba(255,59,141,0.14), transparent 60%), radial-gradient(600px 300px at 50% 0%, rgba(255,216,77,0.12), transparent 60%), var(--bg); }
 body[data-season="fete-musique"] #seasonal-banner{ background:linear-gradient(90deg, rgba(0,234,255,0.22), rgba(255,59,141,0.22), rgba(255,216,77,0.22)); color:#06101a; font-weight:900; }
+
+
+/* FÊTE NATIONALE — 14 JUILLET */
+body[data-season="fete-nationale"]{
+  --cyan:#4f8cff;
+  --violet:#ffffff;
+  --pink:#ff4f5e;
+}
+body[data-season="fete-nationale"]{
+  background:
+    radial-gradient(900px 500px at 15% 0%, rgba(79,140,255,0.16), transparent 60%),
+    radial-gradient(900px 500px at 85% 0%, rgba(255,79,94,0.16), transparent 60%),
+    var(--bg);
+}
+body[data-season="fete-nationale"] #seasonal-banner{
+  background:linear-gradient(90deg,
+    rgba(40,85,190,0.30),
+    rgba(255,255,255,0.22),
+    rgba(220,45,60,0.30));
+  color:#fff;
+  text-shadow:0 0 8px rgba(0,0,0,0.55);
+  font-weight:900;
+}
+
+
+/* ANNIVERSAIRE REDDICE — 26 AVRIL */
+body[data-season="anniversaire-reddice"]{
+  --cyan:#ffb347;
+  --violet:#ff6b9d;
+  --pink:#ffd166;
+}
+body[data-season="anniversaire-reddice"] #seasonal-banner{
+  background:linear-gradient(90deg,
+    rgba(255,179,71,0.28),
+    rgba(255,107,157,0.28),
+    rgba(255,209,102,0.28));
+  font-weight:900;
+}
+
+/* ANNIVERSAIRE DU STREAM — 5 SEPTEMBRE */
+body[data-season="anniversaire-stream"]{
+  --cyan:#7c5cff;
+  --violet:#00d4ff;
+  --pink:#ff4fd8;
+}
+body[data-season="anniversaire-stream"] #seasonal-banner{
+  background:linear-gradient(90deg,
+    rgba(124,92,255,0.28),
+    rgba(0,212,255,0.24),
+    rgba(255,79,216,0.28));
+  font-weight:900;
+}
