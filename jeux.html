@@ -12,8 +12,8 @@
   <header class="hub-header">
     <div class="hub-brand">
       <a href="index.html"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
-      <span class="hub-overline">Système en ligne - V3 // LIBRARY</span>
-      <p class="hub-subtitle">Ma collection perso - GOG / Epic / Steam / GeForce NOW</p>
+      <span class="hub-overline">LIBRARY // COLLECTION PERSO</span>
+      <p class="hub-subtitle">Ma ludothèque - GOG / Epic / GeForce NOW + HyperX Cloud Jet</p>
     </div>
   </header>
   <nav class="hub-nav-shell">
@@ -32,7 +32,7 @@
         <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
       </ul>
       <div class="hub-nav-right">
-        <div class="quick-socials" style="display:flex; gap:.45rem;">
+        <div class="quick-socials" style="display:flex; gap:.45rem">
           <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
           <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
         </div>
@@ -43,116 +43,41 @@
 
   <main class="container">
     <section class="shell reveal visible">
-      <span class="kicker">LIBRARY // COLLECTION PERSO</span>
-      <h2>Mes jeux possédés</h2>
-      <p class="lead" id="games-count">Chargement de ta liste Excel...</p>
+      <span class="kicker">GAMES // DATA PAD - 119 GOG + Epic (CSV complet dès fix ZIP)</span>
+      <h2>Ma liste de jeux possédés</h2>
+      <p class="lead" id="games-count">Chargement...</p>
       <div style="display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1rem">
-        <input id="games-search" placeholder="Rechercher un jeu..." style="max-width:340px">
-        <select id="games-filter" style="max-width:200px">
+        <input id="search" placeholder="Rechercher un jeu..." style="max-width:340px">
+        <select id="filter" style="max-width:180px">
           <option value="all">Toutes plateformes</option>
           <option value="GOG">GOG</option>
           <option value="Epic Games">Epic Games</option>
-          <option value="Steam">Steam</option>
-          <option value="GeForce NOW">GeForce NOW</option>
         </select>
-        <button class="btn btn-small" onclick="exportGames()">Exporter JSON</button>
+        <span class="mini-chip" id="total-chip"></span>
       </div>
-      <div id="games-grid" class="grid-3" style="margin-top:1.2rem"></div>
+      <div id="grid" class="grid-3" style="margin-top:1.2rem"></div>
     </section>
   </main>
 
   <footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)">
-    <small>
-      <a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="jeux.html" style="color:var(--cyan)">Mes Jeux</a> • <a href="planning.html">Planning</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a><br>
-      Reddice HUB V3 • <span id="current-year"></span>
-    </small>
+    <small><a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="jeux.html" style="color:var(--cyan)">Mes Jeux</a> • <a href="planning.html">Planning</a> • <a href="contact.html">Contact</a><br>Reddice HUB V3 • <span id="current-year"></span></small>
   </footer>
-  <div id="legal-modal" class="legal-modal"><div class="legal-modal-bg" data-legal-close></div><div class="legal-modal-box shell"><button class="legal-close btn btn-small" data-legal-close>✕ Fermer</button><span class="kicker">Légal</span><h2>Mentions légales</h2><div style="color:var(--muted); font-size:.9rem"><p><strong style="color:#fff">Éditeur:</strong> Reddice / Cédric Detrez</p></div></div></div>
+
   <script src="script.js"></script>
   <script>
-    // LISTE EXTRAITE DE TON EXCEL (133 premiers jeux - complet GOG)
-    const GAMES = [
-      {platform:"GOG", title:"A Plague Tale: Innocence"},
-      {platform:"GOG", title:"Alien Breed 2: Assault"},
-      {platform:"GOG", title:"Alien Breed 3: Descent"},
-      {platform:"GOG", title:"Alien Breed: Impact"},
-      {platform:"GOG", title:"Arcade Paradise"},
-      {platform:"GOG", title:"Baldur's Gate II: Enhanced Edition"},
-      {platform:"GOG", title:"Baldur's Gate: Enhanced Edition"},
-      {platform:"GOG", title:"BioShock Infinite"},
-      {platform:"GOG", title:"Blade of Darkness"},
-      {platform:"GOG", title:"Brigador: Up-Armored Edition"},
-      {platform:"GOG", title:"Call of Juarez"},
-      {platform:"GOG", title:"Call of Juarez: Bound in Blood"},
-      {platform:"GOG", title:"Captain Blood"},
-      {platform:"GOG", title:"Cat Quest II"},
-      {platform:"GOG", title:"Chicken Assassin: Reloaded"},
-      {platform:"GOG", title:"Civilization III: Complete"},
-      {platform:"GOG", title:"Cyberpunk 2077"},
-      {platform:"GOG", title:"Dark Deity: Complete Edition"},
-      {platform:"GOG", title:"Deus Ex: GOTY Edition"},
-      {platform:"GOG", title:"Dishonored 2"},
-      {platform:"GOG", title:"DOOM (1993)"},
-      {platform:"GOG", title:"Fallout: New Vegas - Ultimate Edition"},
-      {platform:"GOG", title:"Ghostrunner"},
-      {platform:"GOG", title:"GreedFall"},
-      {platform:"GOG", title:"Hitman: Absolution"},
-      {platform:"GOG", title:"Kerbal Space Program"},
-      {platform:"GOG", title:"LEGO Star Wars: The Complete Saga"},
-      {platform:"GOG", title:"Mafia: Definitive Edition"},
-      {platform:"GOG", title:"Middle-earth: Shadow of Mordor"},
-      {platform:"GOG", title:"Neverwinter Nights: Diamond"},
-      {platform:"GOG", title:"Stellaris"},
-      {platform:"GOG", title:"The Witcher: Enhanced Edition Director's Cut"},
-      {platform:"GOG", title:"Tomb Raider I-III Remastered"},
-      {platform:"GOG", title:"Wolfenstein: The New Order"},
-      {platform:"GOG", title:"Zoria: Age of Shattering"},
-      {platform:"Epic Games", title:"112 Operator"},
-      {platform:"Epic Games", title:"20 Minutes Till Dawn"},
-      {platform:"Epic Games", title:"A Plague Tale: Innocence"},
-      {platform:"Epic Games", title:"Alan Wake"},
-      {platform:"Epic Games", title:"Alien: Isolation"},
-      {platform:"Epic Games", title:"ARK: Survival Evolved"},
-      // ... COLLE ICI LA SUITE DE TON EXCEL (je peux te générer le reste dès que mon cache est réparé)
-    ];
-
-    // Pour l'instant j'ajoute tous les jeux que j'ai lus
-    const EXTRA_GOG = ["A Plague Tale: Innocence","Alien Breed 2: Assault","Alien Breed 3: Descent","Alien Breed: Impact","Arcade Paradise","Baldur's Gate II: Enhanced Edition","Baldur's Gate: Enhanced Edition","BioShock Infinite","Blade of Darkness","Brigador: Up-Armored Edition","Call of Juarez","Call of Juarez: Bound in Blood","Captain Blood","Cat Quest II","Chicken Assassin: Reloaded","Civilization III: Complete","Cyberpunk 2077","D&D: Dragons of Flame - Silver Box Classic","D&D: Heroes of the Lance - Silver Box Classic","D&D: Shadow Sorcerer - Silver Box Classic","D&D: War of the Lance - Silver Box Classic","Dark Deity: Complete Edition","Deus Ex: GOTY Edition","Deus Ex: Invisible War","Dishonored 2","DOOM (1993)","DOOM + DOOM II Pack","DOOM 3","DOOM II","Epic 40,000: Final Liberation","Eschalon: Book II","Fallout","Fallout: London","Fallout: New Vegas - Ultimate Edition","Final DOOM","FlatOut","Ghost of a Tale","Ghostrunner","GreedFall","Grunts","Grunts 2","Hero of the Kingdom II","Hitman: Absolution","Jazz Jackrabbit 2","Kerbal Space Program","King of Retail","King's Bounty: The Legend","Legacy of Kain: Defiance","LEGO Star Wars III: The Clone Wars","LEGO Star Wars: The Complete Saga","LEGO The Hobbit","LEGO The Lord of the Rings","Mafia II: Definitive Edition","Mafia III: Definitive Edition","Mafia: Definitive Edition","Middle-earth: Shadow of Mordor","Middle-earth: Shadow of War","Midnight Fight Express","Moonscars","Neverwinter Nights 2: Complete","Neverwinter Nights: Diamond","Overcooked! 2","Postal: Classic and Uncut","Quake II","Stellaris","The Talos Principle","The Witcher 2: Enhanced Edition","Thief: Definitive Edition","Tomb Raider I-III Remastered","Tomb Raider: Anniversary","Tropico 4","Warhammer 40,000: Rites of War","Wolfenstein: The New Order","XCOM: Enemy Unknown - Complete Pack","Zoria: Age of Shattering"];
-
-    const allGames = EXTRA_GOG.map(t=>({platform:"GOG", title:t})).concat(GAMES);
-
-    const grid = document.getElementById('games-grid');
-    const count = document.getElementById('games-count');
-    const search = document.getElementById('games-search');
-    const filter = document.getElementById('games-filter');
-
-    function render(){
-      const q = search.value.toLowerCase();
-      const f = filter.value;
-      const filtered = allGames.filter(g => {
-        const matchQ = g.title.toLowerCase().includes(q);
-        const matchF = f==='all' || g.platform===f;
-        return matchQ && matchF;
-      });
-      count.textContent = `${filtered.length} jeux affichés sur ${allGames.length} (GOG complet - Epic/Steam en cours)`;
-      grid.innerHTML = filtered.map(g=>`
-        <div class="card reveal visible">
-          <span class="mini-chip">${g.platform}</span>
-          <h4 style="margin:.6rem 0 0; color:#fff">${g.title}</h4>
-          <div style="margin-top:.6rem; display:flex; gap:.4rem">
-            <span class="mini-chip" style="background:rgba(0,234,255,0.08)">${g.platform==='GOG'?'DRM-Free':'Launcher'}</span>
-          </div>
-        </div>
-      `).join('');
-    }
-    search.addEventListener('input', render);
-    filter.addEventListener('change', render);
-    render();
-    window.exportGames = ()=> {
-      const blob = new Blob([JSON.stringify(allGames, null, 2)], {type:'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href=url; a.download='reddice_games.json'; a.click();
-    };
+  const GAMES = [
+    ["GOG","A Plague Tale: Innocence"],["GOG","Alien Breed 2: Assault"],["GOG","Alien Breed 3: Descent"],["GOG","Alien Breed: Impact"],["GOG","Arcade Paradise"],["GOG","Baldur's Gate II: Enhanced Edition"],["GOG","Baldur's Gate: Enhanced Edition"],["GOG","BioShock Infinite"],["GOG","Blade of Darkness"],["GOG","Brigador: Up-Armored Edition"],["GOG","Call of Juarez"],["GOG","Call of Juarez: Bound in Blood"],["GOG","Captain Blood"],["GOG","Cat Quest II"],["GOG","Chicken Assassin: Reloaded"],["GOG","Civilization III: Complete"],["GOG","Cyberpunk 2077"],["GOG","D&D: Dragons of Flame - Silver Box Classic"],["GOG","D&D: Heroes of the Lance - Silver Box Classic"],["GOG","D&D: Shadow Sorcerer - Silver Box Classic"],["GOG","D&D: War of the Lance - Silver Box Classic"],["GOG","Dark Deity: Complete Edition"],["GOG","Deus Ex: GOTY Edition"],["GOG","Deus Ex: Invisible War"],["GOG","Dishonored 2"],["GOG","DOOM (1993)"],["GOG","DOOM + DOOM II Pack"],["GOG","DOOM 3"],["GOG","DOOM II"],["GOG","Epic 40,000: Final Liberation"],["GOG","Eschalon: Book II"],["GOG","Fallout"],["GOG","Fallout: London"],["GOG","Fallout: New Vegas - Ultimate Edition"],["GOG","Final DOOM"],["GOG","FlatOut"],["GOG","Ghost of a Tale"],["GOG","Ghostrunner"],["GOG","GreedFall"],["GOG","Grunts"],["GOG","Grunts 2"],["GOG","Hero of the Kingdom II"],["GOG","Hitman: Absolution"],["GOG","Jazz Jackrabbit 2"],["GOG","Jazz Jackrabbit 2: The Christmas Chronicles"],["GOG","Kerbal Space Program"],["GOG","King of Retail"],["GOG","King's Bounty: The Legend"],["GOG","Legacy of Kain: Defiance"],["GOG","LEGO Star Wars III: The Clone Wars"],["GOG","LEGO Star Wars: The Complete Saga"],["GOG","LEGO The Hobbit"],["GOG","LEGO The Lord of the Rings"],["GOG","Mafia II: Definitive Edition"],["GOG","Mafia II: Director's Cut"],["GOG","Mafia III: Definitive Edition"],["GOG","Mafia: Definitive Edition"],["GOG","Middle-earth: Shadow of Mordor"],["GOG","Middle-earth: Shadow of War"],["GOG","Midnight Fight Express"],["GOG","Moonscars"],["GOG","Neo Cab"],["GOG","Neurodeck: The Game"],["GOG","Neverwinter Nights 2: Complete"],["GOG","Neverwinter Nights: Diamond"],["GOG","Overcooked! 2"],["GOG","Overcooked! Gourmet Edition"],["GOG","Phantasie: Memorial Set"],["GOG","Postal: Classic and Uncut"],["GOG","Prey (2006)"],["GOG","Pumpkin Jack"],["GOG","Quake 4"],["GOG","Quake II"],["GOG","Quake II Original"],["GOG","RED Goodies Collection"],["GOG","Remothered: Tormented Fathers"],["GOG","Requiem: Avenging Angel"],["GOG","Return of the Phantom"],["GOG","Riot: Civil Unrest"],["GOG","Saints Row: The Third Remastered"],["GOG","Shadows: Awakening"],["GOG","Shantae and the Pirate's Curse"],["GOG","Showgunners"],["GOG","Sigma Theory: Global Cold War"],["GOG","Space Hulk: Deathwing - Enhanced Edition"],["GOG","Star Wars: Bounty Hunter"],["GOG","Star Wars: Galactic Battlegrounds Saga"],["GOG","Star Wars: Rebellion"],["GOG","Stellaris"],["GOG","Stray Gods: The Roleplaying Musical"],["GOG","The Beast Inside"],["GOG","The Coma 2: Vicious Sisters"],["GOG","The Coma: Recut"],["GOG","The Elder Scrolls II: Daggerfall Unity"],["GOG","The Elder Scrolls: Arena"],["GOG","The Evil Within 2"],["GOG","The First Templar"],["GOG","The Last Spell"],["GOG","The Talos Principle"],["GOG","The Thaumaturge"],["GOG","The Ultimate DOOM"],["GOG","The Witcher 2: Assassins of Kings Enhanced Edition"],["GOG","The Witcher: Enhanced Edition Director's Cut"],["GOG","Thief: Definitive Edition"],["GOG","Thronebreaker: The Witcher Tales"],["GOG","Tomb Raider I-III Remastered"],["GOG","Tomb Raider: Anniversary"],["GOG","Tomb Raider: Chronicles"],["GOG","Tomb Raider: Legend"],["GOG","Tomb Raider: The Angel of Darkness"],["GOG","Tomb Raider: The Last Revelation"],["GOG","Tomb Raider: Underworld"],["GOG","Tropico 4"],["GOG","Warhammer 40,000: Rites of War"],["GOG","Whispering Willows"],["GOG","Wolfenstein: The New Order"],["GOG","XCOM: Enemy Unknown - Complete Pack"],["GOG","Zoria: Age of Shattering"],
+    ["Epic Games","112 Operator"],["Epic Games","20 Minutes Till Dawn"],["Epic Games","A Game Of Thrones: The Board Game Digital Edition"],["Epic Games","A Plague Tale: Innocence"],["Epic Games","Alan Wake"],["Epic Games","Alien: Isolation"],["Epic Games","Among the Sleep - Enhanced Edition"],["Epic Games","Arcade Paradise"],["Epic Games","Arcadegeddon"],["Epic Games","ARK: Survival Evolved"],["Epic Games","Asteroids: Recharged"],["Epic Games","Atari Mania"]
+  ];
+  const grid=document.getElementById('grid'), count=document.getElementById('games-count'), totalChip=document.getElementById('total-chip'), search=document.getElementById('search'), filter=document.getElementById('filter');
+  function render(){
+    const q=search.value.toLowerCase(); const f=filter.value;
+    const filtered=GAMES.filter(([p,t])=> (f==='all'||p===f) && t.toLowerCase().includes(q));
+    count.textContent=`${filtered.length} jeux affichés / ${GAMES.length} chargés (GOG complet) - En attente CSV complet`;
+    totalChip.textContent=`${GAMES.filter(g=>g[0]==='GOG').length} GOG • ${GAMES.filter(g=>g[0]==='Epic Games').length} Epic`;
+    grid.innerHTML=filtered.map(([p,t])=>`<div class="card reveal visible"><span class="mini-chip">${p}</span><h4 style="margin:.5rem 0 0">${t}</h4><small style="color:var(--muted); font-family:var(--font-mono)">${p==='GOG'?'DRM-Free':'Launcher'}</small></div>`).join('');
+  }
+  search.addEventListener('input',render); filter.addEventListener('change',render); render();
   </script>
 </body>
 </html>
