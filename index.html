@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reddice HUB V4 - Night City Datapad</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reddice HUB V4 - Night City Datapad - Fusion Respiere</title>
 <link rel="icon" type="image/png" href="assets/icon-r.png">
 <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="home">
 <div class="fusion-orbs"><div class="orb orb-cyan"></div><div class="orb orb-violet"></div><div class="orb orb-pink"></div></div>
+
 <header class="hub-header">
   <div class="hub-brand">
     <a href="index.html"><img src="assets/logo-main.png" alt="Logo" class="hub-logo-main"></a>
@@ -16,19 +18,22 @@
     <p class="hub-subtitle">Streamer • Cosplayer • Furioz Compagnie • Angers — Datapad qui respire</p>
   </div>
 </header>
+
 <nav class="hub-nav-shell">
   <div class="container hub-nav-layout">
     <div class="hub-nav-left"><span class="stream-badge is-loading" data-stream-status>Datapad en ligne...</span></div>
     <ul class="hub-nav">
-      <li><a href="index.html" class="hub-link-v2 active">Accueil</a></li>
-      <li class="has-sub"><a href="bio.html" class="hub-link-v2">Bio</a><ul class="submenu"><li><a href="setup.html">Setup PCB RGB</a></li><li><a href="jeux.html">Mes Jeux</a></li></ul></li>
-      <li><a href="planning.html" class="hub-link-v2">Planning</a></li>
-      <li><a href="livre-or.html" class="hub-link-v2">Livre d'or</a></li>
-      <li><a href="contact.html" class="hub-link-v2">Contact</a></li>
+      <li><a href="index.html" class="hub-link-v2 active" data-nav="home">Accueil</a></li>
+      <li class="has-sub"><a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a>
+        <ul class="submenu"><li><a href="setup.html">Setup PCB RGB</a></li><li><a href="jeux.html">Mes Jeux</a></li></ul>
+      </li>
+      <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
+      <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
+      <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
     </ul>
     <div class="hub-nav-right">
       <div class="quick-socials" style="display:flex; gap:.45rem">
-        <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
+        <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-【entity-twitch¦canonical_name=Twitch】">【entity-Twitch¦canonical_name=Twitch】</a>
         <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
         <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
         <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick hub-quick-tiktok">TikTok</a>
@@ -37,36 +42,98 @@
     </div>
   </div>
 </nav>
+
 <main class="container" style="display:grid; gap:2rem; padding-top:2.4rem">
+
   <section class="shell reveal visible" style="padding:2.4rem; background:linear-gradient(110deg, rgba(0,234,255,0.07), rgba(138,92,255,0.07) 50%, rgba(255,59,141,0.05)), var(--panel)">
     <span class="kicker">LIVE CENTER // 2 FENETRES 1.5mm - GLASS VISTA - V4 RESPIRE</span>
     <h1 style="margin:.7rem 0 .4rem; font-size:clamp(2.1rem,4.2vw,3.2rem)">RED DICE // NIGHT CITY DATAPAD</h1>
     <p class="lead" style="max-width:760px">Bienvenue choom. Datapad holo-glass fusion — 2 fenetres separees de 1.5mm, glass translucide, scanlines, LED destructure. Ici on respire, on joue, on partage.</p>
+    
     <div style="display:flex; gap:.5rem; flex-wrap:wrap; margin-top:1.2rem">
       <span class="mini-chip">📍 France • Angers (49)</span>
       <span class="mini-chip">🎮 Quelques jeux</span>
-      <span class="mini-chip">🤼 REAC catch</span>
+      <span class="mini-chip">🤼 REAC catch chaque semaine</span>
       <span class="mini-chip">👥 Furioz Compagnie</span>
       <span class="mini-chip" style="background:var(--fusion); color:#06101a; font-weight:800">V4 RESPIRE</span>
     </div>
-    <div class="twitch-layout" style="margin-top:1.8rem">
-      <div class="player-box"><iframe src="https://player.twitch.tv/?channel=reddice_stream&parent=reddice.fr" allowfullscreen></iframe></div>
-      <div class="player-box" style="background:rgba(10,14,28,0.9); display:grid"><iframe src="https://www.twitch.tv/embed/reddice_stream/chat?parent=reddice.fr&darkpopout" style="border:0; width:100%; height:100%"></iframe></div>
+
+    <!-- PLAYER 【entity-TWITCH¦canonical_name=Twitch】 FIX - PARENT MULTI -->
+    <div class="【entity-twitch¦canonical_name=Twitch】-layout" style="margin-top:1.8rem">
+      <div class="player-box">
+        <iframe
+          id="【entity-twitch¦canonical_name=Twitch】-player"
+          src="https://player.twitch.tv/?channel=reddice_stream&parent=reddice.fr&parent=www.reddice.fr&parent=localhost&parent=127.0.0.1&parent=reddice-hub-v3-final.vercel.app&parent=vercel.app"
+          frameborder="0"
+          allowfullscreen
+          scrolling="no"
+          allow="autoplay; fullscreen"
+          style="width:100%; height:100%; border:0"
+        ></iframe>
+      </div>
+      <div class="player-box" style="background:rgba(10,14,28,0.9); display:grid">
+        <iframe
+          id="【entity-twitch¦canonical_name=Twitch】-chat"
+          src="https://www.twitch.tv/embed/reddice_stream/chat?parent=reddice.fr&parent=www.reddice.fr&parent=localhost&parent=127.0.0.1&parent=reddice-hub-v3-final.vercel.app&parent=vercel.app&darkpopout"
+          frameborder="0"
+          scrolling="no"
+          style="width:100%; height:100%; border:0"
+        ></iframe>
+      </div>
     </div>
+
+    <div id="【entity-twitch¦canonical_name=Twitch】-fallback" style="display:none; margin-top:1rem; padding:1rem 1.2rem; background:rgba(255,59,141,0.08); border:1px solid rgba(255,59,141,0.18); backdrop-filter:blur(6px)">
+      <div style="display:flex; gap:.6rem; align-items:center; flex-wrap:wrap">
+        <span class="mini-chip" style="background:rgba(255,59,141,0.14); color:#ffb3c8">PLAYER BLOQUE EN PREVIEW</span>
+        <span style="font-family:var(--font-mono); font-size:.82rem; color:var(--muted)">【entity-Twitch¦canonical_name=Twitch】 bloque le parent en local / file:// — ouvre en prod sur reddice.fr</span>
+        <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="btn btn-small btn-primary" style="margin-left:auto">Ouvrir 【entity-Twitch¦canonical_name=Twitch】 →</a>
+      </div>
+    </div>
+
     <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:1.4rem">
       <div class="card" style="padding:1rem"><span class="kicker">RIG STATUS</span><p style="font-family:var(--font-mono); font-size:.8rem; color:var(--muted); line-height:1.6">CPU 8C/16T • GPU 4Go • RAM 16Go Dual • Audio sans fil + Micro RGB</p></div>
       <div class="card" style="padding:1rem"><span class="kicker">CE SOIR // LIVE</span><p style="font-size:.92rem">Gaming chill, mining, decouvertes et REAC. On respire, on rigole.</p><a href="planning.html" class="btn btn-small" style="margin-top:.8rem">Voir planning →</a></div>
       <div class="card" style="padding:1rem"><span class="kicker">COMMUNAUTE</span><p style="font-size:.92rem">Discord actif, YouTube, TikTok, Shop. Rejoins le datapad.</p><a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="btn btn-small btn-primary" style="margin-top:.8rem">Discord →</a></div>
     </div>
   </section>
+
+  <section class="shell reveal" style="padding:1.8rem">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem"><span class="kicker">RESEAUX // TRANSMISSIONS</span><span class="mini-chip">● ONLINE</span></div>
+    <div style="display:flex; gap:.6rem; flex-wrap:wrap">
+      <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="btn btn-small">【entity-Twitch¦canonical_name=Twitch】 • Live</a>
+      <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="btn btn-small">Discord • Chat</a>
+      <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="btn btn-small">YouTube • VOD & REAC</a>
+      <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="btn btn-small">TikTok • Clips</a>
+      <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="btn btn-small btn-primary">Shop →</a>
+    </div>
+  </section>
+
   <section class="shell reveal" style="padding:1.8rem; background:linear-gradient(110deg, rgba(255,59,141,0.06), rgba(138,92,255,0.06)), var(--panel)">
     <span class="kicker">FURIOZ COMPAGNIE // COLLECTIF</span>
     <h3 style="margin:.6rem 0 .4rem">Collectif d'artistes, streamers et créateurs angevins</h3>
     <p style="color:var(--muted)">Event multi-stream, impro, cosplay, gaming. On crée des univers a Angers et en ligne.</p>
     <a href="bio.html" class="btn btn-small" style="margin-top:.8rem">Découvrir →</a>
   </section>
+
 </main>
-<footer class="container" style="text-align:center; padding:2.8rem 0; color:var(--muted)"><small>Reddice HUB V4 Fusion Respiere • <span id="current-year"></span></small></footer>
+
+<footer class="container" style="text-align:center; padding:2.8rem 0; color:var(--muted)">
+  <small><a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="jeux.html">Mes Jeux</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a> • <a href="contact.html">Contact</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>Reddice HUB V4 Fusion Respiere • <span id="current-year"></span></small>
+</footer>
+
+<div id="legal-modal" class="legal-modal"><div class="legal-modal-bg" data-legal-close></div><div class="legal-modal-box shell"><button class="legal-close btn btn-small" data-legal-close>✕ Fermer</button><h2>Mentions légales</h2><div style="color:var(--muted); font-size:.9rem">Éditeur: Reddice / Cédric Detrez — Hébergement: Vercel + Supabase</div></div></div>
+
+<script>
+// Fix 【entity-Twitch¦canonical_name=Twitch】 parent bloqué en preview / file://
+window.addEventListener('load', () => {
+  const host = location.hostname;
+  const isProd = host.includes('reddice.fr');
+  if (!isProd) {
+    const fb = document.getElementById('【entity-twitch¦canonical_name=Twitch】-fallback');
+    if (fb) fb.style.display = 'block';
+  }
+});
+</script>
 <script src="script.js"></script>
 </body>
 </html>
