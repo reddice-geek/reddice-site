@@ -1,144 +1,25 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Planning - Reddice HUB V4 - Night City Agenda</title>
-  <link rel="icon" type="image/png" href="assets/icon-r.png">
-  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Planning - V4 Respiere</title><link rel="stylesheet" href="styles.css"></head>
 <body data-page="planning">
 <div class="fusion-orbs"><div class="orb orb-cyan"></div><div class="orb orb-violet"></div><div class="orb orb-pink"></div></div>
-
-<header class="hub-header">
-  <div class="hub-brand">
-    <a href="index.html"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
-    <span class="hub-overline">SYSTÈME EN LIGNE - V4 // PLANNING - AGENDA HOLOGRAPHIQUE FUSION</span>
-    <p class="hub-subtitle">Agenda Holographique Night City - Streams à venir & archives - 【entity-ROG¦canonical_name=ROG】 G17 + GeForce NOW + 【entity-HyperX¦canonical_name=HyperX】 Cloud Jet + SLi50 RGB Egogear</p>
-  </div>
-</header>
-
-<nav class="hub-nav-shell">
-  <div class="container hub-nav-layout">
-    <div class="hub-nav-left"><span class="stream-badge is-loading" data-stream-status>Agenda Syncing...</span></div>
-    <ul class="hub-nav">
-      <li><a href="index.html" class="hub-link-v2" data-nav="home">Accueil</a></li>
-      <li class="has-sub"><a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a>
-        <ul class="submenu">
-          <li><a href="setup.html">Setup PCB RGB</a></li>
-          <li><a href="jeux.html">Mes Jeux</a></li>
-        </ul>
-      </li>
-      <li><a href="planning.html" class="hub-link-v2 active" data-nav="planning">Planning</a></li>
-      <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
-      <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
-    </ul>
-    <div class="hub-nav-right">
-      <div class="quick-socials" style="display:flex; gap:.45rem">
-        <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
-        <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
-        <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
-        <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick hub-quick-tiktok">TikTok</a>
-      </div>
-      <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop" style="margin-left:12px">Shop</a>
-    </div>
-  </div>
-</nav>
-
 <main class="container" style="display:grid; gap:2rem; padding-top:2.4rem">
+<section class="shell reveal visible" style="padding:2.4rem"><span class="kicker">PLANNING V4 // AGENDA HOLOGRAPHIQUE</span><h2>Agenda Holographique</h2><p class="lead" id="planning-status">Chargement des events...</p></section>
 
-  <section class="shell reveal visible" style="padding:2.4rem; background:linear-gradient(110deg, rgba(0,234,255,0.07), rgba(138,92,255,0.07) 50%, rgba(255,59,141,0.05)), var(--panel)">
-    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; align-items:center">
-      <div>
-        <span class="kicker">PLANNING V4 // AGENDA HOLOGRAPHIQUE - FUSION RESPIRE</span>
-        <h2 style="margin:.7rem 0 .3rem; font-size:clamp(2rem,4vw,2.8rem)">Agenda Holographique Night City</h2>
-        <p class="lead" id="planning-status" style="max-width:720px">Chargement Night City... Sync GeForce NOW • HyperX Cloud Jet • SLi50 RGB Egogear</p>
-      </div>
-      <div style="display:flex; gap:.5rem; flex-wrap:wrap">
-        <span class="mini-chip" style="background:rgba(0,234,255,0.12); color:var(--cyan)">● SYNC ACTIVE</span>
-        <span class="mini-chip" style="background:rgba(138,92,255,0.12); color:var(--violet)">V4 FUSION</span>
-        <span class="mini-chip">ROG G17 • 144Hz</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- 2 COLONNES QUI RESPIRENT -->
-  <div style="display:grid; grid-template-columns:1.15fr .85fr; gap:1.8rem">
-    <section class="shell reveal" style="padding:1.8rem">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2rem">
-        <span class="kicker">ARCHIVES TWITCH // VOD - NIGHT CITY</span>
-        <span class="mini-chip">6 dernières • HOLO</span>
-      </div>
-      <div id="planning-archives" class="grid-2" style="gap:1.2rem"></div>
-    </section>
-
-    <section class="shell reveal" style="padding:1.8rem; background:linear-gradient(135deg, rgba(0,234,255,0.08), rgba(138,92,255,0.06)), var(--panel)">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2rem">
-        <span class="kicker">À VENIR // UPCOMING - LED</span>
-        <span class="mini-chip" style="background:rgba(0,234,255,0.12); color:var(--cyan)">● LIVE SOON</span>
-      </div>
-      <div id="planning-upcoming" style="display:grid; gap:1rem"></div>
-      <div style="margin-top:1.2rem; padding:.9rem; background:rgba(0,0,0,0.22); border:1px solid var(--border-dim); font-family:var(--font-mono); font-size:.78rem; color:var(--muted)">
-        <span style="color:var(--cyan)">[FUSION_SYNC]</span> Ajoute tes events dans admin.html → Planning • Export planning.json → Vercel • GeForce NOW + HyperX + SLi50 RGB OK
-      </div>
-    </section>
-  </div>
-
-  <section class="shell reveal" style="padding:1.8rem">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2rem">
-      <span class="kicker">EVENTS SPÉCIAUX // FURIOZ • COLLAB • NIGHT CITY</span>
-      <span class="mini-chip" style="background:rgba(255,59,141,0.12); color:var(--pink)">SPECIAL • FUSION</span>
-    </div>
-    <div id="planning-special" class="grid-3" style="gap:1.2rem"></div>
-  </section>
-
-  <div style="display:grid; grid-template-columns:1fr 380px; gap:1.8rem">
-    <section class="shell reveal" style="padding:1.8rem; background:linear-gradient(110deg, rgba(255,59,141,0.06), rgba(138,92,255,0.06)), var(--panel)">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2rem">
-        <span class="kicker">REAC CATCH WWE / AEW // NIGHT CITY PLE</span>
-        <span class="mini-chip" style="background:rgba(255,59,141,0.12); color:var(--pink)">RAW • SMACKDOWN • NXT • PLE</span>
-      </div>
-      <div id="planning-catch" class="grid-3" style="gap:1.2rem"></div>
-    </section>
-
-    <section class="shell reveal" style="padding:1.8rem">
-      <span class="kicker">STATS TWITCH // DATAPAD ANALYTICS - FUSION</span>
-      <div id="planning-stats" class="stat-row" style="grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.2rem"></div>
-      <div style="margin-top:1.4rem; padding:1rem; background:rgba(0,0,0,0.22); border:1px solid var(--border-dim); font-family:var(--font-mono); font-size:.78rem; line-height:1.6; color:var(--muted)">
-        <div style="display:flex; justify-content:space-between"><span>SETUP</span><span style="color:#fff">ROG G17 + RTX 3050</span></div>
-        <div style="display:flex; justify-content:space-between"><span>CLOUD</span><span style="color:var(--violet)">GeForce NOW</span></div>
-        <div style="display:flex; justify-content:space-between"><span>AUDIO</span><span style="color:var(--cyan)">HyperX Cloud Jet</span></div>
-        <div style="display:flex; justify-content:space-between"><span>MIC RGB</span><span style="color:var(--pink)">SLi50 PC RGB</span></div>
-        <div style="margin-top:.6rem; height:1px; background:linear-gradient(90deg, transparent, var(--border-dim), transparent)"></div>
-        <div style="margin-top:.6rem; color:var(--cyan)">[V4_FUSION_READY] Night City Datapad opérationnel • LED destructure active</div>
-      </div>
-    </section>
-  </div>
-
-</main>
-
-<footer class="container" style="text-align:center; padding:2.8rem 0; color:var(--muted)">
-  <small style="line-height:1.8">
-    <a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="jeux.html">Mes Jeux</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a> • <a href="contact.html">Contact</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>
-    Reddice HUB V4 Fusion • Agenda Holographique • ROG G17 + GeForce NOW + HyperX Cloud Jet + SLi50 RGB Egogear • <span id="current-year"></span>
-  </small>
-</footer>
-
-<div id="legal-modal" class="legal-modal">
-  <div class="legal-modal-bg" data-legal-close></div>
-  <div class="legal-modal-box shell">
-    <button class="legal-close btn btn-small" data-legal-close>✕ Fermer</button>
-    <span class="kicker">Légal // Arasaka Compliance</span>
-    <h2>Mentions légales</h2>
-    <div style="color:var(--muted); font-size:.9rem; line-height:1.6">
-      <p><strong style="color:#fff">Éditeur:</strong> Reddice / Cédric Detrez - Agenda V4 Fusion</p>
-      <p><strong style="color:#fff">Setup:</strong> ROG G713IE • 4800H • RTX 3050 • 16Go • 512Go • GeForce NOW • HyperX Cloud Jet • SLi50 PC RGB Egogear</p>
-      <p><strong style="color:#fff">Hébergement:</strong> Vercel + Supabase</p>
-    </div>
-  </div>
+<section class="shell reveal" style="padding:1.6rem; background:linear-gradient(90deg, rgba(0,234,255,0.06), rgba(138,92,255,0.06)), var(--panel)">
+<div style="display:flex; justify-content:space-between; flex-wrap:wrap"><span class="kicker">STATS // DATAPAD ANALYTICS - HORIZONTAL</span><span class="mini-chip">LIVE STATS</span></div>
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:1rem; margin-top:1.2rem">
+<div class="card" style="text-align:center"><small>Ce mois</small><div style="font-size:1.6rem; font-weight:800">17.6h</div><small>Temps stream</small></div>
+<div class="card" style="text-align:center"><small>Jeux</small><div style="font-size:1.6rem; font-weight:800">1</div><small>Titres</small></div>
+<div class="card" style="text-align:center"><small>Followers</small><div style="font-size:1.6rem; font-weight:800; color:var(--cyan)">1449</div><small>Communauté</small></div>
+<div class="card" style="text-align:center"><small>Subs</small><div style="font-size:1.6rem">—</div><small>Abonnés</small></div>
 </div>
+</section>
 
+<div style="display:grid; grid-template-columns:1.15fr .85fr; gap:1.8rem">
+<section class="shell reveal" style="padding:1.8rem"><span class="kicker">ARCHIVES // VOD</span><div id="planning-archives" class="grid-2" style="margin-top:1rem"></div></section>
+<section class="shell reveal" style="padding:1.8rem"><span class="kicker">A VENIR // UPCOMING</span><div id="planning-upcoming" style="margin-top:1rem"></div></section>
+</div>
+<section class="shell reveal" style="padding:1.8rem"><span class="kicker">EVENTS SPECIAUX // FURIOZ</span><div id="planning-special" class="grid-3" style="margin-top:1rem"></div></section>
+<section class="shell reveal" style="padding:1.8rem"><span class="kicker">REAC CATCH // PLE</span><div id="planning-catch" class="grid-3" style="margin-top:1rem"></div></section>
+</main>
 <script src="script.js"></script>
-</body>
-</html>
+</body></html>
