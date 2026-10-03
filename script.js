@@ -1,8 +1,18 @@
-
 document.addEventListener("DOMContentLoaded", async ()=>{
   initSeasonal();
-  initReveal(); initLegalModal(); initActiveNav(); initTwitchEmbeds(); initStreamStatus(); initPlanningV2(); initGuestbook(); initContactForm(); initAdmin(); setYear();
+  initReveal();
+  initLegalModal();
+  initActiveNav();
+  initTwitchEmbeds();
+  initStreamStatus();
+  initPlanningV2();
+  initGuestbook();
+  initContactForm();
+  initAdmin();
+  setYear();
+  initCyberpunk2077();
 });
+
 function initLegalModal(){
   document.querySelectorAll('[data-legal-open]').forEach(function(b){ b.addEventListener('click', function(e){ e.preventDefault(); var m=document.getElementById('legal-modal'); if(m) m.classList.add('is-open'); }); });
   document.querySelectorAll('[data-legal-close]').forEach(function(b){ b.addEventListener('click', function(){ var m=document.getElementById('legal-modal'); if(m) m.classList.remove('is-open'); }); });
@@ -47,10 +57,10 @@ async function initPlanningV2(){
   const specialNode=document.getElementById("planning-special");
   const catchNode=document.getElementById("planning-catch");
   const statsNode=document.getElementById("planning-stats");
-  const editableNode=document.getElementById("planning-editable"); // legacy fallback
+  const editableNode=document.getElementById("planning-editable");
   const statusNode=document.getElementById("planning-status");
   const targetNode = upcomingNode || editableNode;
-  if(!targetNode && !archiveNode) return;
+  if(!targetNode &&!archiveNode) return;
 
   let planning=[];
   try{
@@ -63,7 +73,6 @@ async function initPlanningV2(){
     if(!Array.isArray(planning)) planning=[];
   }catch(e){ planning=[]; }
 
-  // split types
   const upcoming = planning.filter(p=> (p.type||"upcoming")==="upcoming" && p.active!==false);
   const specials = planning.filter(p=> (p.type||"")=== "special" || (p.tag||"").toLowerCase().includes("special") || (p.tag||"").toLowerCase().includes("event"));
 
@@ -74,7 +83,7 @@ async function initPlanningV2(){
     items.forEach(item=>{
       const div=document.createElement("div");
       div.className=`card planning-card reveal visible active`;
-      const dateStr = item.date ? formatDateFR(item.date) : item.day;
+      const dateStr = item.date? formatDateFR(item.date) : item.day;
       const gCal = buildGCalLink(item);
       const outlook = buildOutlookLink(item);
       div.innerHTML=`
@@ -92,7 +101,6 @@ async function initPlanningV2(){
 
   if(statusNode) statusNode.textContent=`Planning à jour • ${upcoming.length} streams à venir • ${specials.length} events spéciaux`;
 
-  // archives Twitch
   let historyItems=[];
   if(archiveNode){
     try{
@@ -114,36 +122,31 @@ async function initPlanningV2(){
     }catch(e){ if(archiveNode) archiveNode.innerHTML="<p class='lead'>Archives indisponibles.</p>"; }
   }
 
-  // stats Twitch monthly
   if(statsNode){
     try{
       const now=new Date();
       const monthStart=new Date(now.getFullYear(), now.getMonth(), 1);
       const monthItems = historyItems.filter(i=> new Date(i.created_at) >= monthStart);
       const totalSec = monthItems.reduce((acc, cur)=>{
-        // parse duration like 2h13m5s
         const m = String(cur.duration||"").match(/(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?/);
         if(!m) return acc;
         const h=parseInt(m[1]||0), mi=parseInt(m[2]||0), s=parseInt(m[3]||0);
         return acc + h*3600 + mi*60 + s;
       },0);
       const hours = (totalSec/3600).toFixed(1);
-      // try fetch followers count from status if available extended
       let followers="—", subs="—", games= new Set(monthItems.map(i=>i.title)).size || "—";
       try{
         const r=await fetch(`/api/twitch-status?login=reddice_stream&_=${Date.now()}`,{cache:"no-store"});
         const j=await r.json();
-        // if api returns extra, use
         if(j.followers) followers=j.followers;
         if(j.subscribers) subs=j.subscribers;
       }catch{}
       statsNode.innerHTML=`
-        <div class="stat"><small class="mini-chip">Août 2026</small><strong>${hours}h</strong><span style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem">Temps stream ce mois</span></div>
-        <div class="stat"><small class="mini-chip">Jeux</small><strong>${games}</strong><span style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem">Titres différents</span></div>
+        <div class="stat"><small class="mini-chip">Ce mois</small><strong>${hours}h</strong><span style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem">Temps stream</span></div>
+        <div class="stat"><small class="mini-chip">Jeux</small><strong>${games}</strong><span style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem">Titres</span></div>
         <div class="stat"><small class="mini-chip">Followers</small><strong id="stat-followers">${esc(String(followers))}</strong><span style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem">Communauté</span></div>
-        <div class="stat"><small class="mini-chip">Subs</small><strong id="stat-subs">${esc(String(subs))}</strong><span style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem">Abonnés actifs</span></div>
+        <div class="stat"><small class="mini-chip">Subs</small><strong id="stat-subs">${esc(String(subs))}</strong><span style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem">Abonnés</span></div>
       `;
-      // try fetch real followers via new api if exists
       fetch("/api/twitch-stats?login=reddice_stream").then(r=>r.json()).then(j=>{
         if(j.followers) document.getElementById("stat-followers").textContent=j.followers;
         if(j.subscribers) document.getElementById("stat-subs").textContent=j.subscribers;
@@ -151,13 +154,12 @@ async function initPlanningV2(){
     }catch{}
   }
 
-  // catch reac section
   if(catchNode){
     const keywords=["WWE","AEW","RAW","SMACKDOWN","NXT","PLE","CATCH","WRESTLE"];
     const catchItems = historyItems.filter(v=> keywords.some(k=> (v.title||"").toUpperCase().includes(k)));
     catchNode.innerHTML="";
     if(!catchItems.length){
-      catchNode.innerHTML="<p class='lead'>Aucun REAC catch récent. Mots-clés surveillés: WWE, AEW, RAW, SmackDown, NXT, PLE.</p>";
+      catchNode.innerHTML="<p class='lead'>Aucun REAC catch récent. Mots-clés: WWE, AEW, RAW, SmackDown, NXT, PLE.</p>";
     }else{
       catchItems.slice(0,6).forEach(v=>{
         const el=document.createElement("div");
@@ -178,13 +180,7 @@ function buildGCalLink(item){
   const start=new Date(date); start.setHours(h, m||0,0,0);
   const end=new Date(start.getTime()+2*60*60*1000);
   const fmt=d=>d.toISOString().replace(/[-:]/g,"").split(".")[0]+"Z";
-  const params=new URLSearchParams({
-    action:"TEMPLATE",
-    text:item.title||"Stream Reddice",
-    dates:`${fmt(start)}/${fmt(end)}`,
-    details:`Stream Reddice - ${item.tag||""} - https://www.twitch.tv/reddice_stream`,
-    location:"https://www.twitch.tv/reddice_stream"
-  });
+  const params=new URLSearchParams({action:"TEMPLATE", text:item.title||"Stream Reddice", dates:`${fmt(start)}/${fmt(end)}`, details:`Stream Reddice - ${item.tag||""} - https://www.twitch.tv/reddice_stream`, location:"https://www.twitch.tv/reddice_stream"});
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 function buildOutlookLink(item){
@@ -194,19 +190,11 @@ function buildOutlookLink(item){
   const start=new Date(date); start.setHours(h, m||0,0,0);
   const end=new Date(start.getTime()+2*60*60*1000);
   const fmt=d=>d.toISOString();
-  const params=new URLSearchParams({
-    path:"/calendar/action/compose",
-    rru:"addevent",
-    subject:item.title||"Stream Reddice",
-    body:`Stream Reddice - ${item.tag||""} - https://www.twitch.tv/reddice_stream`,
-    startdt:fmt(start),
-    enddt:fmt(end),
-    location:"https://www.twitch.tv/reddice_stream"
-  });
+  const params=new URLSearchParams({path:"/calendar/action/compose", rru:"addevent", subject:item.title||"Stream Reddice", body:`Stream Reddice - ${item.tag||""} - https://www.twitch.tv/reddice_stream`, startdt:fmt(start), enddt:fmt(end), location:"https://www.twitch.tv/reddice_stream"});
   return `https://outlook.live.com/calendar/0/deeplink/compose?${params.toString()}`;
 }
 
-/* GUESTBOOK DYNAMIC */
+/* GUESTBOOK */
 async function initGuestbook(){
   const form=document.getElementById("guestbook-form");
   const list=document.getElementById("guestbook-list");
@@ -217,10 +205,10 @@ async function initGuestbook(){
   if(!form||!list) return;
   let items=[]; let current=5; let currentPage=1; const perPage=10;
   const STORAGE_KEY="reddice_guestbook_auto_v3";
-  const stars=Array.from(document.querySelectorAll("[data-rating-value]")).filter(b=>b.closest("#guestbook-stars")||true);
+  const stars=Array.from(document.querySelectorAll("[data-rating-value]"));
   const paint=v=>stars.forEach(s=>s.classList.toggle("is-active", Number(s.dataset.ratingValue)<=v));
   paint(5);
-  stars.forEach(s=>s.addEventListener("click",()=>{current=Number(s.dataset.ratingValue); if(ratingInput) ratingInput.value=current; paint(current)}));
+  stars.forEach(s=>s.addEventListener("click",()=>{current=Number(s.dataset.ratingValue); if(ratingInput) ratingInput.value=current; paint(current); triggerLedFlash(s);}));
 
   const saveLocal=()=>{ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }catch{} };
   const loadLocal=()=>{ try{ const raw=localStorage.getItem(STORAGE_KEY); if(raw){ const arr=JSON.parse(raw); if(Array.isArray(arr)) return arr; } }catch{} return []; };
@@ -228,36 +216,26 @@ async function initGuestbook(){
   const render=()=>{
     const total=items.length;
     if(countEl) countEl.textContent=`${total} avis • Page ${currentPage}/${Math.max(1,Math.ceil(total/perPage))} • Holo-feed actif`;
-    if(total===0){ list.innerHTML="<p class='lead'>Aucun avis, sois le premier. Ton avis s'affiche instantanément en holo-feed !</p>"; if(pagination) pagination.innerHTML=""; return; }
+    if(total===0){ list.innerHTML="<p class='lead'>Aucun avis, sois le premier. Ton avis s'affiche instantanément en holo-feed!</p>"; if(pagination) pagination.innerHTML=""; return; }
     const start=(currentPage-1)*perPage;
     const pageItems=items.slice(start, start+perPage);
     list.innerHTML="";
     pageItems.forEach(e=>{
       const d=document.createElement("div");
       d.className="card reveal visible";
-      d.style.animation=`holoIn .4s ease`;
-      d.innerHTML=`<div style="display:flex; justify-content:space-between; align-items:center"><strong style="color:#fff">${esc(e.name)}</strong><small style="color:var(--muted)">${new Date(e.created_at).toLocaleDateString('fr-FR')}</small></div><div style="color:var(--gold); letter-spacing:2px; margin:.3rem 0">${"★".repeat(e.rating||5)}<span style="color:#333">${"★".repeat(5-(e.rating||5))}</span></div>${e.title?`<h4 style="margin:0.4rem 0; color:var(--cyan)">${esc(e.title)}</h4>`:""}<p style="color:var(--muted); line-height:1.4">${esc(e.message)}</p>${location.search.includes('admin')?`<button class="btn btn-small" onclick="deleteEntry('${e.id}')">Supprimer</button>`:""}`;
+      d.innerHTML=`<div style="display:flex; justify-content:space-between; align-items:center"><strong style="color:#fff">${esc(e.name)}</strong><small style="color:var(--muted)">${new Date(e.created_at).toLocaleDateString('fr-FR')}</small></div><div style="color:var(--gold); letter-spacing:2px; margin:.3rem 0">${"★".repeat(e.rating||5)}<span style="color:#333">${"★".repeat(5-(e.rating||5))}</span></div>${e.title?`<h4 style="margin:0.4rem 0; color:var(--cyan)">${esc(e.title)}</h4>`:""}<p style="color:var(--muted); line-height:1.4">${esc(e.message)}</p>`;
       list.appendChild(d);
     });
     if(pagination){
       const totalPages=Math.ceil(total/perPage);
       pagination.innerHTML="";
       if(totalPages>1){
-        const mkBtn=(label,page,disabled=false,active=false)=>{
-          const b=document.createElement("button");
-          b.textContent=label; b.className="btn btn-small"+(active?" btn-primary":""); b.disabled=disabled; b.style.opacity=disabled?"0.4":"1";
-          b.onclick=()=>{ currentPage=page; render(); window.scrollTo({top:list.offsetTop-120, behavior:"smooth"}); };
-          return b;
-        };
-        pagination.appendChild(mkBtn("◀", Math.max(1,currentPage-1), currentPage===1));
         for(let p=1;p<=totalPages;p++){
-          if(totalPages>7 && Math.abs(p-currentPage)>2 && p!==1 && p!==totalPages){
-            if(p===2 || p===totalPages-1){ const sep=document.createElement("span"); sep.textContent="…"; sep.style.padding="0.5rem"; pagination.appendChild(sep); }
-            continue;
-          }
-          pagination.appendChild(mkBtn(String(p), p, false, p===currentPage));
+          const b=document.createElement("button");
+          b.textContent=p; b.className="btn btn-small"+(p===currentPage?" btn-primary":"");
+          b.onclick=()=>{ currentPage=p; render(); window.scrollTo({top:list.offsetTop-120, behavior:"smooth"}); };
+          pagination.appendChild(b);
         }
-        pagination.appendChild(mkBtn("▶", Math.min(totalPages,currentPage+1), currentPage===totalPages));
       }
     }
   };
@@ -267,14 +245,10 @@ async function initGuestbook(){
       const r=await fetch("/api/guestbook",{cache:"no-store"});
       if(r.ok){
         const j=await r.json();
-        if(j.items && j.items.length){
-          items=j.items; saveLocal(); currentPage=1; render(); return;
-        }
+        if(j.items && j.items.length){ items=j.items; saveLocal(); currentPage=1; render(); return; }
       }
     }catch{}
-    const local=loadLocal();
-    if(local.length){ items=local; }
-    render();
+    items=loadLocal(); render();
   };
 
   form.addEventListener("submit", async ev=>{
@@ -284,24 +258,15 @@ async function initGuestbook(){
     if(!payload.name||!payload.message){ if(status) status.textContent="Pseudo + message obligatoires"; return;}
     const newItem={id:"local_"+Date.now(), name:payload.name, title:payload.title, message:payload.message, rating:payload.rating, created_at:new Date().toISOString()};
     items.unshift(newItem); saveLocal(); currentPage=1; render();
-    if(status) status.textContent="Publié instantanément !";
+    if(status) status.textContent="Publié instantanément! [LED_SYNC_OK]";
     form.reset(); current=5; if(ratingInput) ratingInput.value=5; paint(5);
     try{
       const r=await fetch("/api/guestbook",{method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
       const j=await r.json();
-      if(r.ok && j.item){ items[0]=j.item; saveLocal(); render(); if(status) status.textContent="Publié et sauvegardé !"; }
+      if(r.ok && j.item){ items[0]=j.item; saveLocal(); render(); if(status) status.textContent="Publié et sauvegardé!"; }
     }catch(e){ if(status) status.textContent="Publié en local (serveur indisponible)."; }
   });
-
   await load();
-  window.deleteEntry=async(id)=>{
-    if(!confirm("Supprimer cet avis ?")) return;
-    items=items.filter(i=>i.id!==id); saveLocal();
-    const totalPages=Math.max(1,Math.ceil(items.length/perPage));
-    if(currentPage>totalPages) currentPage=totalPages;
-    render();
-    try{ await fetch(`/api/guestbook?id=${id}`,{method:"DELETE"}); }catch{}
-  };
 }
 
 /* CONTACT */
@@ -312,61 +277,44 @@ function initContactForm(){
   form.addEventListener("submit", async e=>{
     e.preventDefault();
     const fd=new FormData(form);
-    const payload={
-      name:String(fd.get("name")||"").trim(),
-      email:String(fd.get("email")||"").trim(),
-      subject:String(fd.get("subject")||"").trim(),
-      message:String(fd.get("message")||"").trim(),
-      website:String(fd.get("website")||"").trim(),
-    };
+    const payload={name:String(fd.get("name")||"").trim(), email:String(fd.get("email")||"").trim(), subject:String(fd.get("subject")||"").trim(), message:String(fd.get("message")||"").trim(), website:String(fd.get("website")||"").trim()};
     if(payload.website){ status.textContent="Spam détecté."; return; }
-    if(!payload.name || !payload.email || !payload.message){ status.textContent="Nom, email et message requis."; return; }
-    status.textContent="Envoi...";
-    // save locally + try api
+    if(!payload.name ||!payload.email ||!payload.message){ status.textContent="Nom, email et message requis."; return; }
+    status.textContent="Transmission en cours... [ENCRYPTING]";
     try{
       const r=await fetch("/api/contact",{method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
-      if(r.ok){ status.textContent="Message envoyé ! Je te réponds vite."; form.reset(); return; }
+      if(r.ok){ status.textContent="Message envoyé! Je te réponds vite. [TRACE_CLEARED]"; form.reset(); return; }
       throw new Error("api fail");
     }catch{
-      // fallback local
       const key="reddice_contacts_v3";
       const arr=JSON.parse(localStorage.getItem(key)||"[]");
       arr.unshift({...payload, id:"ct_"+Date.now(), created_at:new Date().toISOString()});
       localStorage.setItem(key, JSON.stringify(arr));
-      status.textContent="Message enregistré en local (API indisponible). Je le verrai dans l'admin.";
+      status.textContent="Message enregistré en local (API indisponible). Visible dans admin.";
       form.reset();
     }
   });
 }
 
-/* ADMIN - login + panel */
+/* ADMIN */
 function initAdmin(){
   const loginForm=document.getElementById("admin-login-form");
   const panel=document.getElementById("admin-panel");
   if(!loginForm) return;
-  // CHANGE ICI TES IDENTIFIANTS UNIQUES
-  const ADMIN_USER="reddice"; // <-- change
-  const ADMIN_PASS="Xboxone49Angers*"; // <-- change
-
+  const ADMIN_USER="reddice";
+  const ADMIN_PASS="Xboxone49Angers*";
   const checkSession=()=> localStorage.getItem("reddice_admin_session")==="ok";
   const setSession=()=>{ localStorage.setItem("reddice_admin_session","ok"); panel.classList.add("is-open"); loginForm.parentElement.style.display="none"; loadAdminData(); };
   if(checkSession()) setSession();
-
   loginForm.addEventListener("submit", e=>{
     e.preventDefault();
     const fd=new FormData(loginForm);
     const u=String(fd.get("username")||"").trim();
     const p=String(fd.get("password")||"");
     if(u===ADMIN_USER && p===ADMIN_PASS){ setSession(); }
-    else{ document.getElementById("admin-login-status").textContent="Identifiants invalides."; }
+    else{ document.getElementById("admin-login-status").textContent="Identifiants invalides. [ACCESS_DENIED]"; triggerGlitch(document.getElementById("admin-login-block")); }
   });
-
-  document.getElementById("admin-logout")?.addEventListener("click", ()=>{
-    localStorage.removeItem("reddice_admin_session");
-    location.reload();
-  });
-
-  // tabs
+  document.getElementById("admin-logout")?.addEventListener("click", ()=>{ localStorage.removeItem("reddice_admin_session"); location.reload(); });
   document.querySelectorAll("[data-admin-tab]").forEach(btn=>{
     btn.addEventListener("click", ()=>{
       document.querySelectorAll("[data-admin-tab]").forEach(b=>b.classList.remove("btn-primary"));
@@ -376,9 +324,7 @@ function initAdmin(){
     });
   });
 }
-
 async function loadAdminData(){
-  // planning editor
   const planningList=document.getElementById("admin-planning-list");
   const contactsList=document.getElementById("admin-contacts-list");
   const guestbookAdmin=document.getElementById("admin-guestbook-list");
@@ -386,221 +332,74 @@ async function loadAdminData(){
   try{
     const stored=localStorage.getItem("reddice_planning_override_v3");
     if(stored) planning=JSON.parse(stored);
-    else{
-      const r=await fetch("/data/planning.json",{cache:"no-store"});
-      planning=await r.json();
-    }
+    else{ const r=await fetch("/data/planning.json",{cache:"no-store"}); planning=await r.json(); }
   }catch{}
   if(planningList){
     planningList.innerHTML="";
     planning.forEach((ev, idx)=>{
-      const row=document.createElement("div");
-      row.className="card";
-      row.innerHTML=`<div style="display:grid; gap:.4rem">
-        <input data-idx="${idx}" data-field="title" value="${esc(ev.title)}">
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:.4rem">
-          <input data-idx="${idx}" data-field="date" type="date" value="${esc(ev.date||"")}">
-          <input data-idx="${idx}" data-field="time" value="${esc(ev.time)}">
-          <input data-idx="${idx}" data-field="tag" value="${esc(ev.tag)}">
-        </div>
-        <select data-idx="${idx}" data-field="type"><option value="upcoming" ${ev.type==="upcoming"?"selected":""}>upcoming</option><option value="special" ${ev.type==="special"?"selected":""}>special</option></select>
-        <div style="display:flex; gap:.4rem"><button class="btn btn-small" onclick="adminDeletePlanning(${idx})">Supprimer</button></div>
-      </div>`;
+      const row=document.createElement("div"); row.className="card";
+      row.innerHTML=`<div style="display:grid; gap:.4rem"><input data-idx="${idx}" data-field="title" value="${esc(ev.title)}"><div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:.4rem"><input data-idx="${idx}" data-field="date" type="date" value="${esc(ev.date||"")}"><input data-idx="${idx}" data-field="time" value="${esc(ev.time)}"><input data-idx="${idx}" data-field="tag" value="${esc(ev.tag)}"></div><select data-idx="${idx}" data-field="type"><option value="upcoming" ${ev.type==="upcoming"?"selected":""}>upcoming</option><option value="special" ${ev.type==="special"?"selected":""}>special</option></select><div style="display:flex; gap:.4rem"><button class="btn btn-small" onclick="adminDeletePlanning(${idx})">Supprimer</button></div></div>`;
       planningList.appendChild(row);
     });
-    planningList.querySelectorAll("input,select").forEach(inp=>{
-      inp.addEventListener("change", e=>{
-        const idx=parseInt(e.target.dataset.idx);
-        const field=e.target.dataset.field;
-        planning[idx][field]=e.target.value;
-        localStorage.setItem("reddice_planning_override_v3", JSON.stringify(planning));
-      });
-    });
+    planningList.querySelectorAll("input,select").forEach(inp=>{ inp.addEventListener("change", e=>{ const idx=parseInt(e.target.dataset.idx); const field=e.target.dataset.field; planning[idx][field]=e.target.value; localStorage.setItem("reddice_planning_override_v3", JSON.stringify(planning)); }); });
   }
-  window.adminDeletePlanning=(idx)=>{
-    planning.splice(idx,1);
-    localStorage.setItem("reddice_planning_override_v3", JSON.stringify(planning));
-    loadAdminData();
-  };
+  window.adminDeletePlanning=(idx)=>{ planning.splice(idx,1); localStorage.setItem("reddice_planning_override_v3", JSON.stringify(planning)); loadAdminData(); };
   window.adminAddPlanning=()=>{
-    const title=prompt("Titre de l'event ?");
-    if(!title) return;
+    const title=prompt("Titre de l'event?"); if(!title) return;
     const date=prompt("Date YYYY-MM-DD","2026-09-01")|| new Date().toISOString().slice(0,10);
     const time=prompt("Heure HH:MM","20:30")||"20:30";
     const tag=prompt("Tag","Live principal")||"Live";
     const type=prompt("Type upcoming / special","upcoming")||"upcoming";
     planning.push({id:"evt_"+Date.now(), day: new Date(date).toLocaleDateString('fr-FR',{weekday:'long'}), date, time, title, tag, active:true, type});
-    localStorage.setItem("reddice_planning_override_v3", JSON.stringify(planning));
-    loadAdminData();
+    localStorage.setItem("reddice_planning_override_v3", JSON.stringify(planning)); loadAdminData();
   };
-  window.adminExportPlanning=()=>{
-    const blob=new Blob([JSON.stringify(planning, null, 2)],{type:"application/json"});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement("a"); a.href=url; a.download="planning.json"; a.click();
-  };
-  window.adminResetPlanning=()=>{
-    if(confirm("Reset planning vers fichier d'origine ?")){ localStorage.removeItem("reddice_planning_override_v3"); loadAdminData(); }
-  };
+  window.adminExportPlanning=()=>{ const blob=new Blob([JSON.stringify(planning, null, 2)],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download="planning.json"; a.click(); };
+  window.adminResetPlanning=()=>{ if(confirm("Reset planning vers fichier d'origine?")){ localStorage.removeItem("reddice_planning_override_v3"); loadAdminData(); } };
 
-  // contacts
   if(contactsList){
-    contactsList.innerHTML="";
-    let contacts=[];
-    try{
-      const r=await fetch("/api/contact",{cache:"no-store"});
-      if(r.ok){ const j=await r.json(); contacts=j.items||[]; }
-    }catch{}
-    if(!contacts.length){
-      contacts=JSON.parse(localStorage.getItem("reddice_contacts_v3")||"[]");
-    }
+    contactsList.innerHTML=""; let contacts=[];
+    try{ const r=await fetch("/api/contact",{cache:"no-store"}); if(r.ok){ const j=await r.json(); contacts=j.items||[]; } }catch{}
+    if(!contacts.length){ contacts=JSON.parse(localStorage.getItem("reddice_contacts_v3")||"[]"); }
     if(!contacts.length) contactsList.innerHTML="<p class='lead'>Aucun contact.</p>";
-    contacts.forEach(c=>{
-      const div=document.createElement("div");
-      div.className="card";
-      div.innerHTML=`<strong>${esc(c.name)} - ${esc(c.email)}</strong><br><small style="color:var(--muted)">${new Date(c.created_at).toLocaleDateString('fr-FR')} - ${esc(c.subject||"")}</small><p style="color:var(--muted)">${esc(c.message)}</p>`;
-      contactsList.appendChild(div);
-    });
+    contacts.forEach(c=>{ const div=document.createElement("div"); div.className="card"; div.innerHTML=`<strong>${esc(c.name)} - ${esc(c.email)}</strong><br><small style="color:var(--muted)">${new Date(c.created_at).toLocaleDateString('fr-FR')} - ${esc(c.subject||"")}</small><p style="color:var(--muted)">${esc(c.message)}</p>`; contactsList.appendChild(div); });
   }
-  // guestbook in admin
   if(guestbookAdmin){
     try{
-      const r=await fetch("/api/guestbook",{cache:"no-store"});
-      const j=await r.json();
-
-      const items=Array.isArray(j.items)
-        ? j.items
-        : JSON.parse(
-            localStorage.getItem("reddice_guestbook_auto_v3") || "[]"
-          );
-
+      const r=await fetch("/api/guestbook",{cache:"no-store"}); const j=await r.json();
+      const items=Array.isArray(j.items)? j.items : JSON.parse(localStorage.getItem("reddice_guestbook_auto_v3") || "[]");
       guestbookAdmin.innerHTML="";
-
-      if(!items.length){
-        guestbookAdmin.innerHTML="<p class='lead'>Aucun avis.</p>";
-      }
-
+      if(!items.length){ guestbookAdmin.innerHTML="<p class='lead'>Aucun avis.</p>"; }
       items.slice(0,50).forEach(e=>{
-        const d=document.createElement("div");
-        d.className="card";
-
-        d.innerHTML=`
-          <strong>${esc(e.name)}</strong> - ${Number(e.rating||5)}/5
-          <br>
-          <small>${esc(e.title||"")}</small>
-          <p>${esc(e.message)}</p>
-
-          <button
-            class="btn btn-small"
-            data-guestbook-delete="${esc(e.id)}"
-            type="button"
-          >
-            Supprimer
-          </button>
-        `;
-
+        const d=document.createElement("div"); d.className="card";
+        d.innerHTML=`<strong>${esc(e.name)}</strong> - ${Number(e.rating||5)}/5<br><small>${esc(e.title||"")}</small><p>${esc(e.message)}</p><button class="btn btn-small" data-guestbook-delete="${esc(e.id)}" type="button">Supprimer</button>`;
         const deleteButton=d.querySelector("[data-guestbook-delete]");
-
-        if(deleteButton){
-          deleteButton.addEventListener("click", async ()=>{
-            await adminDeleteGuestbook(e.id, deleteButton);
-          });
-        }
-
+        if(deleteButton){ deleteButton.addEventListener("click", async ()=>{ await adminDeleteGuestbook(e.id, deleteButton); }); }
         guestbookAdmin.appendChild(d);
       });
-
-    }catch(error){
-      console.error("Erreur chargement livre d'or admin :", error);
-      guestbookAdmin.innerHTML="<p class='lead'>Impossible de charger les avis.</p>";
-    }
+    }catch(error){ guestbookAdmin.innerHTML="<p class='lead'>Impossible de charger les avis.</p>"; }
   }
 }
-
-
-/* SUPPRESSION LIVRE D'OR DEPUIS LE PANEL ADMIN */
 async function adminDeleteGuestbook(id, button){
-  if(!id) return;
-
-  if(!confirm("Supprimer définitivement cet avis ?")){
-    return;
-  }
-
-  const oldText=button ? button.textContent : "";
-
-  if(button){
-    button.disabled=true;
-    button.textContent="Suppression...";
-  }
-
+  if(!id) return; if(!confirm("Supprimer définitivement cet avis?")) return;
+  const oldText=button? button.textContent : "";
+  if(button){ button.disabled=true; button.textContent="Suppression... [PURGE]"; }
   try{
-    const r=await fetch(
-      `/api/guestbook?id=${encodeURIComponent(id)}`,
-      {
-        method:"DELETE",
-        headers:{
-          "Accept":"application/json"
-        },
-        cache:"no-store"
-      }
-    );
-
-    let j={};
-
-    try{
-      j=await r.json();
-    }catch{}
-
-    if(!r.ok || j.ok===false){
-      throw new Error(
-        j.error ||
-        `Erreur suppression (${r.status})`
-      );
-    }
-
-    // Nettoie aussi le fallback local du navigateur
-    try{
-      const key="reddice_guestbook_auto_v3";
-      const local=JSON.parse(localStorage.getItem(key)||"[]");
-
-      if(Array.isArray(local)){
-        const cleaned=local.filter(item=>String(item.id)!==String(id));
-        localStorage.setItem(key, JSON.stringify(cleaned));
-      }
-    }catch{}
-
-    // Recharge la liste admin pour vérifier côté serveur
+    const r=await fetch(`/api/guestbook?id=${encodeURIComponent(id)}`,{method:"DELETE", headers:{"Accept":"application/json"}, cache:"no-store"});
+    let j={}; try{ j=await r.json(); }catch{}
+    if(!r.ok || j.ok===false){ throw new Error(j.error || `Erreur suppression (${r.status})`); }
+    try{ const key="reddice_guestbook_auto_v3"; const local=JSON.parse(localStorage.getItem(key)||"[]"); if(Array.isArray(local)){ const cleaned=local.filter(item=>String(item.id)!==String(id)); localStorage.setItem(key, JSON.stringify(cleaned)); } }catch{}
     await loadAdminData();
-
-  }catch(error){
-    console.error("Erreur suppression avis :", error);
-    alert(
-      "La suppression a échoué : " +
-      (error.message || "erreur inconnue")
-    );
-
-    if(button){
-      button.disabled=false;
-      button.textContent=oldText || "Supprimer";
-    }
-  }
+  }catch(error){ alert("La suppression a échoué : " + (error.message || "erreur inconnue")); if(button){ button.disabled=false; button.textContent=oldText || "Supprimer"; } }
 }
-
 window.adminDeleteGuestbook=adminDeleteGuestbook;
 
-
-/* === SEASONAL AUTO SYSTEM V3.5 === */
+/* SEASONAL */
 function isDateInRange(m,d, sm,sd, em,ed){
-  const cur = m*100 + d;
-  const start = sm*100 + sd;
-  const end = em*100 + ed;
-  if(start <= end){ return cur >= start && cur <= end; }
-  else { return cur >= start || cur <= end; } // wraps year
+  const cur = m*100 + d; const start = sm*100 + sd; const end = em*100 + ed;
+  if(start <= end){ return cur >= start && cur <= end; } else { return cur >= start || cur <= end; }
 }
 function getCurrentSeason(date = new Date()){
-  const m = date.getMonth()+1;
-  const d = date.getDate();
-
-  // Priorité aux fêtes spéciales
+  const m = date.getMonth()+1; const d = date.getDate();
   if(isDateInRange(m,d,2,12,2,15)) return "saint-valentin";
   if(isDateInRange(m,d,4,26,4,26)) return "anniversaire-reddice";
   if(isDateInRange(m,d,9,5,9,5)) return "anniversaire-stream";
@@ -609,73 +408,191 @@ function getCurrentSeason(date = new Date()){
   if(isDateInRange(m,d,10,20,11,2)) return "halloween";
   if(isDateInRange(m,d,12,1,12,26)) return "noel";
   if(isDateInRange(m,d,12,27,1,5)) return "nouvel-an";
-
-  // Saisons continues : aucune date oubliée
   if(isDateInRange(m,d,3,20,6,21)) return "printemps";
   if(isDateInRange(m,d,6,22,9,21)) return "ete";
   if(isDateInRange(m,d,9,22,11,30)) return "automne";
   if(isDateInRange(m,d,12,1,3,19)) return "hiver";
-
   return "hiver";
 }
 function getSeasonConfig(season){
   const cfg={
-    "saint-valentin":{ name:"Saint-Valentin", emoji:"💘", msg:"💘 Saint-Valentin — Love is in the air, choom ! Cupidon a hacké le datapad 💘", particles:["💘","❤️","💕","💖","💝"], count:22 },
-    "anniversaire-reddice":{ name:"Anniversaire de Reddice", emoji:"🎂", msg:"🎂 26 Avril — Joyeux anniversaire Reddice ! 🎉", particles:["🎂","🎉","🎈","🥳","✨"], count:30 },
-    "anniversaire-stream":{ name:"Anniversaire du stream de Reddice", emoji:"🎮", msg:"🎮 5 Septembre — Joyeux anniversaire au stream de Reddice ! 🎉", particles:["🎮","🎉","🎧","🥳","✨"], count:30 },
+    "saint-valentin":{ name:"Saint-Valentin", emoji:"💘", msg:"💘 Saint-Valentin — Love is in the air, choom! 💘", particles:["💘","❤","💕","💖","💝"], count:22 },
+    "anniversaire-reddice":{ name:"Anniversaire de Reddice", emoji:"🎂", msg:"🎂 26 Avril — Joyeux anniversaire Reddice! 🎉", particles:["🎂","🎉","🎈","🥳","✨"], count:30 },
+    "anniversaire-stream":{ name:"Anniversaire du stream", emoji:"🎮", msg:"🎮 5 Septembre — Joyeux anniversaire au stream de Reddice! 🎉", particles:["🎮","🎉","🎧","🥳","✨"], count:30 },
     "printemps":{ name:"Printemps", emoji:"🌸", msg:"🌸 Printemps — Bloom & Chill — Le datacenter fleurit 🌸", particles:["🌸","🌺","🌷","🍃","✨"], count:24 },
-    "fete-musique":{ name:"Fête de la Musique", emoji:"🎵", msg:"🎵 Fête de la Musique — 21 Juin — Pousse le son à fond, stream en live ! 🎶", particles:["🎵","🎶","🎧","🎸","🎤"], count:28 },
-    "fete-nationale":{ name:"Fête nationale", emoji:"🇫🇷", msg:"🇫🇷 14 Juillet — Bonne fête nationale ! Feux d'artifice et ambiance tricolore 🎆", particles:["🇫🇷","🎆","🎇","✨","🎉"], count:30 },
-    "ete":{ name:"Été", emoji:"☀️", msg:"☀️ Été — Mode soleil activé — Shadow PC au frais, toi au soleil ☀️", particles:["☀️","✨","🌊","😎","🌴"], count:20 },
+    "fete-musique":{ name:"Fête de la Musique", emoji:"🎵", msg:"🎵 Fête de la Musique — 21 Juin — Pousse le son! 🎶", particles:["🎵","🎶","🎧","🎸","🎤"], count:28 },
+    "fete-nationale":{ name:"Fête nationale", emoji:"🇫🇷", msg:"🇫🇷 14 Juillet — Bonne fête nationale! 🎆", particles:["🇫🇷","🎆","🎇","✨","🎉"], count:30 },
+    "ete":{ name:"Été", emoji:"☀", msg:"☀ Été — Mode soleil activé — GeForce NOW au frais ☀", particles:["☀","✨","🌊","😎","🌴"], count:20 },
     "automne":{ name:"Automne", emoji:"🍂", msg:"🍂 Automne — Feuilles qui tombent, cosplay qui chauffe 🍁", particles:["🍂","🍁","🍃","🧡","✨"], count:26 },
-    "halloween":{ name:"Halloween", emoji:"🎃", msg:"🎃 Halloween — Beware the Black ICE... Les netrunners se déguisent 🎃", particles:["🎃","👻","🦇","🕷️","💀"], count:30 },
-    "noel":{ name:"Noël", emoji:"🎄", msg:"🎄 Joyeux Noël de la part de Reddice & Furioz Compagnie ! 🎄", particles:["❄️","🎄","🎁","✨","⛄"], count:32 },
-    "nouvel-an":{ name:"Nouvel An", emoji:"🎆", msg:"🎆 Nouvel An — Bonne année ! Que tes streams pètent le score ! 🎇", particles:["🎆","🎇","✨","🥂","🎉"], count:30 },
-    "hiver":{ name:"Hiver", emoji:"❄️", msg:"❄️ Hiver — Stay cozy, stream au chaud — Chocolat chaud + Star Citizen ❄️", particles:["❄️","🌨️","✨","🧣","☃️"], count:28 },
+    "halloween":{ name:"Halloween", emoji:"🎃", msg:"🎃 Halloween — Beware the Black ICE... 🎃", particles:["🎃","👻","🦇","🕷","💀"], count:30 },
+    "noel":{ name:"Noël", emoji:"🎄", msg:"🎄 Joyeux Noël de la part de Reddice & Furioz Compagnie! 🎄", particles:["❄","🎄","🎁","✨","⛄"], count:32 },
+    "nouvel-an":{ name:"Nouvel An", emoji:"🎆", msg:"🎆 Nouvel An — Bonne année! 🎇", particles:["🎆","🎇","✨","🥂","🎉"], count:30 },
+    "hiver":{ name:"Hiver", emoji:"❄", msg:"❄ Hiver — Stay cozy, stream au chaud ❄", particles:["❄","🌨","✨","🧣","☃"], count:28 },
   };
   return cfg[season] || { name:season, emoji:"✨", msg: "✨ Saison "+season+" ✨", particles:["✨"], count:15 };
 }
 function initSeasonal(){
   try{
-    const season = getCurrentSeason();
-    const cfg = getSeasonConfig(season);
+    const season = getCurrentSeason(); const cfg = getSeasonConfig(season);
     document.body.dataset.season = season;
-    // Banner
     let banner = document.getElementById("seasonal-banner");
-    if(!banner){
-      banner = document.createElement("div");
-      banner.id = "seasonal-banner";
-      document.body.prepend(banner);
-      // Push content down a bit
-      document.body.style.paddingTop = "28px";
-    }
-    banner.textContent = cfg.msg;
-    banner.title = "Saison auto: "+cfg.name+" - Change automatiquement selon la date";
-    // Particles
+    if(!banner){ banner = document.createElement("div"); banner.id = "seasonal-banner"; document.body.prepend(banner); document.body.style.paddingTop = "28px"; }
+    banner.textContent = cfg.msg; banner.title = "Saison auto: "+cfg.name;
     let cont = document.getElementById("seasonal-particles");
-    if(!cont){
-      cont = document.createElement("div");
-      cont.id = "seasonal-particles";
-      document.body.appendChild(cont);
-    }
+    if(!cont){ cont = document.createElement("div"); cont.id = "seasonal-particles"; document.body.appendChild(cont); }
     cont.innerHTML = "";
     for(let i=0;i<cfg.count;i++){
-      const el = document.createElement("div");
-      el.className = "season-particle";
+      const el = document.createElement("div"); el.className = "season-particle";
       el.textContent = cfg.particles[Math.floor(Math.random()*cfg.particles.length)];
-      el.style.left = Math.random()*100 + "vw";
-      el.style.animationDuration = (4 + Math.random()*6) + "s";
-      el.style.animationDelay = (Math.random()*5) + "s";
-      el.style.fontSize = (0.9 + Math.random()*1.1) + "rem";
-      el.style.opacity = (0.6 + Math.random()*0.4).toString();
+      el.style.left = Math.random()*100 + "vw"; el.style.animationDuration = (4 + Math.random()*6) + "s"; el.style.animationDelay = (Math.random()*5) + "s";
+      el.style.fontSize = (0.9 + Math.random()*1.1) + "rem"; el.style.opacity = (0.6 + Math.random()*0.4).toString();
       cont.appendChild(el);
     }
-    console.log("[Seasonal] Saison active:", season, cfg.name);
-    // Expose for debug
-    window._reddiceSeason = season;
-    window._reddiceSeasonConfig = cfg;
+    window._reddiceSeason = season; window._reddiceSeasonConfig = cfg;
   }catch(e){ console.warn("Seasonal init failed", e); }
 }
-
 function setYear(){ const n=document.getElementById("current-year"); if(n) n.textContent=new Date().getFullYear(); }
 function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+
+/* === CYBERPUNK 2077 AMBIANCE - LED / DESTRUCTURE / GLITCH === */
+function initCyberpunk2077(){
+  initMouseGlow();
+  initLedFlicker();
+  initGlitchTitles();
+  initDestructure();
+  initTypingOverline();
+  initHoloTilt();
+  initScanlinePulse();
+  setInterval(()=>{ if(Math.random()<0.08) triggerRandomGlitch(); }, 3000);
+}
+function initMouseGlow(){
+  const glow=document.createElement('div');
+  glow.id='fusion-mouse-glow';
+  glow.style.cssText='position:fixed; width:700px; height:700px; pointer-events:none; z-index:9996; background:radial-gradient(circle, rgba(0,234,255,0.14), rgba(138,92,255,0.10) 38%, rgba(255,59,141,0.06) 58%, transparent 72%); mix-blend-mode:screen; transform:translate(-50%,-50%); transition:opacity.35s; opacity:0; filter:blur(2px)';
+  document.body.appendChild(glow);
+  let t;
+  document.addEventListener('mousemove', e=>{
+    glow.style.left=e.clientX+'px'; glow.style.top=e.clientY+'px'; glow.style.opacity='1';
+    clearTimeout(t); t=setTimeout(()=>glow.style.opacity='0', 1800);
+  });
+}
+function initLedFlicker(){
+  const kickers=document.querySelectorAll('.kicker');
+  kickers.forEach(k=>{
+    setInterval(()=>{
+      if(Math.random()<0.04){
+        k.style.textShadow='0 0 12px currentColor, 0 0 22px currentColor';
+        k.style.filter='brightness(1.6)';
+        setTimeout(()=>{ k.style.textShadow=''; k.style.filter=''; }, 90+Math.random()*120);
+      }
+    }, 220);
+  });
+  // overline LED dot pulse
+  const over=document.querySelector('.hub-overline');
+  if(over){
+    setInterval(()=>{
+      over.style.boxShadow=`0 0 ${8+Math.random()*18}px rgba(0,234,255,0.6), inset 0 0 8px rgba(0,234,255,0.2)`;
+      setTimeout(()=>over.style.boxShadow='', 180);
+    }, 900);
+  }
+}
+function initGlitchTitles(){
+  document.querySelectorAll('h2, h1').forEach(h=>{
+    h.addEventListener('mouseenter', ()=>triggerGlitch(h));
+  });
+}
+function triggerGlitch(el){
+  if(!el || el.dataset.glitching==='1') return;
+  el.dataset.glitching='1';
+  const original=el.innerHTML;
+  const chars='█▓▒░<>\\/[]{}—_#@&%';
+  let count=0;
+  const int=setInterval(()=>{
+    el.innerHTML=original.split('').map(c=>{
+      if(c===' ' || Math.random()<0.7) return c;
+      return chars[Math.floor(Math.random()*chars.length)];
+    }).join('');
+    el.style.transform=`translate(${Math.random()*2-1}px, ${Math.random()*2-1}px) skewX(${(Math.random()*2-1)*1.2}deg)`;
+    el.style.textShadow=`${Math.random()*3-1.5}px 0 var(--cyan), ${Math.random()*3-1.5}px 0 var(--pink)`;
+    count++;
+    if(count>6){
+      clearInterval(int);
+      el.innerHTML=original;
+      el.style.transform=''; el.style.textShadow='';
+      delete el.dataset.glitching;
+    }
+  }, 42);
+}
+function triggerRandomGlitch(){
+  const els=document.querySelectorAll('.shell h2,.card h3,.hub-overline');
+  const el=els[Math.floor(Math.random()*els.length)];
+  if(el) triggerGlitch(el);
+}
+function triggerLedFlash(el){
+  if(!el) return;
+  el.style.boxShadow='0 0 18px var(--cyan), 0 0 32px var(--violet)';
+  setTimeout(()=>el.style.boxShadow='', 220);
+}
+function initDestructure(){
+  // Destructure les kicker en lettres qui se décalent au hover - style Cyberpunk 2077 menu
+  document.querySelectorAll('.kicker,.hub-overline').forEach(k=>{
+    if(k.dataset.dest==='1') return;
+    k.dataset.dest='1';
+    const txt=k.textContent;
+    k.innerHTML=txt.split('').map(ch=>`<span style="display:inline-block; transition:transform.18s cubic-bezier(.16,1,.3,1)">${ch===' '?'&nbsp;':esc(ch)}</span>`).join('');
+    k.addEventListener('mouseenter', ()=>{
+      k.querySelectorAll('span').forEach((s,i)=>{
+        s.style.transform=`translateY(${Math.sin(i*1.3)*3}px) translateX(${Math.random()*2-1}px)`;
+        s.style.color=i%3===0?'var(--cyan)':i%3===1?'var(--pink)':'var(--violet)';
+      });
+    });
+    k.addEventListener('mouseleave', ()=>{
+      k.querySelectorAll('span').forEach(s=>{ s.style.transform=''; s.style.color=''; });
+    });
+  });
+}
+function initTypingOverline(){
+  const over=document.querySelector('.hub-overline');
+  if(!over || over.dataset.typed==='1') return;
+  over.dataset.typed='1';
+  const full=over.textContent;
+  over.textContent='';
+  let i=0;
+  const type=()=>{
+    if(i<=full.length){
+      over.textContent=full.slice(0,i)+'█';
+      i++;
+      setTimeout(type, 28+Math.random()*32);
+    }else{
+      over.textContent=full;
+      over.style.borderRight='2px solid var(--cyan)';
+      setTimeout(()=>over.style.borderRight='', 800);
+    }
+  };
+  setTimeout(type, 400);
+}
+function initHoloTilt(){
+  const cards=document.querySelectorAll('.card,.shell');
+  cards.forEach(card=>{
+    card.addEventListener('mousemove', e=>{
+      const rect=card.getBoundingClientRect();
+      const x=(e.clientX-rect.left)/rect.width-0.5;
+      const y=(e.clientY-rect.top)/rect.height-0.5;
+      card.style.transform=`perspective(900px) rotateY(${x*6}deg) rotateX(${-y*6}deg) translateY(-2px)`;
+      card.style.setProperty('--mx', (e.clientX-rect.left)+'px');
+      card.style.setProperty('--my', (e.clientY-rect.top)+'px');
+    });
+    card.addEventListener('mouseleave', ()=>{
+      card.style.transform='';
+    });
+  });
+}
+function initScanlinePulse(){
+  // Scanline qui pulse aléatoirement - ambiance écran CRT Night City
+  setInterval(()=>{
+    if(Math.random()<0.12){
+      document.body.style.filter='contrast(1.08) brightness(1.06)';
+      setTimeout(()=>document.body.style.filter='', 70);
+    }
+  }, 800);
+}
