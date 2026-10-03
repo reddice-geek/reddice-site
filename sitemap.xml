@@ -1,44 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <url>
-    <loc>/index.html</loc>
-    <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>/bio.html</loc>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>/setup.html</loc>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>/jeux.html</loc>
-    <priority>0.85</priority>
-  </url>
-
-  <url>
-    <loc>/planning.html</loc>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>/livre-or.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>/contact.html</loc>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>/sitemap.html</loc>
-    <priority>0.5</priority>
-  </url>
-
+  <url><loc>https://reddice.fr/index.html</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://reddice.fr/bio.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://reddice.fr/setup.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://reddice.fr/jeux.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://reddice.fr/planning.html</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://reddice.fr/livre-or.html</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://reddice.fr/contact.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://reddice.fr/sitemap.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://reddice.fr/404.html</loc><changefreq>yearly</changefreq><priority>0.1</priority></url>
+  <url><loc>https://reddice.fr/admin.html</loc><changefreq>yearly</changefreq><priority>0.1</priority></url>
 </urlset>
