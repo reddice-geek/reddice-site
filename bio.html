@@ -1,29 +1,69 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Bio - V4 Respiere</title><link rel="stylesheet" href="styles.css"></head>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bio - Reddice HUB V4</title>
+<link rel="icon" type="image/png" href="assets/icon-r.png">
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
 <body data-page="bio">
 <div class="fusion-orbs"><div class="orb orb-cyan"></div><div class="orb orb-violet"></div><div class="orb orb-pink"></div></div>
-<header class="hub-header"><div class="hub-brand"><span class="hub-overline">SYSTEME EN LIGNE - V4 // IDENTITE - BIO</span><p class="hub-subtitle">Streamer • Cosplayer • Créateur d'univers • Angers</p></div></header>
+<header class="hub-header">
+  <div class="hub-brand">
+    <a href="index.html"><img src="assets/logo-main.png" alt="Logo" class="hub-logo-main"></a>
+    <span class="hub-overline">SYSTEME EN LIGNE - V4 // IDENTITE - BIO</span>
+    <p class="hub-subtitle">Streamer • Cosplayer • Créateur d'univers • Angers — Datapad qui respire</p>
+  </div>
+</header>
+<nav class="hub-nav-shell">
+  <div class="container hub-nav-layout">
+    <div class="hub-nav-left"><span class="stream-badge is-loading" data-stream-status>Identité en ligne...</span></div>
+    <ul class="hub-nav">
+      <li><a href="index.html" class="hub-link-v2" data-nav="home">Accueil</a></li>
+      <li class="has-sub"><a href="bio.html" class="hub-link-v2 active" data-nav="bio">Bio</a>
+        <ul class="submenu"><li><a href="setup.html">Setup PCB RGB</a></li><li><a href="jeux.html">Mes Jeux</a></li></ul>
+      </li>
+      <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
+      <li><a href="livre-or.html" class="hub-link-v2" data-nav="guestbook">Livre d'or</a></li>
+      <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
+    </ul>
+    <div class="hub-nav-right">
+      <div class="quick-socials" style="display:flex; gap:.45rem">
+        <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick">Twitch</a>
+        <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick">Discord</a>
+        <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick">YouTube</a>
+        <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick">TikTok</a>
+      </div>
+      <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop" style="margin-left:12px">Shop</a>
+    </div>
+  </div>
+</nav>
 <main class="container" style="display:grid; gap:2rem; padding-top:2.4rem">
-<section class="shell reveal visible" style="padding:2.4rem">
-<div style="display:grid; grid-template-columns:300px 1fr; gap:2rem">
-<div style="border:1px solid var(--border); background:rgba(0,0,0,0.24)"><img src="assets/photo-cedric.jpg" alt="Cedric" style="width:100%"></div>
-<div>
-<span class="kicker">ORIGINE // ANGEVINS</span>
-<h1>CEDRIC // REDDICE</h1>
-<p class="lead">Streamer, cosplayer, créateur d'univers geek — passionné de sci-fi, de catch et de culture pop. Membre fondateur de Furioz Compagnie.</p>
-<div style="display:flex; gap:.45rem; flex-wrap:wrap; margin-top:1rem">
-<span class="mini-chip">📍 Angers</span><span class="mini-chip">🎮 Gaming • Cosplay</span><span class="mini-chip">🤼 Catch • REAC</span><span class="mini-chip">👥 Furioz</span>
-</div>
-</div>
-</div>
-</section>
-<section class="shell reveal" style="padding:1.8rem; background:linear-gradient(110deg, rgba(0,234,255,0.06), rgba(138,92,255,0.06)), var(--panel)">
-<span class="kicker">CE QUE TU TROUVES ICI // LOOT - STREAMS & RESEAUX</span>
-<p style="color:var(--muted); margin-top:.8rem">Ce que tu trouves sur mes streams et contenus YouTube / TikTok / reseaux :</p>
-<div style="display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; margin-top:1rem">
-<div class="card">🎥 Live chill mais pro - overlay datapad qui respire<br>🎮 Gaming, chill, mining et decouvertes<br>🤼 REAC catch chaque semaine - clips YouTube / TikTok<br>👥 Events Furioz Compagnie en multi</div>
-<div class="card">🧵 Cosplay et creations sur le shop<br>📱 Best-of, VOD, clips courts<br>💬 Communaute active<br>✨ Contenu qui respire, moderne et LED destructure</div>
-</div>
-</section>
+  <section class="shell reveal visible" style="padding:2.4rem">
+    <div style="display:grid; grid-template-columns:300px 1fr; gap:2rem">
+      <div style="border:1px solid var(--border); background:rgba(0,0,0,0.24)"><img src="assets/photo-cedric.jpg" alt="Cedric" style="width:100%; display:block"></div>
+      <div>
+        <span class="kicker">ORIGINE // ANGEVINS</span>
+        <h1 style="margin:.6rem 0 .4rem; font-size:clamp(2rem,4vw,2.8rem)">CEDRIC // REDDICE</h1>
+        <p class="lead">Streamer, cosplayer, créateur d'univers geek — passionné de sci-fi, de catch et de culture pop. Membre fondateur de Furioz Compagnie. Datapad qui respire.</p>
+        <div style="display:flex; gap:.45rem; flex-wrap:wrap; margin-top:1rem">
+          <span class="mini-chip">📍 Angers</span><span class="mini-chip">🎮 Gaming • Cosplay</span><span class="mini-chip">🤼 Catch • REAC</span><span class="mini-chip">👥 Furioz</span>
+        </div>
+        <div style="display:flex; gap:.6rem; margin-top:1.2rem"><a href="setup.html" class="btn btn-small">Setup PCB →</a><a href="jeux.html" class="btn btn-small btn-primary">Ludothèque →</a></div>
+      </div>
+    </div>
+  </section>
+  <section class="shell reveal" style="padding:1.8rem"><span class="kicker">PARCOURS // TIMELINE</span><h3>De passionné à créateur d'univers</h3><p style="color:var(--muted)">Depuis petit baigné dans les jeux, la SF, les cartes et le catch. Aujourd'hui je stream, cosplay, crée des events avec Furioz à Angers. Objectif : partager, respirer, kiffer.</p></section>
+  <section class="shell reveal" style="padding:1.8rem; background:linear-gradient(110deg, rgba(0,234,255,0.06), rgba(138,92,255,0.06)), var(--panel)">
+    <span class="kicker">CE QUE TU TROUVES ICI // LOOT</span>
+    <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; margin-top:1rem">
+      <div class="card">Live chill mais pro — overlay qui respire<br>Gaming, chill, mining et découvertes<br>REAC catch chaque semaine sur YouTube / TikTok<br>Events Furioz en multi</div>
+      <div class="card">Cosplay et créations sur le shop<br>Best-of, VOD, clips courts<br>Communauté active<br>Contenu moderne LED destructure</div>
+    </div>
+  </section>
 </main>
+<footer class="container" style="text-align:center; padding:2.8rem 0; color:var(--muted)"><small><a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="jeux.html">Mes Jeux</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a> • <a href="contact.html">Contact</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a><br><span id="current-year"></span></small></footer>
 <script src="script.js"></script>
-</body></html>
+</body>
+</html>
