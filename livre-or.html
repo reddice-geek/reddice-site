@@ -3,93 +3,159 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Reddice HUB V3 // Livre d'or</title>
+  <title>Reddice HUB V4 // Livre d'or - Holo-Feed Fusion</title>
   <link rel="icon" type="image/png" href="assets/icon-r.png">
-  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Share+Tech+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="guestbook">
-  <header class="hub-header">
-    <div class="hub-brand">
-      <a href="index.html"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
-      <span class="hub-overline">Système en ligne - V3 // HOLO-GLASS</span>
-      <p class="hub-subtitle">Livre d'or holo-feed - Avis communautaire.</p>
-    </div>
-  </header>
-  <nav class="hub-nav-shell">
-    <div class="container hub-nav-layout">
-      <div class="hub-nav-left"><span class="stream-badge is-loading" data-stream-status>Checking</span></div>
-      <ul class="hub-nav">
-        <li><a href="index.html" class="hub-link-v2" data-nav="home">Accueil</a></li>
-        <li class="has-sub"><a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a>
-          <ul class="submenu">
-            <li><a href="setup.html">Setup PCB RGB</a></li>
-            <li><a href="jeux.html">Mes Jeux</a></li>
-          </ul>
-        </li>
-        <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
-        <li><a href="livre-or.html" class="hub-link-v2 active" data-nav="guestbook">Livre d'or</a></li>
-        <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
-      </ul>
-      <div class="hub-nav-right">
-        <div class="quick-socials" style="display:flex; gap:.45rem; align-items:center">
-          <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
-          <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
-          <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
-          <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick hub-quick-tiktok">TikTok</a>
-        </div>
-        <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop" style="margin-left:10px">Shop</a>
+<div class="fusion-orbs"><div class="orb orb-cyan"></div><div class="orb orb-violet"></div><div class="orb orb-pink"></div></div>
+
+<header class="hub-header">
+  <div class="hub-brand">
+    <a href="index.html"><img src="assets/logo-main.png" alt="Reddice Logo" class="hub-logo-main"></a>
+    <span class="hub-overline">SYSTÈME EN LIGNE - V4 // HOLO-FEED - LIVRE D'OR FUSION</span>
+    <p class="hub-subtitle">Livre d'or holo-feed - Avis communautaire Night City - ROG G17 + GeForce NOW + HyperX Cloud Jet + SLi50 RGB</p>
+  </div>
+</header>
+
+<nav class="hub-nav-shell">
+  <div class="container hub-nav-layout">
+    <div class="hub-nav-left"><span class="stream-badge is-loading" data-stream-status>Holo-Feed Active...</span></div>
+    <ul class="hub-nav">
+      <li><a href="index.html" class="hub-link-v2" data-nav="home">Accueil</a></li>
+      <li class="has-sub"><a href="bio.html" class="hub-link-v2" data-nav="bio">Bio</a>
+        <ul class="submenu">
+          <li><a href="setup.html">Setup PCB RGB</a></li>
+          <li><a href="jeux.html">Mes Jeux</a></li>
+        </ul>
+      </li>
+      <li><a href="planning.html" class="hub-link-v2" data-nav="planning">Planning</a></li>
+      <li><a href="livre-or.html" class="hub-link-v2 active" data-nav="guestbook">Livre d'or</a></li>
+      <li><a href="contact.html" class="hub-link-v2" data-nav="contact">Contact</a></li>
+    </ul>
+    <div class="hub-nav-right">
+      <div class="quick-socials" style="display:flex; gap:.45rem">
+        <a href="https://www.twitch.tv/reddice_stream" target="_blank" class="hub-quick hub-quick-twitch">Twitch</a>
+        <a href="https://discord.gg/vY8WJQcwPN" target="_blank" class="hub-quick hub-quick-discord">Discord</a>
+        <a href="https://www.youtube.com/@reddice-geek" target="_blank" class="hub-quick hub-quick-youtube">YouTube</a>
+        <a href="https://www.tiktok.com/@reddice.geek" target="_blank" class="hub-quick hub-quick-tiktok">TikTok</a>
       </div>
-    </div>
-  </nav>
-  <main class="container">
-    <section class="shell reveal visible">
-      <span class="kicker">Holo-Feed // Avis communautaire</span>
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.8rem">
-        <h2 style="margin:0">Livre d'or - Dynamique V3</h2>
-        <span id="guestbook-count" class="mini-chip">Chargement...</span>
-      </div>
-      <p class="lead">Avis réel avec note sur 5 - Effet glass, apparition holo. Modération via panel admin.</p>
-      <div class="guestbook-grid" style="margin-top:1.2rem">
-        <div class="card" style="position:sticky; top:90px">
-          <h3 style="margin-top:0">Publier // Transmettre</h3>
-          <form id="guestbook-form" style="display:grid; gap:0.8rem">
-            <input type="text" name="name" placeholder="Pseudo" required>
-            <input type="text" name="title" placeholder="Titre (optionnel)">
-            <textarea name="message" rows="6" placeholder="Ton message holo..." required></textarea>
-            <input type="hidden" id="guestbook-rating" name="rating" value="5">
-            <div class="guestbook-rating-wrap">
-              <div style="font-family:var(--font-mono); font-size:.86rem; color:var(--muted)">Ta note : <strong id="guestbook-rating-text" style="color:var(--text)">5/5</strong></div>
-              <div class="guestbook-stars" id="guestbook-stars"><button type="button" class="guestbook-star is-active" data-rating-value="1">★</button><button type="button" class="guestbook-star is-active" data-rating-value="2">★</button><button type="button" class="guestbook-star is-active" data-rating-value="3">★</button><button type="button" class="guestbook-star is-active" data-rating-value="4">★</button><button type="button" class="guestbook-star is-active" data-rating-value="5">★</button></div>
-            </div>
-            <input type="text" name="website" style="position:absolute; left:-9999px" tabindex="-1" autocomplete="off">
-            <button type="submit" class="btn btn-primary">Publier en holo-feed</button>
-          </form>
-          <div id="guestbook-status" style="margin-top:0.8rem; font-family:var(--font-mono); font-size:0.8rem; color:var(--muted)"></div>
-        </div>
-        <div><div id="guestbook-list" style="display:grid; gap:.8rem"></div><div id="guestbook-pagination" style="display:flex; gap:.4rem; flex-wrap:wrap; margin-top:1rem"></div></div>
-      </div>
-    </section>
-  </main>
-  <footer class="container" style="text-align:center; padding:2.5rem 0; color:var(--muted)">
-    <small>
-      <a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="jeux.html">Mes Jeux</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a> • <a href="contact.html">Contact</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>
-      Reddice HUB V3 Holo-Glass • <span id="current-year"></span>
-    </small>
-  </footer>
-  <div id="legal-modal" class="legal-modal">
-    <div class="legal-modal-bg" data-legal-close></div>
-    <div class="legal-modal-box shell">
-      <button class="legal-close btn btn-small" data-legal-close>✕ Fermer</button>
-      <span class="kicker">Légal</span>
-      <h2>Mentions légales</h2>
-      <div style="color:var(--muted); font-size:.9rem; line-height:1.6">
-        <p><strong style="color:#fff">Éditeur:</strong> Reddice / Cédric Detrez</p>
-        <p><strong style="color:#fff">Hébergement:</strong> Vercel + Supabase</p>
-        <p><strong style="color:#fff">Données:</strong> Pas de vente. Suppression sur demande.</p>
-      </div>
+      <a href="https://reddice-stream-shop.fourthwall.com/" target="_blank" class="hub-quick hub-quick-shop" style="margin-left:12px">Shop</a>
     </div>
   </div>
-  <script src="script.js"></script>
+</nav>
+
+<main class="container" style="display:grid; gap:2rem; padding-top:2.4rem">
+
+  <section class="shell reveal visible" style="padding:2.4rem; background:linear-gradient(110deg, rgba(255,216,77,0.06), rgba(0,234,255,0.06) 50%, rgba(138,92,255,0.06)), var(--panel)">
+    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; align-items:center; margin-bottom:1.2rem">
+      <div>
+        <span class="kicker">HOLO-FEED // AVIS COMMUNAUTAIRE - V4 FUSION</span>
+        <h2 style="margin:.7rem 0 .3rem; font-size:clamp(2rem,4vw,2.8rem)">Livre d'or - Dynamique Night City</h2>
+        <p class="lead" style="max-width:720px">Avis réel avec note sur 5 - Effet glass fusion qui respire, apparition holo LED destructure. Modération via panel admin. Setup final : GeForce NOW + HyperX Jet + SLi50 RGB.</p>
+      </div>
+      <div style="display:flex; gap:.5rem; flex-wrap:wrap; align-items:center">
+        <span id="guestbook-count" class="mini-chip" style="background:rgba(255,216,77,0.12); color:var(--gold); border-color:rgba(255,216,77,0.24)">Chargement Night City...</span>
+        <span class="mini-chip" style="background:rgba(0,234,255,0.12); color:var(--cyan)">● HOLO-FEED ACTIVE</span>
+      </div>
+    </div>
+
+    <div class="guestbook-grid" style="gap:1.8rem; align-items:start">
+      <!-- FORM QUI RESPIRE - STICKY -->
+      <div class="card" style="padding:1.8rem; position:sticky; top:92px; background:linear-gradient(180deg, rgba(16,22,38,0.84), rgba(10,14,28,0.96)); border-color:rgba(0,234,255,0.18)">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2rem">
+          <h3 style="margin:0; font-size:1.3rem">Publier // Transmettre</h3>
+          <span class="mini-chip" style="color:var(--cyan)">SECURE • V4</span>
+        </div>
+        
+        <form id="guestbook-form" style="display:grid; gap:1.1rem">
+          <div style="display:grid; gap:.4rem">
+            <label style="font-family:var(--font-mono); font-size:.72rem; color:var(--muted); letter-spacing:.08em">PSEUDO // NETRUNNER ID</label>
+            <input type="text" name="name" placeholder="Johnny_Silverhand_2077" required>
+          </div>
+          
+          <div style="display:grid; gap:.4rem">
+            <label style="font-family:var(--font-mono); font-size:.72rem; color:var(--muted); letter-spacing:.08em">TITRE // OPTIONNEL - TRACE</label>
+            <input type="text" name="title" placeholder="Meilleur REAC Catch WWE, setup de ouf, etc...">
+          </div>
+          
+          <div style="display:grid; gap:.4rem">
+            <label style="font-family:var(--font-mono); font-size:.72rem; color:var(--muted); letter-spacing:.08em">MESSAGE HOLO // DATA</label>
+            <textarea name="message" rows="7" placeholder="Ton message holo qui respire... Parle de tes vibes Night City, du stream, de GeForce NOW, HyperX Cloud Jet, SLi50 RGB, Furioz..." required></textarea>
+          </div>
+          
+          <input type="hidden" id="guestbook-rating" name="rating" value="5">
+          
+          <div class="guestbook-rating-wrap" style="padding:1rem; background:rgba(0,0,0,0.22); border:1px solid var(--border-dim)">
+            <div style="display:flex; justify-content:space-between; align-items:center">
+              <div style="font-family:var(--font-mono); font-size:.86rem; color:var(--muted)">Ta note Night City : <strong id="guestbook-rating-text" style="color:var(--gold); font-size:1.05rem">5/5</strong></div>
+              <span class="mini-chip" style="color:var(--gold)">★ LED SYNC</span>
+            </div>
+            <div class="guestbook-stars" id="guestbook-stars" style="margin-top:.6rem; gap:.35rem">
+              <button type="button" class="guestbook-star is-active" data-rating-value="1">★</button>
+              <button type="button" class="guestbook-star is-active" data-rating-value="2">★</button>
+              <button type="button" class="guestbook-star is-active" data-rating-value="3">★</button>
+              <button type="button" class="guestbook-star is-active" data-rating-value="4">★</button>
+              <button type="button" class="guestbook-star is-active" data-rating-value="5">★</button>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:.68rem; color:var(--muted); margin-top:.5rem">Clique les étoiles • Effet LED destructure activé</div>
+          </div>
+          
+          <input type="text" name="website" style="position:absolute; left:-9999px" tabindex="-1" autocomplete="off">
+          
+          <button type="submit" class="btn btn-primary" style="padding:1rem; font-size:.92rem">▶ PUBLIER EN HOLO-FEED • FUSION</button>
+          
+          <div id="guestbook-status" style="font-family:var(--font-mono); font-size:.82rem; color:var(--muted); min-height:1.2rem; padding:.6rem .8rem; background:rgba(0,0,0,0.18); border:1px solid var(--border-dim); display:grid; place-items:center"></div>
+        </form>
+
+        <div style="margin-top:1.2rem; padding:.8rem; background:linear-gradient(90deg, rgba(0,234,255,0.08), rgba(255,216,77,0.08)); border:1px solid rgba(0,234,255,0.14); font-family:var(--font-mono); font-size:.74rem; color:var(--muted); line-height:1.5">
+          <span style="color:var(--cyan)">[HOLO-FEED V4]</span> Avis instantané • Glass fusion qui respire • Modération admin • ROG G17 + GeForce NOW + HyperX Jet + SLi50 RGB Egogear • Night City Ready
+        </div>
+      </div>
+
+      <!-- LIST QUI RESPIRE -->
+      <div style="display:grid; gap:1.2rem">
+        <div style="display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; padding:0 .2rem">
+          <span class="kicker">FEED // TRANSMISSIONS NIGHT CITY</span>
+          <span class="mini-chip">LED • DESTRUCTURE • GLITCH</span>
+          <span class="mini-chip" style="margin-left:auto; background:rgba(255,216,77,0.12); color:var(--gold)">Affichage holo qui respire</span>
+        </div>
+        
+        <div id="guestbook-list" style="display:grid; gap:1rem"></div>
+        
+        <div id="guestbook-pagination" style="display:flex; gap:.5rem; flex-wrap:wrap; justify-content:center; margin-top:.8rem; padding:1rem; background:rgba(0,0,0,0.14); border:1px solid var(--border-dim)"></div>
+
+        <div class="card" style="padding:1.2rem; background:linear-gradient(90deg, rgba(138,92,255,0.08), rgba(0,234,255,0.08)); text-align:center">
+          <span style="font-family:var(--font-mono); font-size:.78rem; color:var(--muted)">Tu veux que ton avis clignote en LED Night City ? Mets 5 étoiles et écris <strong style="color:#fff">【entity-CYBERPUNK 2077¦canonical_name=CYBERPUNK 2077】</strong> dans ton message — effet destructure garanti.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="container" style="text-align:center; padding:2.8rem 0; color:var(--muted)">
+  <small style="line-height:1.8">
+    <a href="index.html">Accueil</a> • <a href="bio.html">Bio</a> • <a href="setup.html">Setup</a> • <a href="jeux.html">Mes Jeux</a> • <a href="planning.html">Planning</a> • <a href="livre-or.html">Livre d'or</a> • <a href="contact.html">Contact</a> • <a href="sitemap.html" style="color:var(--cyan)">Sitemap</a> • <a href="#" data-legal-open>Mentions légales</a><br>
+    Reddice HUB V4 Fusion • Holo-Feed Night City • ROG G17 + GeForce NOW + HyperX Cloud Jet + SLi50 RGB Egogear • <span id="current-year"></span>
+  </small>
+</footer>
+
+<div id="legal-modal" class="legal-modal">
+  <div class="legal-modal-bg" data-legal-close></div>
+  <div class="legal-modal-box shell">
+    <button class="legal-close btn btn-small" data-legal-close>✕ Fermer</button>
+    <span class="kicker">Légal // Arasaka Compliance</span>
+    <h2>Mentions légales</h2>
+    <div style="color:var(--muted); font-size:.9rem; line-height:1.6">
+      <p><strong style="color:#fff">Éditeur:</strong> Reddice / Cédric Detrez - Holo-Feed V4 Fusion</p>
+      <p><strong style="color:#fff">Setup:</strong> ROG G713IE • 4800H • RTX 3050 • 16Go • 512Go • GeForce NOW • HyperX Cloud Jet • SLi50 PC RGB Egogear</p>
+      <p><strong style="color:#fff">Hébergement:</strong> Vercel + Supabase • Données Night City chiffrées</p>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
