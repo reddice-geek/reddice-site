@@ -1,598 +1,76 @@
-document.addEventListener("DOMContentLoaded", async ()=>{
-  initSeasonal();
-  initReveal();
-  initLegalModal();
-  initActiveNav();
-  initTwitchEmbeds();
-  initStreamStatus();
-  initPlanningV2();
-  initGuestbook();
-  initContactForm();
-  initAdmin();
-  setYear();
-  initCyberpunk2077();
-});
+// Reddice V5 FROM ZERO - Keystone + Inventory
+document.addEventListener('DOMContentLoaded',()=>{
+  const yearEl=document.getElementById('year'); if(yearEl) yearEl.textContent=new Date().getFullYear();
+  const sysDate=document.getElementById('sys-date');
+  if(sysDate) setInterval(()=>{sysDate.textContent=new Date().toLocaleString('fr-FR')+' • ANGERS // FR'},1000);
 
-function initLegalModal(){
-  document.querySelectorAll('[data-legal-open]').forEach(function(b){ b.addEventListener('click', function(e){ e.preventDefault(); var m=document.getElementById('legal-modal'); if(m) m.classList.add('is-open'); }); });
-  document.querySelectorAll('[data-legal-close]').forEach(function(b){ b.addEventListener('click', function(){ var m=document.getElementById('legal-modal'); if(m) m.classList.remove('is-open'); }); });
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape'){ var m=document.getElementById('legal-modal'); if(m) m.classList.remove('is-open'); } });
-}
-function initReveal(){
-  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:0.08});
-  document.querySelectorAll(".reveal").forEach(el=>obs.observe(el));
-}
-function initActiveNav(){
-  const page=document.body.dataset.page;
-  document.querySelectorAll("[data-nav]").forEach(a=>{if(a.dataset.nav===page)a.classList.add("active")});
-}
-function initTwitchEmbeds(){
-  const p=document.getElementById("twitch-player");
-  const c=document.getElementById("twitch-chat");
-  if(!p||!c) return;
-  const host=location.hostname || "localhost";
-  const parent=encodeURIComponent(host);
-  p.src=`https://player.twitch.tv/?channel=reddice_stream&parent=${parent}&muted=true`;
-  setTimeout(()=>{c.src=`https://www.twitch.tv/embed/reddice_stream/chat?parent=${parent}`},250);
-}
-async function initStreamStatus(){
-  const badges=document.querySelectorAll("[data-stream-status]");
-  if(!badges.length) return;
-  const set=(cls,txt)=>badges.forEach(b=>{b.className=`stream-badge ${cls}`; b.textContent=txt});
-  const refresh=async()=>{
-    set("is-loading","Checking");
-    try{
-      const r=await fetch(`/api/twitch-status?login=reddice_stream&_=${Date.now()}`,{cache:"no-store"});
-      const j=await r.json();
-      set(j.live?"is-live":"is-offline", j.live?`ON • ${j.viewer_count||0} VIEWERS` : "Stream Off");
-    }catch{set("is-offline","Offline")}
-  };
-  await refresh(); setInterval(refresh,60000);
-}
-
-/* PLANNING V2 ENHANCED */
-async function initPlanningV2(){
-  const upcomingNode=document.getElementById("planning-upcoming");
-  const archiveNode=document.getElementById("planning-archives");
-  const specialNode=document.getElementById("planning-special");
-  const catchNode=document.getElementById("planning-catch");
-  const statsNode=document.getElementById("planning-stats");
-  const editableNode=document.getElementById("planning-editable");
-  const statusNode=document.getElementById("planning-status");
-  const targetNode = upcomingNode || editableNode;
-  if(!targetNode &&!archiveNode) return;
-
-  let planning=[];
-  try{
-    const stored=localStorage.getItem("reddice_planning_override_v3");
-    if(stored){ planning=JSON.parse(stored); }
-    else{
-      const res=await fetch("/data/planning.json",{cache:"no-store"});
-      planning=await res.json();
-    }
-    if(!Array.isArray(planning)) planning=[];
-  }catch(e){ planning=[]; }
-
-  const upcoming = planning.filter(p=> (p.type||"upcoming")==="upcoming" && p.active!==false);
-  const specials = planning.filter(p=> (p.type||"")=== "special" || (p.tag||"").toLowerCase().includes("special") || (p.tag||"").toLowerCase().includes("event"));
-
-  const renderUpcoming = (node, items)=>{
-    if(!node) return;
-    node.innerHTML="";
-    if(!items.length){ node.innerHTML="<p class='lead'>Aucun stream prévu. Ajoute-en dans le panel admin.</p>"; return; }
-    items.forEach(item=>{
-      const div=document.createElement("div");
-      div.className=`card planning-card reveal visible active`;
-      const dateStr = item.date? formatDateFR(item.date) : item.day;
-      const gCal = buildGCalLink(item);
-      const outlook = buildOutlookLink(item);
-      div.innerHTML=`
-        <div style="display:flex; gap:0.5rem; flex-wrap:wrap"><span class="mini-chip">${esc(dateStr)}</span><span class="mini-chip">${esc(item.time)}</span><span class="mini-chip">${esc(item.tag||"Live")}</span></div>
-        <strong style="color:#fff; margin-top:0.4rem; font-size:1.05rem">${esc(item.title)}</strong>
-        <div style="display:flex; gap:.4rem; margin-top:.7rem; flex-wrap:wrap">
-          <a href="${gCal}" target="_blank" class="btn btn-small btn-ghost">+ Google Calendar</a>
-          <a href="${outlook}" target="_blank" class="btn btn-small btn-ghost">+ Outlook</a>
-        </div>`;
-      node.appendChild(div);
-    });
-  };
-  renderUpcoming(targetNode, upcoming);
-  renderUpcoming(specialNode, specials);
-
-  if(statusNode) statusNode.textContent=`Planning à jour • ${upcoming.length} streams à venir • ${specials.length} events spéciaux`;
-
-  let historyItems=[];
-  if(archiveNode){
-    try{
-      const r=await fetch("/api/twitch-history?login=reddice_stream",{cache:"no-store"});
-      const data=await r.json();
-      historyItems=data.items||[];
-      archiveNode.innerHTML="";
-      if(!historyItems.length){ archiveNode.innerHTML="<p class='lead'>Aucune VOD. Active la conservation des VOD dans Twitch.</p>"; }
-      historyItems.slice(0,6).forEach(v=>{
-        const art=document.createElement("article");
-        art.className="card reveal visible";
-        art.innerHTML=`<div style="height:140px; background:linear-gradient(rgba(0,0,0,0.15),rgba(0,0,0,0.5)), url('${v.thumbnail_url}') center/cover; margin-bottom:0.8rem; border:1px solid var(--border-dim)"></div>
-          <span class="mini-chip">${new Date(v.created_at).toLocaleDateString('fr-FR')}</span> <span class="mini-chip">${esc(v.duration)}</span>
-          <h3 style="margin:0.5rem 0 0.2rem; font-size:1rem">${esc(v.title)}</h3>
-          <p style="color:var(--muted); font-size:0.85rem; margin:0 0 0.8rem">${v.view_count} vues • ${esc(v.type||"archive")}</p>
-          <a class="btn btn-small" href="${v.url}" target="_blank">Voir VOD</a>`;
-        archiveNode.appendChild(art);
-      });
-    }catch(e){ if(archiveNode) archiveNode.innerHTML="<p class='lead'>Archives indisponibles.</p>"; }
-  }
-
-  if(statsNode){
-    try{
-      const now=new Date();
-      const monthStart=new Date(now.getFullYear(), now.getMonth(), 1);
-      const monthItems = historyItems.filter(i=> new Date(i.created_at) >= monthStart);
-      const totalSec = monthItems.reduce((acc, cur)=>{
-        const m = String(cur.duration||"").match(/(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?/);
-        if(!m) return acc;
-        const h=parseInt(m[1]||0), mi=parseInt(m[2]||0), s=parseInt(m[3]||0);
-        return acc + h*3600 + mi*60 + s;
-      },0);
-      const hours = (totalSec/3600).toFixed(1);
-      let followers="—", subs="—", games= new Set(monthItems.map(i=>i.title)).size || "—";
+  // Twitch fallback if iframe blocked in preview
+  const twitchBox=document.querySelector('.player-box iframe');
+  if(twitchBox){
+    setTimeout(()=>{
       try{
-        const r=await fetch(`/api/twitch-status?login=reddice_stream&_=${Date.now()}`,{cache:"no-store"});
-        const j=await r.json();
-        if(j.followers) followers=j.followers;
-        if(j.subscribers) subs=j.subscribers;
-      }catch{}
-      statsNode.innerHTML=`
-        <div class="stat"><small class="mini-chip">Ce mois</small><strong>${hours}h</strong><span style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem">Temps stream</span></div>
-        <div class="stat"><small class="mini-chip">Jeux</small><strong>${games}</strong><span style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem">Titres</span></div>
-        <div class="stat"><small class="mini-chip">Followers</small><strong id="stat-followers">${esc(String(followers))}</strong><span style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem">Communauté</span></div>
-        <div class="stat"><small class="mini-chip">Subs</small><strong id="stat-subs">${esc(String(subs))}</strong><span style="color:var(--muted); font-family:var(--font-mono); font-size:.8rem">Abonnés</span></div>
-      `;
-      fetch("/api/twitch-stats?login=reddice_stream").then(r=>r.json()).then(j=>{
-        if(j.followers) document.getElementById("stat-followers").textContent=j.followers;
-        if(j.subscribers) document.getElementById("stat-subs").textContent=j.subscribers;
-      }).catch(()=>{});
-    }catch{}
-  }
-
-  if(catchNode){
-    const keywords=["WWE","AEW","RAW","SMACKDOWN","NXT","PLE","CATCH","WRESTLE"];
-    const catchItems = historyItems.filter(v=> keywords.some(k=> (v.title||"").toUpperCase().includes(k)));
-    catchNode.innerHTML="";
-    if(!catchItems.length){
-      catchNode.innerHTML="<p class='lead'>Aucun REAC catch récent. Mots-clés: WWE, AEW, RAW, SmackDown, NXT, PLE.</p>";
-    }else{
-      catchItems.slice(0,6).forEach(v=>{
-        const el=document.createElement("div");
-        el.className="card reveal visible";
-        el.innerHTML=`<span class="mini-chip">CATCH REAC</span><h4 style="margin:.5rem 0">${esc(v.title)}</h4><small style="color:var(--muted)">${new Date(v.created_at).toLocaleDateString('fr-FR')} • ${esc(v.duration)}</small><br><a class="btn btn-small" href="${v.url}" target="_blank" style="margin-top:.6rem">Voir</a>`;
-        catchNode.appendChild(el);
-      });
-    }
-  }
-}
-function formatDateFR(iso){
-  try{ const d=new Date(iso); return d.toLocaleDateString('fr-FR',{weekday:'short', day:'2-digit', month:'short'}); }catch{return iso}
-}
-function buildGCalLink(item){
-  const date = item.date || new Date().toISOString().slice(0,10);
-  const time = (item.time||"20:30").replace("Off","20:30");
-  const [h,m]=time.split(":").map(x=>parseInt(x)||20);
-  const start=new Date(date); start.setHours(h, m||0,0,0);
-  const end=new Date(start.getTime()+2*60*60*1000);
-  const fmt=d=>d.toISOString().replace(/[-:]/g,"").split(".")[0]+"Z";
-  const params=new URLSearchParams({action:"TEMPLATE", text:item.title||"Stream Reddice", dates:`${fmt(start)}/${fmt(end)}`, details:`Stream Reddice - ${item.tag||""} - https://www.twitch.tv/reddice_stream`, location:"https://www.twitch.tv/reddice_stream"});
-  return `https://calendar.google.com/calendar/render?${params.toString()}`;
-}
-function buildOutlookLink(item){
-  const date = item.date || new Date().toISOString().slice(0,10);
-  const time = (item.time||"20:30").replace("Off","20:30");
-  const [h,m]=time.split(":").map(x=>parseInt(x)||20);
-  const start=new Date(date); start.setHours(h, m||0,0,0);
-  const end=new Date(start.getTime()+2*60*60*1000);
-  const fmt=d=>d.toISOString();
-  const params=new URLSearchParams({path:"/calendar/action/compose", rru:"addevent", subject:item.title||"Stream Reddice", body:`Stream Reddice - ${item.tag||""} - https://www.twitch.tv/reddice_stream`, startdt:fmt(start), enddt:fmt(end), location:"https://www.twitch.tv/reddice_stream"});
-  return `https://outlook.live.com/calendar/0/deeplink/compose?${params.toString()}`;
-}
-
-/* GUESTBOOK */
-async function initGuestbook(){
-  const form=document.getElementById("guestbook-form");
-  const list=document.getElementById("guestbook-list");
-  const status=document.getElementById("guestbook-status");
-  const countEl=document.getElementById("guestbook-count");
-  const pagination=document.getElementById("guestbook-pagination");
-  const ratingInput=document.getElementById("guestbook-rating");
-  if(!form||!list) return;
-  let items=[]; let current=5; let currentPage=1; const perPage=10;
-  const STORAGE_KEY="reddice_guestbook_auto_v3";
-  const stars=Array.from(document.querySelectorAll("[data-rating-value]"));
-  const paint=v=>stars.forEach(s=>s.classList.toggle("is-active", Number(s.dataset.ratingValue)<=v));
-  paint(5);
-  stars.forEach(s=>s.addEventListener("click",()=>{current=Number(s.dataset.ratingValue); if(ratingInput) ratingInput.value=current; paint(current); triggerLedFlash(s);}));
-
-  const saveLocal=()=>{ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }catch{} };
-  const loadLocal=()=>{ try{ const raw=localStorage.getItem(STORAGE_KEY); if(raw){ const arr=JSON.parse(raw); if(Array.isArray(arr)) return arr; } }catch{} return []; };
-
-  const render=()=>{
-    const total=items.length;
-    if(countEl) countEl.textContent=`${total} avis • Page ${currentPage}/${Math.max(1,Math.ceil(total/perPage))} • Holo-feed actif`;
-    if(total===0){ list.innerHTML="<p class='lead'>Aucun avis, sois le premier. Ton avis s'affiche instantanément en holo-feed!</p>"; if(pagination) pagination.innerHTML=""; return; }
-    const start=(currentPage-1)*perPage;
-    const pageItems=items.slice(start, start+perPage);
-    list.innerHTML="";
-    pageItems.forEach(e=>{
-      const d=document.createElement("div");
-      d.className="card reveal visible";
-      d.innerHTML=`<div style="display:flex; justify-content:space-between; align-items:center"><strong style="color:#fff">${esc(e.name)}</strong><small style="color:var(--muted)">${new Date(e.created_at).toLocaleDateString('fr-FR')}</small></div><div style="color:var(--gold); letter-spacing:2px; margin:.3rem 0">${"★".repeat(e.rating||5)}<span style="color:#333">${"★".repeat(5-(e.rating||5))}</span></div>${e.title?`<h4 style="margin:0.4rem 0; color:var(--cyan)">${esc(e.title)}</h4>`:""}<p style="color:var(--muted); line-height:1.4">${esc(e.message)}</p>`;
-      list.appendChild(d);
-    });
-    if(pagination){
-      const totalPages=Math.ceil(total/perPage);
-      pagination.innerHTML="";
-      if(totalPages>1){
-        for(let p=1;p<=totalPages;p++){
-          const b=document.createElement("button");
-          b.textContent=p; b.className="btn btn-small"+(p===currentPage?" btn-primary":"");
-          b.onclick=()=>{ currentPage=p; render(); window.scrollTo({top:list.offsetTop-120, behavior:"smooth"}); };
-          pagination.appendChild(b);
+        if(twitchBox.clientHeight<50){
+          twitchBox.parentElement.innerHTML='<div style="padding:2rem;text-align:center;color:#8aa0bc;font-family:Share Tech Mono">PLAYER BLOQUE EN PREVIEW — ouvre en prod sur reddice.fr<br><a href="https://twitch.tv/reddice_stream" target="_blank" class="btn btn-primary" style="margin-top:1rem">Ouvrir Twitch</a></div>';
         }
-      }
-    }
-  };
-
-  const load=async()=>{
-    try{
-      const r=await fetch("/api/guestbook",{cache:"no-store"});
-      if(r.ok){
-        const j=await r.json();
-        if(j.items && j.items.length){ items=j.items; saveLocal(); currentPage=1; render(); return; }
-      }
-    }catch{}
-    items=loadLocal(); render();
-  };
-
-  form.addEventListener("submit", async ev=>{
-    ev.preventDefault();
-    const fd=new FormData(form);
-    const payload={name:String(fd.get("name")||"").trim(), title:String(fd.get("title")||"").trim(), message:String(fd.get("message")||"").trim(), rating:Number(fd.get("rating")||5), website:String(fd.get("website")||"").trim()};
-    if(!payload.name||!payload.message){ if(status) status.textContent="Pseudo + message obligatoires"; return;}
-    const newItem={id:"local_"+Date.now(), name:payload.name, title:payload.title, message:payload.message, rating:payload.rating, created_at:new Date().toISOString()};
-    items.unshift(newItem); saveLocal(); currentPage=1; render();
-    if(status) status.textContent="Publié instantanément! [LED_SYNC_OK]";
-    form.reset(); current=5; if(ratingInput) ratingInput.value=5; paint(5);
-    try{
-      const r=await fetch("/api/guestbook",{method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
-      const j=await r.json();
-      if(r.ok && j.item){ items[0]=j.item; saveLocal(); render(); if(status) status.textContent="Publié et sauvegardé!"; }
-    }catch(e){ if(status) status.textContent="Publié en local (serveur indisponible)."; }
-  });
-  await load();
-}
-
-/* CONTACT */
-function initContactForm(){
-  const form=document.getElementById("contact-form");
-  const status=document.getElementById("contact-status");
-  if(!form) return;
-  form.addEventListener("submit", async e=>{
-    e.preventDefault();
-    const fd=new FormData(form);
-    const payload={name:String(fd.get("name")||"").trim(), email:String(fd.get("email")||"").trim(), subject:String(fd.get("subject")||"").trim(), message:String(fd.get("message")||"").trim(), website:String(fd.get("website")||"").trim()};
-    if(payload.website){ status.textContent="Spam détecté."; return; }
-    if(!payload.name ||!payload.email ||!payload.message){ status.textContent="Nom, email et message requis."; return; }
-    status.textContent="Transmission en cours... [ENCRYPTING]";
-    try{
-      const r=await fetch("/api/contact",{method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(payload)});
-      if(r.ok){ status.textContent="Message envoyé! Je te réponds vite. [TRACE_CLEARED]"; form.reset(); return; }
-      throw new Error("api fail");
-    }catch{
-      const key="reddice_contacts_v3";
-      const arr=JSON.parse(localStorage.getItem(key)||"[]");
-      arr.unshift({...payload, id:"ct_"+Date.now(), created_at:new Date().toISOString()});
-      localStorage.setItem(key, JSON.stringify(arr));
-      status.textContent="Message enregistré en local (API indisponible). Visible dans admin.";
-      form.reset();
-    }
-  });
-}
-
-/* ADMIN */
-function initAdmin(){
-  const loginForm=document.getElementById("admin-login-form");
-  const panel=document.getElementById("admin-panel");
-  if(!loginForm) return;
-  const ADMIN_USER="reddice";
-  const ADMIN_PASS="Xboxone49Angers*";
-  const checkSession=()=> localStorage.getItem("reddice_admin_session")==="ok";
-  const setSession=()=>{ localStorage.setItem("reddice_admin_session","ok"); panel.classList.add("is-open"); loginForm.parentElement.style.display="none"; loadAdminData(); };
-  if(checkSession()) setSession();
-  loginForm.addEventListener("submit", e=>{
-    e.preventDefault();
-    const fd=new FormData(loginForm);
-    const u=String(fd.get("username")||"").trim();
-    const p=String(fd.get("password")||"");
-    if(u===ADMIN_USER && p===ADMIN_PASS){ setSession(); }
-    else{ document.getElementById("admin-login-status").textContent="Identifiants invalides. [ACCESS_DENIED]"; triggerGlitch(document.getElementById("admin-login-block")); }
-  });
-  document.getElementById("admin-logout")?.addEventListener("click", ()=>{ localStorage.removeItem("reddice_admin_session"); location.reload(); });
-  document.querySelectorAll("[data-admin-tab]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      document.querySelectorAll("[data-admin-tab]").forEach(b=>b.classList.remove("btn-primary"));
-      btn.classList.add("btn-primary");
-      document.querySelectorAll(".admin-section").forEach(s=>s.style.display="none");
-      document.getElementById("admin-section-"+btn.dataset.adminTab).style.display="block";
-    });
-  });
-}
-async function loadAdminData(){
-  const planningList=document.getElementById("admin-planning-list");
-  const contactsList=document.getElementById("admin-contacts-list");
-  const guestbookAdmin=document.getElementById("admin-guestbook-list");
-  let planning=[];
-  try{
-    const stored=localStorage.getItem("reddice_planning_override_v3");
-    if(stored) planning=JSON.parse(stored);
-    else{ const r=await fetch("/data/planning.json",{cache:"no-store"}); planning=await r.json(); }
-  }catch{}
-  if(planningList){
-    planningList.innerHTML="";
-    planning.forEach((ev, idx)=>{
-      const row=document.createElement("div"); row.className="card";
-      row.innerHTML=`<div style="display:grid; gap:.4rem"><input data-idx="${idx}" data-field="title" value="${esc(ev.title)}"><div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:.4rem"><input data-idx="${idx}" data-field="date" type="date" value="${esc(ev.date||"")}"><input data-idx="${idx}" data-field="time" value="${esc(ev.time)}"><input data-idx="${idx}" data-field="tag" value="${esc(ev.tag)}"></div><select data-idx="${idx}" data-field="type"><option value="upcoming" ${ev.type==="upcoming"?"selected":""}>upcoming</option><option value="special" ${ev.type==="special"?"selected":""}>special</option></select><div style="display:flex; gap:.4rem"><button class="btn btn-small" onclick="adminDeletePlanning(${idx})">Supprimer</button></div></div>`;
-      planningList.appendChild(row);
-    });
-    planningList.querySelectorAll("input,select").forEach(inp=>{ inp.addEventListener("change", e=>{ const idx=parseInt(e.target.dataset.idx); const field=e.target.dataset.field; planning[idx][field]=e.target.value; localStorage.setItem("reddice_planning_override_v3", JSON.stringify(planning)); }); });
+      }catch(e){}
+    },2000);
   }
-  window.adminDeletePlanning=(idx)=>{ planning.splice(idx,1); localStorage.setItem("reddice_planning_override_v3", JSON.stringify(planning)); loadAdminData(); };
-  window.adminAddPlanning=()=>{
-    const title=prompt("Titre de l'event?"); if(!title) return;
-    const date=prompt("Date YYYY-MM-DD","2026-09-01")|| new Date().toISOString().slice(0,10);
-    const time=prompt("Heure HH:MM","20:30")||"20:30";
-    const tag=prompt("Tag","Live principal")||"Live";
-    const type=prompt("Type upcoming / special","upcoming")||"upcoming";
-    planning.push({id:"evt_"+Date.now(), day: new Date(date).toLocaleDateString('fr-FR',{weekday:'long'}), date, time, title, tag, active:true, type});
-    localStorage.setItem("reddice_planning_override_v3", JSON.stringify(planning)); loadAdminData();
-  };
-  window.adminExportPlanning=()=>{ const blob=new Blob([JSON.stringify(planning, null, 2)],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download="planning.json"; a.click(); };
-  window.adminResetPlanning=()=>{ if(confirm("Reset planning vers fichier d'origine?")){ localStorage.removeItem("reddice_planning_override_v3"); loadAdminData(); } };
 
-  if(contactsList){
-    contactsList.innerHTML=""; let contacts=[];
-    try{ const r=await fetch("/api/contact",{cache:"no-store"}); if(r.ok){ const j=await r.json(); contacts=j.items||[]; } }catch{}
-    if(!contacts.length){ contacts=JSON.parse(localStorage.getItem("reddice_contacts_v3")||"[]"); }
-    if(!contacts.length) contactsList.innerHTML="<p class='lead'>Aucun contact.</p>";
-    contacts.forEach(c=>{ const div=document.createElement("div"); div.className="card"; div.innerHTML=`<strong>${esc(c.name)} - ${esc(c.email)}</strong><br><small style="color:var(--muted)">${new Date(c.created_at).toLocaleDateString('fr-FR')} - ${esc(c.subject||"")}</small><p style="color:var(--muted)">${esc(c.message)}</p>`; contactsList.appendChild(div); });
+  // Guestbook V5 vide de base
+  const list=document.getElementById('guestbook-list'), count=document.getElementById('guestbook-count'), form=document.getElementById('guestbook-form'), ratingInput=document.getElementById('guestbook-rating'), starsWrap=document.getElementById('guestbook-stars'), status=document.getElementById('guestbook-status');
+  let rating=5; const LS_KEY='reddice_guestbook_auto_v3';
+  function paintStars(v){ if(!starsWrap) return; [...starsWrap.children].forEach(b=>{ b.style.color=parseInt(b.dataset.ratingValue)<=v?'#ffd54a':'rgba(255,255,255,0.2)' }) }
+  if(starsWrap){
+    starsWrap.addEventListener('click',e=>{
+      const btn=e.target.closest('[data-rating-value]'); if(!btn) return;
+      rating=parseInt(btn.dataset.ratingValue); if(ratingInput) ratingInput.value=rating; paintStars(rating);
+    });
+    paintStars(5);
   }
-  if(guestbookAdmin){
-    try{
-      const r=await fetch("/api/guestbook",{cache:"no-store"}); const j=await r.json();
-      const items=Array.isArray(j.items)? j.items : JSON.parse(localStorage.getItem("reddice_guestbook_auto_v3") || "[]");
-      guestbookAdmin.innerHTML="";
-      if(!items.length){ guestbookAdmin.innerHTML="<p class='lead'>Aucun avis.</p>"; }
-      items.slice(0,50).forEach(e=>{
-        const d=document.createElement("div"); d.className="card";
-        d.innerHTML=`<strong>${esc(e.name)}</strong> - ${Number(e.rating||5)}/5<br><small>${esc(e.title||"")}</small><p>${esc(e.message)}</p><button class="btn btn-small" data-guestbook-delete="${esc(e.id)}" type="button">Supprimer</button>`;
-        const deleteButton=d.querySelector("[data-guestbook-delete]");
-        if(deleteButton){ deleteButton.addEventListener("click", async ()=>{ await adminDeleteGuestbook(e.id, deleteButton); }); }
-        guestbookAdmin.appendChild(d);
-      });
-    }catch(error){ guestbookAdmin.innerHTML="<p class='lead'>Impossible de charger les avis.</p>"; }
+  function load(){ try{return JSON.parse(localStorage.getItem(LS_KEY)||'[]')}catch{return[]} }
+  function save(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr)) }
+  function render(){
+    const data=load();
+    if(count) count.textContent=`${data.length} avis`;
+    if(!list) return;
+    if(data.length===0){ list.innerHTML='<div class="shell" style="margin:0;text-align:center;color:var(--muted)">Aucun avis pour l\'instant. Sois le premier choom — feed vide de base, clean.</div>'; return; }
+    list.innerHTML=data.map(d=>`<div class="shell fia-red" style="margin:0"><div style="display:flex;justify-content:space-between"><strong>${d.name}</strong><span>${'★'.repeat(d.rating)}${'☆'.repeat(5-d.rating)}</span></div><small style="color:var(--muted)">${d.title||''} • ${new Date(d.date).toLocaleString('fr-FR')}</small><p style="margin-top:.6rem">${d.message}</p></div>`).join('');
   }
-}
-async function adminDeleteGuestbook(id, button){
-  if(!id) return; if(!confirm("Supprimer définitivement cet avis?")) return;
-  const oldText=button? button.textContent : "";
-  if(button){ button.disabled=true; button.textContent="Suppression... [PURGE]"; }
-  try{
-    const r=await fetch(`/api/guestbook?id=${encodeURIComponent(id)}`,{method:"DELETE", headers:{"Accept":"application/json"}, cache:"no-store"});
-    let j={}; try{ j=await r.json(); }catch{}
-    if(!r.ok || j.ok===false){ throw new Error(j.error || `Erreur suppression (${r.status})`); }
-    try{ const key="reddice_guestbook_auto_v3"; const local=JSON.parse(localStorage.getItem(key)||"[]"); if(Array.isArray(local)){ const cleaned=local.filter(item=>String(item.id)!==String(id)); localStorage.setItem(key, JSON.stringify(cleaned)); } }catch{}
-    await loadAdminData();
-  }catch(error){ alert("La suppression a échoué : " + (error.message || "erreur inconnue")); if(button){ button.disabled=false; button.textContent=oldText || "Supprimer"; } }
-}
-window.adminDeleteGuestbook=adminDeleteGuestbook;
+  if(form){
+    form.addEventListener('submit',e=>{
+      e.preventDefault();
+      const fd=new FormData(form);
+      const entry={name:fd.get('name')||'Anonyme', title:fd.get('title')||'', message:fd.get('message')||'', rating:rating, date:new Date().toISOString()};
+      const arr=load(); arr.unshift(entry); save(arr); render(); form.reset(); rating=5; if(ratingInput) ratingInput.value=5; paintStars(5);
+      if(status){ status.textContent='Transmis en Holo-Feed ✓'; status.style.color='#3CFF9A' }
+    });
+  }
+  render();
 
-/* SEASONAL */
-function isDateInRange(m,d, sm,sd, em,ed){
-  const cur = m*100 + d; const start = sm*100 + sd; const end = em*100 + ed;
-  if(start <= end){ return cur >= start && cur <= end; } else { return cur >= start || cur <= end; }
-}
-function getCurrentSeason(date = new Date()){
-  const m = date.getMonth()+1; const d = date.getDate();
-  if(isDateInRange(m,d,2,12,2,15)) return "saint-valentin";
-  if(isDateInRange(m,d,4,26,4,26)) return "anniversaire-reddice";
-  if(isDateInRange(m,d,9,5,9,5)) return "anniversaire-stream";
-  if(isDateInRange(m,d,6,21,6,21)) return "fete-musique";
-  if(isDateInRange(m,d,7,14,7,14)) return "fete-nationale";
-  if(isDateInRange(m,d,10,20,11,2)) return "halloween";
-  if(isDateInRange(m,d,12,1,12,26)) return "noel";
-  if(isDateInRange(m,d,12,27,1,5)) return "nouvel-an";
-  if(isDateInRange(m,d,3,20,6,21)) return "printemps";
-  if(isDateInRange(m,d,6,22,9,21)) return "ete";
-  if(isDateInRange(m,d,9,22,11,30)) return "automne";
-  if(isDateInRange(m,d,12,1,3,19)) return "hiver";
-  return "hiver";
-}
-function getSeasonConfig(season){
-  const cfg={
-    "saint-valentin":{ name:"Saint-Valentin", emoji:"💘", msg:"💘 Saint-Valentin — Love is in the air, choom! 💘", particles:["💘","❤","💕","💖","💝"], count:22 },
-    "anniversaire-reddice":{ name:"Anniversaire de Reddice", emoji:"🎂", msg:"🎂 26 Avril — Joyeux anniversaire Reddice! 🎉", particles:["🎂","🎉","🎈","🥳","✨"], count:30 },
-    "anniversaire-stream":{ name:"Anniversaire du stream", emoji:"🎮", msg:"🎮 5 Septembre — Joyeux anniversaire au stream de Reddice! 🎉", particles:["🎮","🎉","🎧","🥳","✨"], count:30 },
-    "printemps":{ name:"Printemps", emoji:"🌸", msg:"🌸 Printemps — Bloom & Chill — Le datacenter fleurit 🌸", particles:["🌸","🌺","🌷","🍃","✨"], count:24 },
-    "fete-musique":{ name:"Fête de la Musique", emoji:"🎵", msg:"🎵 Fête de la Musique — 21 Juin — Pousse le son! 🎶", particles:["🎵","🎶","🎧","🎸","🎤"], count:28 },
-    "fete-nationale":{ name:"Fête nationale", emoji:"🇫🇷", msg:"🇫🇷 14 Juillet — Bonne fête nationale! 🎆", particles:["🇫🇷","🎆","🎇","✨","🎉"], count:30 },
-    "ete":{ name:"Été", emoji:"☀", msg:"☀ Été — Mode soleil activé — GeForce NOW au frais ☀", particles:["☀","✨","🌊","😎","🌴"], count:20 },
-    "automne":{ name:"Automne", emoji:"🍂", msg:"🍂 Automne — Feuilles qui tombent, cosplay qui chauffe 🍁", particles:["🍂","🍁","🍃","🧡","✨"], count:26 },
-    "halloween":{ name:"Halloween", emoji:"🎃", msg:"🎃 Halloween — Beware the Black ICE... 🎃", particles:["🎃","👻","🦇","🕷","💀"], count:30 },
-    "noel":{ name:"Noël", emoji:"🎄", msg:"🎄 Joyeux Noël de la part de Reddice & Furioz Compagnie! 🎄", particles:["❄","🎄","🎁","✨","⛄"], count:32 },
-    "nouvel-an":{ name:"Nouvel An", emoji:"🎆", msg:"🎆 Nouvel An — Bonne année! 🎇", particles:["🎆","🎇","✨","🥂","🎉"], count:30 },
-    "hiver":{ name:"Hiver", emoji:"❄", msg:"❄ Hiver — Stay cozy, stream au chaud ❄", particles:["❄","🌨","✨","🧣","☃"], count:28 },
-  };
-  return cfg[season] || { name:season, emoji:"✨", msg: "✨ Saison "+season+" ✨", particles:["✨"], count:15 };
-}
-function initSeasonal(){
-  try{
-    const season = getCurrentSeason(); const cfg = getSeasonConfig(season);
-    document.body.dataset.season = season;
-    let banner = document.getElementById("seasonal-banner");
-    if(!banner){ banner = document.createElement("div"); banner.id = "seasonal-banner"; document.body.prepend(banner); document.body.style.paddingTop = "28px"; }
-    banner.textContent = cfg.msg; banner.title = "Saison auto: "+cfg.name;
-    let cont = document.getElementById("seasonal-particles");
-    if(!cont){ cont = document.createElement("div"); cont.id = "seasonal-particles"; document.body.appendChild(cont); }
-    cont.innerHTML = "";
-    for(let i=0;i<cfg.count;i++){
-      const el = document.createElement("div"); el.className = "season-particle";
-      el.textContent = cfg.particles[Math.floor(Math.random()*cfg.particles.length)];
-      el.style.left = Math.random()*100 + "vw"; el.style.animationDuration = (4 + Math.random()*6) + "s"; el.style.animationDelay = (Math.random()*5) + "s";
-      el.style.fontSize = (0.9 + Math.random()*1.1) + "rem"; el.style.opacity = (0.6 + Math.random()*0.4).toString();
-      cont.appendChild(el);
-    }
-    window._reddiceSeason = season; window._reddiceSeasonConfig = cfg;
-  }catch(e){ console.warn("Seasonal init failed", e); }
-}
-function setYear(){ const n=document.getElementById("current-year"); if(n) n.textContent=new Date().getFullYear(); }
-function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
-
-/* === CYBERPUNK 2077 AMBIANCE - LED / DESTRUCTURE / GLITCH === */
-function initCyberpunk2077(){
-  initMouseGlow();
-  initLedFlicker();
-  initGlitchTitles();
-  initDestructure();
-  initTypingOverline();
-  initHoloTilt();
-  initScanlinePulse();
-  setInterval(()=>{ if(Math.random()<0.08) triggerRandomGlitch(); }, 3000);
-}
-function initMouseGlow(){
-  const glow=document.createElement('div');
-  glow.id='fusion-mouse-glow';
-  glow.style.cssText='position:fixed; width:700px; height:700px; pointer-events:none; z-index:9996; background:radial-gradient(circle, rgba(0,234,255,0.14), rgba(138,92,255,0.10) 38%, rgba(255,59,141,0.06) 58%, transparent 72%); mix-blend-mode:screen; transform:translate(-50%,-50%); transition:opacity.35s; opacity:0; filter:blur(2px)';
-  document.body.appendChild(glow);
-  let t;
-  document.addEventListener('mousemove', e=>{
-    glow.style.left=e.clientX+'px'; glow.style.top=e.clientY+'px'; glow.style.opacity='1';
-    clearTimeout(t); t=setTimeout(()=>glow.style.opacity='0', 1800);
-  });
-}
-function initLedFlicker(){
-  const kickers=document.querySelectorAll('.kicker');
-  kickers.forEach(k=>{
-    setInterval(()=>{
-      if(Math.random()<0.04){
-        k.style.textShadow='0 0 12px currentColor, 0 0 22px currentColor';
-        k.style.filter='brightness(1.6)';
-        setTimeout(()=>{ k.style.textShadow=''; k.style.filter=''; }, 90+Math.random()*120);
-      }
-    }, 220);
-  });
-  // overline LED dot pulse
-  const over=document.querySelector('.hub-overline');
-  if(over){
-    setInterval(()=>{
-      over.style.boxShadow=`0 0 ${8+Math.random()*18}px rgba(0,234,255,0.6), inset 0 0 8px rgba(0,234,255,0.2)`;
-      setTimeout(()=>over.style.boxShadow='', 180);
-    }, 900);
+  // Contact failsafe
+  const cForm=document.getElementById('contact-form'), cStatus=document.getElementById('contact-status');
+  if(cForm){
+    cForm.addEventListener('submit',e=>{
+      e.preventDefault();
+      const fd=new FormData(cForm); const data=Object.fromEntries(fd.entries());
+      const saved=JSON.parse(localStorage.getItem('reddice_contacts_v5')||'[]'); saved.unshift({...data,date:new Date().toISOString()}); localStorage.setItem('reddice_contacts_v5', JSON.stringify(saved));
+      if(cStatus){ cStatus.style.display='block'; cStatus.textContent='✓ Transmission sauvegardée localement - visible dans admin.html'; cStatus.style.borderColor='#3CFF9A'; cStatus.style.color='#3CFF9A' }
+      cForm.reset();
+    });
   }
-}
-function initGlitchTitles(){
-  document.querySelectorAll('h2, h1').forEach(h=>{
-    h.addEventListener('mouseenter', ()=>triggerGlitch(h));
-  });
-}
-function triggerGlitch(el){
-  if(!el || el.dataset.glitching==='1') return;
-  el.dataset.glitching='1';
-  const original=el.innerHTML;
-  const chars='█▓▒░<>\\/[]{}—_#@&%';
-  let count=0;
-  const int=setInterval(()=>{
-    el.innerHTML=original.split('').map(c=>{
-      if(c===' ' || Math.random()<0.7) return c;
-      return chars[Math.floor(Math.random()*chars.length)];
-    }).join('');
-    el.style.transform=`translate(${Math.random()*2-1}px, ${Math.random()*2-1}px) skewX(${(Math.random()*2-1)*1.2}deg)`;
-    el.style.textShadow=`${Math.random()*3-1.5}px 0 var(--cyan), ${Math.random()*3-1.5}px 0 var(--pink)`;
-    count++;
-    if(count>6){
-      clearInterval(int);
-      el.innerHTML=original;
-      el.style.transform=''; el.style.textShadow='';
-      delete el.dataset.glitching;
-    }
-  }, 42);
-}
-function triggerRandomGlitch(){
-  const els=document.querySelectorAll('.shell h2,.card h3,.hub-overline');
-  const el=els[Math.floor(Math.random()*els.length)];
-  if(el) triggerGlitch(el);
-}
-function triggerLedFlash(el){
-  if(!el) return;
-  el.style.boxShadow='0 0 18px var(--cyan), 0 0 32px var(--violet)';
-  setTimeout(()=>el.style.boxShadow='', 220);
-}
-function initDestructure(){
-  // Destructure les kicker en lettres qui se décalent au hover - style Cyberpunk 2077 menu
-  document.querySelectorAll('.kicker,.hub-overline').forEach(k=>{
-    if(k.dataset.dest==='1') return;
-    k.dataset.dest='1';
-    const txt=k.textContent;
-    k.innerHTML=txt.split('').map(ch=>`<span style="display:inline-block; transition:transform.18s cubic-bezier(.16,1,.3,1)">${ch===' '?'&nbsp;':esc(ch)}</span>`).join('');
-    k.addEventListener('mouseenter', ()=>{
-      k.querySelectorAll('span').forEach((s,i)=>{
-        s.style.transform=`translateY(${Math.sin(i*1.3)*3}px) translateX(${Math.random()*2-1}px)`;
-        s.style.color=i%3===0?'var(--cyan)':i%3===1?'var(--pink)':'var(--violet)';
-      });
-    });
-    k.addEventListener('mouseleave', ()=>{
-      k.querySelectorAll('span').forEach(s=>{ s.style.transform=''; s.style.color=''; });
-    });
-  });
-}
-function initTypingOverline(){
-  const over=document.querySelector('.hub-overline');
-  if(!over || over.dataset.typed==='1') return;
-  over.dataset.typed='1';
-  const full=over.textContent;
-  over.textContent='';
-  let i=0;
-  const type=()=>{
-    if(i<=full.length){
-      over.textContent=full.slice(0,i)+'█';
-      i++;
-      setTimeout(type, 28+Math.random()*32);
-    }else{
-      over.textContent=full;
-      over.style.borderRight='2px solid var(--cyan)';
-      setTimeout(()=>over.style.borderRight='', 800);
-    }
-  };
-  setTimeout(type, 400);
-}
-function initHoloTilt(){
-  const cards=document.querySelectorAll('.card,.shell');
-  cards.forEach(card=>{
-    card.addEventListener('mousemove', e=>{
-      const rect=card.getBoundingClientRect();
-      const x=(e.clientX-rect.left)/rect.width-0.5;
-      const y=(e.clientY-rect.top)/rect.height-0.5;
-      card.style.transform=`perspective(900px) rotateY(${x*6}deg) rotateX(${-y*6}deg) translateY(-2px)`;
-      card.style.setProperty('--mx', (e.clientX-rect.left)+'px');
-      card.style.setProperty('--my', (e.clientY-rect.top)+'px');
-    });
-    card.addEventListener('mouseleave', ()=>{
-      card.style.transform='';
-    });
-  });
-}
-function initScanlinePulse(){
-  // Scanline qui pulse aléatoirement - ambiance écran CRT Night City
-  setInterval(()=>{
-    if(Math.random()<0.12){
-      document.body.style.filter='contrast(1.08) brightness(1.06)';
-      setTimeout(()=>document.body.style.filter='', 70);
-    }
-  }, 800);
-}
+
+  // Games filter (jeux.html)
+  const grid=document.getElementById('grid'), gCount=document.getElementById('games-count'), search=document.getElementById('search'), filter=document.getElementById('filter');
+  const GAMES=[["GOG","Cyberpunk 2077"],["GOG","The Witcher 3"],["GOG","DOOM (1993)"],["GOG","Fallout: New Vegas"],["GOG","Baldur's Gate II"],["GOG","Mafia: Definitive Edition"],["GOG","Star Wars: Bounty Hunter"],["Epic","Alan Wake"],["Epic","Alien: Isolation"],["Epic","ARK: Survival Evolved"]];
+  function renderGames(){
+    if(!grid) return;
+    const q=(search?.value||'').toLowerCase(); const f=filter?.value||'all';
+    const filtered=GAMES.filter(([p,t])=>(f==='all'||p===f)&&t.toLowerCase().includes(q));
+    if(gCount) gCount.textContent=`${filtered.length} jeux / ${GAMES.length} chargés • INVENTORY SYNCED`;
+    grid.innerHTML=filtered.map(([p,t])=>`<div class="shell" style="margin:0;border-left:3px solid ${p==='GOG'?'#00F0FF':'#8A5CFF'}"><div style="display:flex;justify-content:space-between"><span class="mini-chip">${p}</span><span class="mini-chip" style="color:#FF3C0A">DPS ${Math.floor(Math.random()*200+150)}</span></div><h4 style="margin:.6rem 0 0">${t}</h4><small style="color:var(--muted);font-family:var(--font-mono)">${p==='GOG'?'DRM-Free':'Cloud Ready'} • Circuit</small></div>`).join('');
+  }
+  if(search) search.addEventListener('input',renderGames);
+  if(filter) filter.addEventListener('change',renderGames);
+  renderGames();
+});
+function buildGCalLink(title,desc,dateStr,timeStr){ const start=new Date(`${dateStr}T${timeStr||'20:30'}`); const end=new Date(start.getTime()+2*3600*1000); const fmt=d=>d.toISOString().replace(/-|:|\.\d+/g,''); return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&details=${encodeURIComponent(desc)}&dates=${fmt(start)}/${fmt(end)}`; }
