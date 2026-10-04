@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     setTimeout(()=>{
       try{
         if(twitchBox.clientHeight<50){
-          twitchBox.parentElement.innerHTML='<div style="padding:2rem;text-align:center;color:#8aa0bc;font-family:Share Tech Mono">PLAYER BLOQUE EN PREVIEW — ouvre en prod sur reddice.fr<br><a href="https://twitch.tv/reddice_stream" target="_blank" class="btn btn-primary" style="margin-top:1rem">Ouvrir Twitch</a></div>';
+          twitchBox.parentElement.innerHTML='<div style="padding:2rem;text-align:center;color:#8aa0bc;font-family:Share Tech Mono">PLAYER BLOQUE EN PREVIEW — ouvre en prod sur reddicestream.com<br><a href="https://twitch.tv/reddice_stream" target="_blank" class="btn btn-primary" style="margin-top:1rem">Ouvrir Twitch</a></div>';
         }
       }catch(e){}
     },2000);

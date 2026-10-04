@@ -9,5 +9,15 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    { "source": "/bio", "destination": "/bio.html" },
+    { "source": "/setup", "destination": "/setup.html" },
+    { "source": "/jeux", "destination": "/jeux.html" },
+    { "source": "/planning", "destination": "/planning.html" },
+    { "source": "/livre-or", "destination": "/livre-or.html" },
+    { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/sitemap", "destination": "/sitemap.html" }
   ]
 }
