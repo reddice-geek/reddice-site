@@ -1,14 +1,15 @@
 // /api/guestbook.js - V3.1 Anti-404 - memory + Supabase - table guestbook_entries + fallback guestbook
 function clean(v,max=1200){return String(v||"").replace(/<[^>]*>/g,"").trim().slice(0,max)}
+function withoutLegacyDemos(items){
+  return (Array.isArray(items)?items:[]).filter(item => !(String(item?.id||"").startsWith("demo_") || (String(item?.name||"") === "Furioz" && String(item?.title||"") === "Datapad validé") || (String(item?.name||"") === "Choom" && String(item?.title||"") === "Black ICE esquivé")));
+}
+
 function cfg(){
   const url=process.env.SUPABASE_URL;
   const key=process.env.SUPABASE_SERVICE_ROLE_KEY;
   return {url, key, hasSupabase:!!(url&&key), headers:{apikey:key, Authorization:`Bearer ${key}`, "Content-Type":"application/json"}}
 }
-let mem=[
-  {id:"demo_1", name:"Furioz", title:"Datapad validé", message:"Holo-glass V3 incroyable ! Le nouveau setup PCB RGB déchire.", rating:5, created_at:new Date().toISOString()},
-  {id:"demo_2", name:"Choom", title:"Black ICE esquivé", message:"404 stylée, on reste dans l'univers Netrunner. GG !", rating:5, created_at:new Date(Date.now()-86400000).toISOString()}
-];
+let mem=[]
 
 async function tryFetchTable(url, headers, table){
   try{
@@ -32,7 +33,7 @@ export default async function handler(req,res){
   const {url, hasSupabase, headers} = cfg();
 
   if(!hasSupabase){
-    if(req.method==="GET") return res.status(200).json({items:mem, source:"memory", message:"Supabase non configuré"});
+    if(req.method==="GET") return res.status(200).json({items:withoutLegacyDemos(mem), source:"memory", message:"Supabase non configuré"});
     if(req.method==="POST"){
       try{
         const b=typeof req.body==="object"?req.body:JSON.parse(req.body||"{}");
@@ -82,8 +83,8 @@ export default async function handler(req,res){
       if(!result.ok){
         result = await tryFetchTable(url, headers, "guestbook");
       }
-      if(result.ok) return res.status(200).json({items: result.items.length?result.items:mem, source:"supabase", table:result.table});
-      return res.status(200).json({items:mem, source:"memory_fallback", warning:"Supabase fail, fallback mem", raw:result.raw});
+      if(result.ok) { const cleaned=withoutLegacyDemos(result.items); return res.status(200).json({items: cleaned.length?cleaned:[], source:"supabase", table:result.table}); }
+      return res.status(200).json({items:withoutLegacyDemos(mem), source:"memory_fallback", warning:"Supabase fail, fallback mem", raw:result.raw});
     }
     if(req.method==="POST"){
       const b=typeof req.body==="object"?req.body:JSON.parse(req.body||"{}");
@@ -195,7 +196,7 @@ export default async function handler(req,res){
     }
     return res.status(405).json({error:"Method"});
   }catch(e){
-    if(req.method==="GET") return res.status(200).json({items:mem, source:"memory_error_fallback", error:e.message});
+    if(req.method==="GET") return res.status(200).json({items:withoutLegacyDemos(mem), source:"memory_error_fallback", error:e.message});
     return res.status(200).json({ok:true, source:"memory_error_fallback", error:e.message, items:mem});
   }
 }

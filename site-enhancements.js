@@ -102,7 +102,7 @@
       <div class="rd-topline" aria-hidden="true"></div>
       <div class="rd-header-inner">
         <a class="rd-brand" href="./" aria-label="Reddice — accueil">
-          <img src="assets/icon-r.png" alt="Reddice" width="1600" height="1600" decoding="async">
+          <img src="assets/logo-main.png" alt="Reddice" width="1600" height="1600" decoding="async">
           <span class="rd-brand-copy">
             <span class="rd-brand-name">REDDICE</span>
             <span class="rd-brand-sub">STREAM HUB // REDDICESTREAM.COM</span>
@@ -155,7 +155,7 @@
       <div class="rd-footer-inner">
         <div class="rd-footer-brand">
           <div class="rd-footer-name">REDDICE // STREAM HUB</div>
-          <div class="rd-footer-meta">© ${year} Reddice • ${SITE.domain} • Tous droits réservés</div>
+          <div class="rd-footer-meta">© ${year} REDDICE • FURIOZ COMPAGNIE // INC. • ${SITE.domain}</div>
         </div>
         <div class="rd-footer-links">
           <a href="./">Accueil</a>
