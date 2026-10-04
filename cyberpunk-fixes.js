@@ -2,6 +2,9 @@
   "use strict";
   const DOMAIN = "reddicestream.com";
   const TWITCH = "reddice_stream";
+  const FURIOZ_TWITCH = "https://twitch.tv/furiozcompagnie";
+  const FURIOZ_DISCORD = "https://discord.com/invite/nKj9NFDyxj";
+  const FURIOZ_SITE = "https://furioz-compagnie.com";
   const year = new Date().getFullYear();
 
   const textWalker = (root, fn) => {
@@ -171,8 +174,38 @@
     wrap.scrollIntoView({behavior:'smooth',block:'start'});
   }
 
+
+  function furiozLinks() {
+    if (document.getElementById('rd-furioz-links')) return;
+    const footer = document.querySelector('footer');
+    if (!footer) return;
+    const box = document.createElement('section');
+    box.id = 'rd-furioz-links';
+    box.setAttribute('aria-label','Furioz Compagnie');
+    box.style.cssText = [
+      'margin-top:18px', 'border:1px solid rgba(0,240,255,.22)', 'border-left:3px solid #FF3C0A',
+      'background:linear-gradient(90deg,rgba(255,60,10,.07),rgba(0,240,255,.04))',
+      'box-shadow:inset 0 0 20px rgba(0,240,255,.05)', 'padding:14px 16px',
+      "font-family:'Share Tech Mono',monospace"
+    ].join(';');
+    box.innerHTML = `
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px">
+        <div>
+          <div style="font-family:'Oxanium',sans-serif;font-weight:800;font-size:14px;letter-spacing:.12em;color:#FF3C0A">FURIOZ COMPAGNIE</div>
+          <div style="margin-top:4px;font-size:10px;letter-spacing:.12em;color:#7F96A8">COLLECTIF // STREAM // COMMUNAUTÉ</div>
+          <div style="margin-top:7px;font-size:10px;line-height:1.5;color:#A6B7C7;max-width:620px">Retrouve la Furioz Compagnie sur ses espaces officiels et rejoins le collectif autour du gaming, du streaming et des projets communautaires.</div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px;align-items:center">
+          <a href="${FURIOZ_TWITCH}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;border:1px solid #9146FF;color:#D8BFFF;background:rgba(145,70,255,.10);padding:7px 10px;font-size:10px;letter-spacing:.10em">TWITCH // FURIOZ</a>
+          <a href="${FURIOZ_DISCORD}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;border:1px solid #5865F2;color:#C9CCFF;background:rgba(88,101,242,.10);padding:7px 10px;font-size:10px;letter-spacing:.10em">DISCORD // FURIOZ</a>
+          <a href="${FURIOZ_SITE}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;border:1px solid #00F0FF;color:#00F0FF;background:rgba(0,240,255,.08);padding:7px 10px;font-size:10px;letter-spacing:.10em">SITE // FURIOZ</a>
+        </div>
+      </div>`;
+    footer.parentNode.insertBefore(box,footer);
+  }
+
   function apply(){
-    brandText(); ageBadge(); logoMain(); bioPhoto(); twitch(); footerYear(); makeVodSection();
+    brandText(); ageBadge(); logoMain(); bioPhoto(); twitch(); footerYear(); makeVodSection(); furiozLinks();
     document.documentElement.style.scrollBehavior='smooth';
     document.querySelectorAll('a[href]').forEach(a=>{
       try{const u=new URL(a.href,location.href);if(u.origin===location.origin&&!a.getAttribute('href').startsWith('#')) a.style.transition='opacity .12s ease, transform .12s ease';}catch{}
