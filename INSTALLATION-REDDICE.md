@@ -3,7 +3,7 @@
 ## 1. Variables Vercel
 Dans **Project Settings → Environment Variables**, vérifier les trois variables suivantes :
 
-- `ADMIN_PASSWORD` : mot de passe choisi pour la console admin.
+- `ADMIN_PASSWORD` : mot de passe choisi pour la console admin (nom recommandé ; `admin_password` en minuscules est aussi accepté par la version corrigée).
 - `SUPABASE_URL` : URL du projet Supabase.
 - `SUPABASE_SERVICE_ROLE_KEY` : clé **service_role**, uniquement côté serveur (ne jamais la mettre dans le HTML ou dans une variable préfixée `NEXT_PUBLIC_`).
 
@@ -17,8 +17,15 @@ Si le projet utilise une ancienne table de Livre d’or nommée `guestbook`, le 
 ## 3. Console admin
 Ouvrir `/admin` (redirige maintenant vers la vraie console de gestion) ou `/admin-tools.html`, saisir le mot de passe `ADMIN_PASSWORD`, puis charger la section voulue. Les onglets Planning, Contacts et Avis chargent les données réelles via `/api/admin-manage`. La page `/admin.html` ne contient plus les anciens boutons de démonstration. Le planning permet d’ajouter, modifier et supprimer les streams. Les avis peuvent être publiés, remis en attente, refusés ou supprimés. Les contacts peuvent être marqués comme traités et supprimés. Le planning public est fourni par `/api/planning`.
 
-## 4. Comportement en cas d’erreur
+## 4. Dépannage rapide
+
+- Si la console dit que le mot de passe admin n’est pas configuré, vérifie `ADMIN_PASSWORD` (ou `admin_password`) sur le bon projet Vercel et dans l’environnement correspondant (Production ou Preview), puis redéploie.
+- Si elle dit que le stockage est indisponible, il manque `SUPABASE_URL` et/ou `SUPABASE_SERVICE_ROLE_KEY`. La variable du mot de passe seule ne suffit pas à charger, ajouter ou modifier les données.
+- Si une erreur de table ou de colonne apparaît, exécute `supabase-migration-reddice.sql` dans Supabase → SQL Editor.
+- N’envoie jamais la valeur de la clé `SUPABASE_SERVICE_ROLE_KEY` dans un message ou une capture d’écran.
+
+## 5. Comportement en cas d’erreur
 Les formulaires n’affichent une confirmation que si le serveur a bien confirmé l’enregistrement. Sans Supabase configuré ou si l’écriture échoue, l’utilisateur voit un message d’erreur ; les données ne sont pas présentées comme enregistrées.
 
-## 5. Vérifications effectuées
+## 6. Vérifications effectuées
 La structure des fichiers et la syntaxe JavaScript ont été vérifiées localement. L’exécution réelle des écritures nécessite les variables et les tables du projet Supabase/Vercel de production.
