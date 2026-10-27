@@ -1,0 +1,30 @@
+/* Harmonisation responsive globale REDDICE */
+:root{color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:90px;max-width:100%;overflow-x:clip}
+body{width:100%;min-width:0;overflow-x:clip}
+img,video,iframe,svg,canvas{max-width:100%}
+button,input,select,textarea{max-width:100%;font:inherit}
+input,select,textarea{min-width:0}
+#root,main,header,footer,section,article{min-width:0}
+#root{width:min(100% - 24px,1360px);margin-inline:auto}
+#root > *{min-width:0}
+.rd-header-inner,.rd-footer-inner{width:min(100%,1360px);padding-inline:clamp(12px,3vw,28px)}
+.rd-header-inner{flex-wrap:wrap}
+.rd-nav{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.rd-nav a{white-space:normal}
+.rd-footer-inner{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:24px}
+.rd-footer-links{display:flex;flex-wrap:wrap;gap:10px 16px}
+button,a{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--rd-cyan,#00f0ff);outline-offset:3px}
+@media(max-width:700px){
+ #root{width:min(100% - 16px,1360px)}
+ .rd-header-inner{gap:10px;padding:10px 12px}
+ .rd-brand img{width:36px;height:36px}
+ .rd-brand-name{font-size:17px}
+ .rd-status{font-size:8px}
+ .rd-footer-inner{padding:20px 12px}
+ .rd-footer-links{gap:10px 12px}
+ table{display:block;max-width:100%;overflow-x:auto}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
