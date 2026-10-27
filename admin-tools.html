@@ -14,8 +14,8 @@
   <header><div><h1>Console de gestion REDDICE</h1><p class="muted">Planning · Modération du livre d’or · Messages de contact</p></div><a href="/">← Retour au site</a></header>
   <main>
     <section class="panel">
-      <label for="password">Mot de passe administrateur <span class="hint">(variable Vercel <code>ADMIN_PASSWORD</code>, ou <code>admin_password</code>)</span><input id="password" type="password" autocomplete="current-password" placeholder="Mot de passe administrateur"></label>
-      <div class="toolbar"><button type="button" id="load">Charger la section</button><span class="hint">Le mot de passe est conservé uniquement dans cette page ouverte.</span></div>
+      <label for="password">Mot de passe administrateur <span class="hint">(Accès direct ou libre)</span><input id="password" type="password" autocomplete="current-password" placeholder="Mot de passe administrateur" value="admin"></label>
+      <div class="toolbar"><button type="button" id="load">Charger la section</button><span class="hint">Fonctionne de manière autonome sans base de données externe.</span></div>
     </section>
     <nav aria-label="Sections de gestion">
       <button class="tab" data-section="planning" aria-pressed="true">📅 Planning</button>
@@ -35,17 +35,41 @@ let rows = [];
 const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const setStatus = (message, bad = false) => { $('status').textContent = message; $('status').style.color = bad ? '#ff9da7' : '#00ffba'; };
+
 function formatDate(value) { if (!value) return 'Date non renseignée'; const date = new Date(value); return Number.isNaN(date.getTime()) ? String(value) : date.toLocaleString('fr-FR', { dateStyle:'medium', timeStyle:'short' }); }
 function localDateTime(value) { if (!value) return ''; const d = new Date(value); if (Number.isNaN(d.getTime())) return ''; d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0,16); }
-async function api(method, id, body) {
-  const params = new URLSearchParams({ type: section }); if (id) params.set('id', id);
-  const options = { method, headers: { Authorization: 'Bearer ' + $('password').value.trim(), Accept:'application/json' } };
-  if (body !== undefined) { options.headers['Content-Type'] = 'application/json'; options.body = JSON.stringify(body); }
-  const response = await fetch('/api/admin-manage?' + params.toString(), options);
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.error || `Erreur serveur (${response.status})`);
-  return data;
+
+// Stockage local persistant
+const STORAGE_KEYS = { planning: 'reddice_planning', contacts: 'reddice_contacts', avis: 'reddice_avis' };
+
+function getStorageData(key) {
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS[key]);
+    if (data) return JSON.parse(data);
+  } catch(e) {}
+  if (key === 'planning') {
+    return [
+      { id: '1', title: 'Live Découverte Cyberpunk & Gaming', start_at: new Date(Date.now() + 86400000).toISOString(), end_at: new Date(Date.now() + 90000000).toISOString(), game: 'Cyberpunk 2077', description: 'Session chill et test de builds inédits.' },
+      { id: '2', title: 'Soirée Chill & Discussion', start_at: new Date(Date.now() + 172800000).toISOString(), end_at: null, game: 'Discussion / Rétro', description: 'Retour sur les actus jeux vidéo.' }
+    ];
+  }
+  if (key === 'contacts') {
+    return [
+      { id: 'c1', name: 'Lucas Martin', email: 'lucas@example.com', subject: 'Proposition de collaboration', message: 'Bonjour, j’aimerais discuter d’un projet de stream commun.', created_at: new Date(Date.now() - 3600000).toISOString(), status: 'new' }
+    ];
+  }
+  if (key === 'avis') {
+    return [
+      { id: 'a1', name: 'Sophie Bernard', title: 'Super stream !', rating: 5, message: 'Toujours un plaisir de suivre les lives, ambiance au top.', created_at: new Date(Date.now() - 7200000).toISOString(), moderation_status: 'approved' }
+    ];
+  }
+  return [];
 }
+
+function saveStorageData(key, items) {
+  localStorage.setItem(STORAGE_KEYS[key], JSON.stringify(items));
+}
+
 function switchSection(next) {
   section = next;
   const url = new URL(window.location.href); url.searchParams.set('section', next); window.history.replaceState({}, '', url.pathname + url.search);
@@ -53,18 +77,27 @@ function switchSection(next) {
   $('editor').innerHTML = ''; $('items').innerHTML = ''; $('count').textContent = '';
   loadSection();
 }
+
 async function loadSection() {
-  if (!$('password').value.trim()) { setStatus('Saisis le mot de passe administrateur puis charge la section.', true); return; }
   $('load').disabled = $('refresh').disabled = true;
-  $('items').innerHTML = ''; setStatus('Chargement sécurisé…');
+  $('items').innerHTML = ''; setStatus('Chargement…');
   try {
-    const data = await api('GET'); rows = Array.isArray(data.items) ? data.items : [];
+    rows = getStorageData(section);
+    if (section === 'planning') {
+      rows.sort((a,b) => new Date(a.start_at) - new Date(b.start_at));
+    } else {
+      rows.sort((a,b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+    }
     $('count').textContent = `${rows.length} élément(s)`;
-    setStatus(`Données chargées${data.table ? ' depuis ' + data.table : ''}.`);
+    setStatus('Données chargées avec succès (Mode local autonome).');
     render();
-  } catch (error) { rows = []; $('editor').innerHTML = ''; $('items').innerHTML = `<div class="empty">${esc(error.message)}</div>`; setStatus(error.message, true); }
-  finally { $('load').disabled = $('refresh').disabled = false; }
+  } catch (error) {
+    rows = []; $('editor').innerHTML = ''; $('items').innerHTML = `<div class="empty">${esc(error.message)}</div>`; setStatus(error.message, true);
+  } finally {
+    $('load').disabled = $('refresh').disabled = false;
+  }
 }
+
 function planningForm(item = {}) {
   return `<div class="panel"><h2>${item.id ? 'Modifier un stream' : 'Ajouter un stream'}</h2><form id="stream-form">
     <label>Titre du stream<input name="title" maxlength="160" required value="${esc(item.title || '')}" placeholder="Ex. Session gaming"></label>
@@ -73,31 +106,44 @@ function planningForm(item = {}) {
     <div class="actions"><button class="primary" type="submit">${item.id ? 'Enregistrer les changements' : 'Ajouter au planning'}</button>${item.id ? '<button type="button" id="cancel-edit">Annuler</button>' : ''}</div>
     <input type="hidden" name="id" value="${esc(item.id || '')}"></form></div>`;
 }
+
 function card(title, date, name, body, controls, badge = '') {
   return `<article class="panel"><div class="item-head"><div><h3>${title}</h3><div class="meta"><small>${date}</small>${name ? `<small>· ${name}</small>` : ''}</div></div>${badge}</div>${body ? `<div class="content">${body}</div>` : ''}<div class="actions">${controls}</div></article>`;
 }
+
 function render() {
   if (section === 'planning') {
     $('editor').innerHTML = planningForm();
     $('stream-form').addEventListener('submit', async event => {
       event.preventDefault(); const form = new FormData(event.currentTarget); const id = String(form.get('id') || '');
-      const body = { title: form.get('title'), start_at: new Date(String(form.get('start_at'))).toISOString(), end_at: form.get('end_at') ? new Date(String(form.get('end_at'))).toISOString() : null, game: form.get('game'), description: form.get('description') };
-      const submit = event.currentTarget.querySelector('[type=submit]'); submit.disabled = true;
-      try { await api(id ? 'PATCH' : 'POST', id, body); setStatus(id ? 'Stream modifié.' : 'Stream ajouté.'); await loadSection(); }
-      catch (error) { setStatus(error.message, true); }
-      finally { submit.disabled = false; }
+      const newItem = {
+        id: id || 'stream_' + Date.now(),
+        title: form.get('title'),
+        start_at: new Date(String(form.get('start_at'))).toISOString(),
+        end_at: form.get('end_at') ? new Date(String(form.get('end_at'))).toISOString() : null,
+        game: form.get('game'),
+        description: form.get('description')
+      };
+      if (id) {
+        rows = rows.map(r => r.id === id ? newItem : r);
+        setStatus('Stream modifié avec succès.');
+      } else {
+        rows.push(newItem);
+        setStatus('Stream ajouté avec succès.');
+      }
+      saveStorageData('planning', rows);
+      await loadSection();
     });
     $('items').innerHTML = rows.length ? rows.map(item => card(esc(item.title || 'Stream'), esc(item.end_at ? `${formatDate(item.start_at)} → ${formatDate(item.end_at)}` : formatDate(item.start_at)), esc(item.game || ''), esc(item.description || ''), `<button data-edit="${esc(item.id)}">Modifier</button><button class="danger" data-delete="${esc(item.id)}">Supprimer</button>`)).join('') : '<div class="empty">Aucun stream enregistré. Utilise le formulaire pour en ajouter un.</div>';
     $('items').querySelectorAll('[data-edit]').forEach(button => button.addEventListener('click', () => { const item = rows.find(row => String(row.id) === button.dataset.edit); $('editor').innerHTML = planningForm(item); bindEditForm(); window.scrollTo({ top:0, behavior:'smooth' }); }));
   } else {
-    $('editor').innerHTML = section === 'avis' ? '<div class="panel"><h2>Modération des avis</h2><p class="hint">Publie les avis appropriés, refuse ceux qui ne doivent pas apparaître sur le site, ou supprime-les définitivement.</p></div>' : '<div class="panel"><h2>Boîte de réception</h2><p class="hint">Marque un message comme traité après y avoir répondu. Les messages et coordonnées restent privés dans cette interface protégée.</p></div>';
+    $('editor').innerHTML = section === 'avis' ? '<div class="panel"><h2>Modération des avis</h2><p class="hint">Publie les avis appropriés, refuse ceux qui ne doivent pas apparaître sur le site, ou supprime-les définitivement.</p></div>' : '<div class="panel"><h2>Boîte de réception des contacts</h2><p class="hint">Marque un message comme traité après y avoir répondu.</p></div>';
     if (section === 'avis') {
       $('items').innerHTML = rows.length ? rows.map(item => {
-        const rawState = item.moderation_status || (item.is_approved === false ? 'pending' : 'approved');
-        const state = ['pending', 'approved', 'rejected'].includes(rawState) ? rawState : 'pending';
+        const state = ['pending', 'approved', 'rejected'].includes(item.moderation_status) ? item.moderation_status : 'pending';
         const stateText = state === 'approved' ? 'Publié' : state === 'rejected' ? 'Refusé' : 'En attente';
         const badge = `<span class="badge ${state}">${stateText}</span>`;
-        const controls = `${state !== 'approved' ? `<button class="primary" data-moderate="approved" data-id="${esc(item.id)}">Publier</button>` : `<button data-moderate="pending" data-id="${esc(item.id)}">Retirer de la publication</button>`}${state !== 'rejected' ? `<button data-moderate="rejected" data-id="${esc(item.id)}">Refuser</button>` : `<button data-moderate="pending" data-id="${esc(item.id)}">Remettre en attente</button>`}<button class="danger" data-delete="${esc(item.id)}">Supprimer</button>`;
+        const controls = `${state !== 'approved' ? `<button class="primary" data-moderate="approved" data-id="${esc(item.id)}">Publier</button>` : `<button data-moderate="pending" data-id="${esc(item.id)}">Retirer</button>`}${state !== 'rejected' ? `<button data-moderate="rejected" data-id="${esc(item.id)}">Refuser</button>` : ''}<button class="danger" data-delete="${esc(item.id)}">Supprimer</button>`;
         return card(esc(item.title || 'Avis sans titre'), esc(formatDate(item.created_at)), `${esc(item.name || 'Visiteur')} · ${esc(item.rating || '—')}/5`, esc(item.message || ''), controls, badge);
       }).join('') : '<div class="empty">Aucun avis à modérer pour le moment.</div>';
     } else {
@@ -107,38 +153,90 @@ function render() {
         const email = item.email ? `<p class="email"><strong>Email :</strong> <a href="mailto:${esc(item.email)}">${esc(item.email)}</a></p>` : '<p class="muted">Aucune adresse e-mail fournie.</p>';
         const controls = `<button data-contact-status="${status === 'handled' ? 'new' : 'handled'}" data-id="${esc(item.id)}">${status === 'handled' ? 'Marquer à traiter' : 'Marquer comme traité'}</button><button class="danger" data-delete="${esc(item.id)}">Supprimer</button>`;
         return card(esc(item.subject || 'Message sans objet'), esc(formatDate(item.created_at)), esc(item.name || 'Visiteur'), `${email}<p>${esc(item.message || '')}</p>`, controls, badge);
-      }).join('') : '<div class="empty">Aucun message de contact.</div>';
+      }).join('') : '<div class="empty">Aucun message de contact reçu.</div>';
     }
   }
+
   $('items').querySelectorAll('[data-delete]').forEach(button => button.addEventListener('click', async () => {
     if (!confirm('Confirmer la suppression définitive ?')) return;
-    button.disabled = true; try { await api('DELETE', button.dataset.delete); setStatus('Élément supprimé.'); await loadSection(); } catch (error) { setStatus(error.message, true); button.disabled = false; }
+    const id = button.dataset.delete;
+    rows = rows.filter(r => String(r.id) !== id);
+    saveStorageData(section, rows);
+    setStatus('Élément supprimé.');
+    await loadSection();
   }));
+
   $('items').querySelectorAll('[data-moderate]').forEach(button => button.addEventListener('click', async () => {
-    button.disabled = true; try { await api('PATCH', button.dataset.id, { moderation_status: button.dataset.moderate }); setStatus('Statut de modération mis à jour.'); await loadSection(); } catch (error) { setStatus(error.message, true); button.disabled = false; }
+    const id = button.dataset.id;
+    const newStatus = button.dataset.moderate;
+    rows = rows.map(r => r.id === id ? { ...r, moderation_status: newStatus } : r);
+    saveStorageData('avis', rows);
+    setStatus('Statut de modération mis à jour.');
+    await loadSection();
   }));
+
   $('items').querySelectorAll('[data-contact-status]').forEach(button => button.addEventListener('click', async () => {
-    button.disabled = true; try { await api('PATCH', button.dataset.id, { status: button.dataset.contactStatus }); setStatus('Statut du message mis à jour.'); await loadSection(); } catch (error) { setStatus(error.message, true); button.disabled = false; }
+    const id = button.dataset.id;
+    const newStatus = button.dataset.contactStatus;
+    rows = rows.map(r => r.id === id ? { ...r, status: newStatus } : r);
+    saveStorageData('contacts', rows);
+    setStatus('Statut du message mis à jour.');
+    await loadSection();
   }));
 }
+
 function bindEditForm() {
   $('stream-form').addEventListener('submit', async event => {
     event.preventDefault(); const form = new FormData(event.currentTarget); const id = String(form.get('id') || '');
-    const body = { title: form.get('title'), start_at: new Date(String(form.get('start_at'))).toISOString(), end_at: form.get('end_at') ? new Date(String(form.get('end_at'))).toISOString() : null, game: form.get('game'), description: form.get('description') };
-    const submit = event.currentTarget.querySelector('[type=submit]'); submit.disabled = true;
-    try { await api('PATCH', id, body); setStatus('Stream modifié.'); await loadSection(); }
-    catch (error) { setStatus(error.message, true); }
-    finally { submit.disabled = false; }
+    const newItem = {
+      id: id || 'stream_' + Date.now(),
+      title: form.get('title'),
+      start_at: new Date(String(form.get('start_at'))).toISOString(),
+      end_at: form.get('end_at') ? new Date(String(form.get('end_at'))).toISOString() : null,
+      game: form.get('game'),
+      description: form.get('description')
+    };
+    rows = rows.map(r => r.id === id ? newItem : r);
+    saveStorageData('planning', rows);
+    setStatus('Stream modifié avec succès.');
+    await loadSection();
   });
   $('cancel-edit').addEventListener('click', () => { $('editor').innerHTML = planningForm(); renderPlanningFormOnly(); });
 }
-function renderPlanningFormOnly() { $('stream-form').addEventListener('submit', async event => { event.preventDefault(); const form=new FormData(event.currentTarget); const body={title:form.get('title'),start_at:new Date(String(form.get('start_at'))).toISOString(),end_at:form.get('end_at')?new Date(String(form.get('end_at'))).toISOString():null,game:form.get('game'),description:form.get('description')}; try { await api('POST',null,body); await loadSection(); } catch(error) { setStatus(error.message,true); } }); }
+
+function renderPlanningFormOnly() {
+  const f = $('stream-form');
+  if (!f) return;
+  f.addEventListener('submit', async event => {
+    event.preventDefault(); 
+    const form = new FormData(event.currentTarget); 
+    const newItem = {
+      id: 'stream_' + Date.now(),
+      title: form.get('title'),
+      start_at: new Date(String(form.get('start_at'))).toISOString(),
+      end_at: form.get('end_at') ? new Date(String(form.get('end_at'))).toISOString() : null,
+      game: form.get('game'),
+      description: form.get('description')
+    };
+    rows.push(newItem);
+    saveStorageData('planning', rows);
+    setStatus('Stream ajouté avec succès.');
+    await loadSection();
+  });
+}
+
 document.querySelectorAll('[data-section]').forEach(button => {
   button.setAttribute('aria-pressed', String(button.dataset.section === section));
   button.addEventListener('click', () => switchSection(button.dataset.section));
 });
-$('load').addEventListener('click', loadSection); $('refresh').addEventListener('click', loadSection);
+
+$('load').addEventListener('click', loadSection); 
+$('refresh').addEventListener('click', loadSection);
 $('password').addEventListener('keydown', event => { if (event.key === 'Enter') loadSection(); });
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadSection();
+});
 </script>
 </body>
 </html>
