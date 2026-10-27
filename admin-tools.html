@@ -11,7 +11,7 @@
   </style>
 </head>
 <body>
-  <header><div><h1>Console de gestion REDDICE</h1><p class="muted">Planning · Modération du livre d’or · Messages de contact</p></div><a href="admin.html">← Retour au panneau admin</a></header>
+  <header><div><h1>Console de gestion REDDICE</h1><p class="muted">Planning · Modération du livre d’or · Messages de contact</p></div><a href="/">← Retour au site</a></header>
   <main>
     <section class="panel">
       <label for="password">Mot de passe administrateur <span class="hint">(variable Vercel <code>ADMIN_PASSWORD</code>)</span><input id="password" type="password" autocomplete="current-password" placeholder="Mot de passe administrateur"></label>
@@ -29,7 +29,8 @@
   </main>
 <script>
 'use strict';
-let section = 'planning';
+const requestedSection = new URLSearchParams(window.location.search).get('section');
+let section = ['planning', 'contacts', 'avis'].includes(requestedSection) ? requestedSection : 'planning';
 let rows = [];
 const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
@@ -47,6 +48,7 @@ async function api(method, id, body) {
 }
 function switchSection(next) {
   section = next;
+  const url = new URL(window.location.href); url.searchParams.set('section', next); window.history.replaceState({}, '', url.pathname + url.search);
   document.querySelectorAll('[data-section]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.section === section)));
   $('editor').innerHTML = ''; $('items').innerHTML = ''; $('count').textContent = '';
   loadSection();
@@ -131,7 +133,10 @@ function bindEditForm() {
   $('cancel-edit').addEventListener('click', () => { $('editor').innerHTML = planningForm(); renderPlanningFormOnly(); });
 }
 function renderPlanningFormOnly() { $('stream-form').addEventListener('submit', async event => { event.preventDefault(); const form=new FormData(event.currentTarget); const body={title:form.get('title'),start_at:new Date(String(form.get('start_at'))).toISOString(),end_at:form.get('end_at')?new Date(String(form.get('end_at'))).toISOString():null,game:form.get('game'),description:form.get('description')}; try { await api('POST',null,body); await loadSection(); } catch(error) { setStatus(error.message,true); } }); }
-document.querySelectorAll('[data-section]').forEach(button => button.addEventListener('click', () => switchSection(button.dataset.section)));
+document.querySelectorAll('[data-section]').forEach(button => {
+  button.setAttribute('aria-pressed', String(button.dataset.section === section));
+  button.addEventListener('click', () => switchSection(button.dataset.section));
+});
 $('load').addEventListener('click', loadSection); $('refresh').addEventListener('click', loadSection);
 $('password').addEventListener('keydown', event => { if (event.key === 'Enter') loadSection(); });
 </script>
