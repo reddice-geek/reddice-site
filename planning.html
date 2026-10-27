@@ -51,5 +51,58 @@ Error generating stack: `+o.message+`
   <script>(function(){function m(a){var h=a.getAttribute("href");if(!h)return;try{var u=new URL(h,document.baseURI);if((u.protocol==="http:"||u.protocol==="https:")&&u.host!==location.host){a.target="_blank";a.rel="noopener noreferrer";}}catch(e){}}function s(){document.querySelectorAll("a[href]").forEach(m);}if(document.readyState!=="loading"){s();}else{document.addEventListener("DOMContentLoaded",s);}document.addEventListener("click",function(e){var a=e.target&&e.target.closest&&e.target.closest("a[href]");if(a){m(a);}},true);})();</script>
   
   <script src="cyberpunk-fixes.js"></script>
+<script>
+(function () {
+  'use strict';
+  const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const prettyDate = value => { const date = new Date(value); return Number.isNaN(date.getTime()) ? 'Date à confirmer' : date.toLocaleString('fr-FR', {weekday:'short', day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit'}); };
+  async function mountPlanning() {
+    const main = document.querySelector('main');
+    const marker = document.querySelector('#planning-special');
+    if (!main || !marker || document.querySelector('#reddice-managed-planning')) return;
+    // Masque le planning statique d'origine pour ne pas présenter de faux créneaux.
+    const oldSection = Array.from(main.querySelectorAll('section')).find(section => section.textContent.includes('SYNC AUTO') && section.textContent.includes('Google Calendar'));
+    if (oldSection) oldSection.hidden = true;
+    const section = document.createElement('section');
+    section.id = 'reddice-managed-planning';
+    section.className = 'rd-managed-planning mb-10';
+    section.innerHTML = '<div class="rd-managed-head"><span>PLANNING DES STREAMS // LIVE DATABASE</span><button type="button" id="reddice-planning-refresh">↻ Actualiser</button></div><p class="rd-managed-status" id="reddice-planning-status" role="status">Chargement du planning…</p><div class="rd-managed-grid" id="reddice-planning-items"></div>';
+    marker.parentNode.insertBefore(section, marker);
+    const status = section.querySelector('#reddice-planning-status');
+    const items = section.querySelector('#reddice-planning-items');
+    async function refresh() {
+      status.textContent = 'Synchronisation du planning…';
+      try {
+        const response = await fetch('/api/planning', { headers: { Accept: 'application/json' } });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.error || 'Planning temporairement indisponible.');
+        const streams = Array.isArray(data.items) ? data.items : [];
+        if (!streams.length) {
+          items.innerHTML = '<div class="rd-managed-empty">Aucun stream programmé pour le moment. Le planning sera mis à jour dès qu’un créneau sera ajouté dans le panneau admin.</div>';
+          status.textContent = 'Aucun stream programmé.';
+          return;
+        }
+        items.innerHTML = streams.map(stream => {
+          const start = new Date(stream.start_at);
+          const end = stream.end_at ? new Date(stream.end_at) : null;
+          const stamp = date => date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+          const calendar = end && !Number.isNaN(start.getTime()) && !Number.isNaN(end.getTime()) ? '<div class="rd-managed-actions"><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(stream.title || 'Stream REDDICE')+'&dates='+encodeURIComponent(stamp(start)+'/'+stamp(end))+'" target="_blank" rel="noopener noreferrer">+ Ajouter à Google Calendar</a></div>' : '';
+          const dateText = end ? prettyDate(stream.start_at)+' — '+prettyDate(stream.end_at) : prettyDate(stream.start_at);
+          return '<article class="rd-managed-card"><div class="rd-managed-date">'+escapeHtml(dateText)+'</div><h3>'+escapeHtml(stream.title || 'Stream')+'</h3>'+(stream.game ? '<div class="rd-managed-game">JEU // '+escapeHtml(stream.game)+'</div>' : '')+(stream.description ? '<p>'+escapeHtml(stream.description)+'</p>' : '')+calendar+'</article>';
+        }).join('');
+        status.textContent = streams.length + (streams.length > 1 ? ' streams programmés.' : ' stream programmé.');
+      } catch (error) {
+        items.innerHTML = '<div class="rd-managed-empty">'+escapeHtml(error.message || 'Impossible de charger le planning.')+'</div>';
+        status.textContent = 'Synchronisation impossible.';
+      }
+    }
+    section.querySelector('#reddice-planning-refresh').addEventListener('click', refresh);
+    refresh();
+  }
+  const observer = new MutationObserver(() => { if (document.querySelector('#planning-special')) { mountPlanning(); if (document.querySelector('#reddice-managed-planning')) observer.disconnect(); } });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+  if (document.readyState !== 'loading') mountPlanning(); else document.addEventListener('DOMContentLoaded', mountPlanning, { once: true });
+})();
+</script>
 </body>
 </html>

@@ -1,13 +1,139 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gestion — Reddice</title><style>body{background:#060b13;color:#edf7ff;font:16px system-ui;margin:0}header,main{max-width:1050px;margin:auto;padding:20px}header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}button,input,textarea{font:inherit;padding:10px;border:1px solid #276078;border-radius:7px;background:#0e1d2b;color:white}button{cursor:pointer}button:hover{border-color:#00efff}nav{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}.panel{background:#101b2a;border:1px solid #29485d;padding:18px;border-radius:10px;margin:12px 0}label{display:block;margin:12px 0}input,textarea{box-sizing:border-box;width:100%}textarea{min-height:90px}.danger{color:#ff8888}#status{color:#00efca;white-space:pre-wrap}small{color:#a4b4c3}h1,h2{color:#00efff}article{overflow-wrap:anywhere}</style>  <link rel="stylesheet" href="site-polish.css">
-</head><body><header><h1>Gestion du site</h1><a href="admin.html" style="color:#00efff">← Panneau admin</a></header><main><label>Mot de passe administrateur (Vercel : ADMIN_PASSWORD)<input id="password" type="password" autocomplete="off" placeholder="Mot de passe"></label><nav><button onclick="show('planning')">📅 Planning</button><button onclick="show('contacts')">✉️ Contacts</button><button onclick="show('avis')">⭐ Livre d'or / Avis</button></nav><div class="toolbar"><button type="button" onclick="show(section)">↻ Actualiser</button><span class="hint">Les modifications sont enregistrées sur le serveur configuré.</span></div><p id="status" role="status" aria-live="polite"></p><section id="editor"></section><section id="items"></section></main><script>
-let section='planning', rows=[];
-const $=id=>document.getElementById(id);
-const formatDate=v=>{if(!v)return 'Date non renseignée';const d=new Date(v);return Number.isNaN(d.getTime())?String(v):d.toLocaleString('fr-FR',{dateStyle:'medium',timeStyle:'short'});};
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-async function api(method,id,body){const q=new URLSearchParams({type:section});if(id)q.set('id',id);const r=await fetch('/api/admin-manage?'+q,{method,headers:{'Authorization':'Bearer '+$('password').value,'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});const data=await r.json();if(!r.ok)throw Error(data.error||'Erreur serveur');return data;}
-async function show(s){section=s;$('status').textContent='Chargement…';$('editor').innerHTML='';$('items').innerHTML='';try{const data=await api('GET');rows=data.items||[];$('status').textContent=rows.length+' élément(s)';render();}catch(e){$('status').textContent='Erreur : '+e.message;}}
-function form(item={}){return `<div class="panel"><h2>${item.id?'Modifier':'Ajouter'} un stream</h2><form id="streamform"><input type="hidden" name="id" value="${esc(item.id||'')}"><label>Titre<input name="title" required value="${esc(item.title||'')}"></label><label>Date et heure<input name="start_at" type="datetime-local" required value="${esc((item.start_at||'').slice(0,16))}"></label><label>Jeu<input name="game" value="${esc(item.game||'')}"></label><label>Description<textarea name="description">${esc(item.description||'')}</textarea></label><button>Enregistrer</button></form></div>`}
-function render(){if(section==='planning'){$('editor').innerHTML=form();bindForm();}else $('editor').innerHTML='';$('items').innerHTML=rows.map(x=>`<article class="panel"><h3>${esc(section==='planning'?x.title:section==='contacts'?x.subject||'Message':x.title||'Avis')}</h3><small>${esc(formatDate(x.created_at||x.start_at||''))} — ${esc(x.name||x.game||'')}</small>${x.email?`<p>Email : ${esc(x.email)}</p>`:''}<p>${esc(x.message||x.description||'')}</p>${section==='avis'?`<p>Note : ${esc(x.rating||'—')}/5</p>`:''}${section==='planning'?`<button data-edit="${esc(x.id)}">Modifier</button>`:''} <button data-del="${esc(x.id)}">Supprimer</button></article>`).join('')||'<p>Aucun élément.</p>';
- document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{const x=rows.find(x=>String(x.id)===b.dataset.edit);$('editor').innerHTML=form(x);bindForm();window.scrollTo({top:0,behavior:'smooth'});});document.querySelectorAll('[data-del]').forEach(b=>b.onclick=async()=>{if(!confirm('Supprimer définitivement cet élément ?'))return;try{await api('DELETE',b.dataset.del);await show(section)}catch(e){alert(e.message)}});}
-function bindForm(){$('streamform').onsubmit=async e=>{e.preventDefault();const b=Object.fromEntries(new FormData(e.currentTarget));const id=b.id;delete b.id;try{await api(id?'PATCH':'POST',id,b);await show('planning')}catch(e){alert(e.message)}}}
-</script></body></html>
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#05070a">
+  <title>Gestion — REDDICE</title>
+  <link rel="stylesheet" href="site-polish.css">
+  <style>
+    :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#05070a;color:#edf7ff;font:15px/1.55 Inter,system-ui,sans-serif}header,main{width:min(1050px,100%);margin:auto;padding:20px}header{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid #00f0ff2c}h1,h2,h3{margin:0;color:#00f0ff}h1{font-size:clamp(22px,4vw,32px)}h2{font-size:20px;margin-bottom:12px}h3{font-size:17px;margin-bottom:6px}a{color:#00f0ff}button,input,textarea,select{font:inherit;border:1px solid #276078;border-radius:6px;background:#0b1722;color:#f4fbff;padding:10px;max-width:100%}button{cursor:pointer}button:hover{border-color:#00f0ff}button:disabled{opacity:.55;cursor:wait}input,textarea,select{width:100%}textarea{min-height:100px;resize:vertical}label{display:grid;gap:6px;margin:12px 0;color:#a9c4d5;font-size:13px}.toolbar,nav,.actions,.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.toolbar{margin:16px 0}nav{margin:18px 0}.toolbar button,.tab{width:auto}.tab[aria-pressed=true]{background:#00f0ff;color:#031018;border-color:#00f0ff;font-weight:700}.panel{background:#0b121b;border:1px solid #29485d;padding:18px;border-radius:9px;margin:12px 0;min-width:0}.panel form{max-width:780px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.status{min-height:28px;color:#00ffba;white-space:pre-wrap}.muted,small{color:#95aabc}.item-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}.badge{display:inline-flex;border:1px solid #4b6678;border-radius:30px;padding:3px 9px;font-size:11px;letter-spacing:.04em}.badge.pending{color:#ffd36a;border-color:#9d7426}.badge.approved,.badge.handled{color:#00ffba;border-color:#127b62}.badge.rejected,.badge.new{color:#ff8e9a;border-color:#89404a}.content{white-space:pre-wrap;overflow-wrap:anywhere;color:#d2e3ec;margin:10px 0}.danger{border-color:#8d3440;color:#ff9da7}.primary{background:#00f0ff;color:#041016;font-weight:700}.empty{padding:20px;border:1px dashed #315164;color:#95aabc;text-align:center;border-radius:8px}.hint{font-size:12px;color:#95aabc}.email{overflow-wrap:anywhere}.toolbar .hint{flex:1;min-width:180px}@media(max-width:600px){header,main{padding:14px}.grid2{grid-template-columns:1fr}.panel{padding:14px}.toolbar button{flex:1}}
+  </style>
+</head>
+<body>
+  <header><div><h1>Console de gestion REDDICE</h1><p class="muted">Planning · Modération du livre d’or · Messages de contact</p></div><a href="admin.html">← Retour au panneau admin</a></header>
+  <main>
+    <section class="panel">
+      <label for="password">Mot de passe administrateur <span class="hint">(variable Vercel <code>ADMIN_PASSWORD</code>)</span><input id="password" type="password" autocomplete="current-password" placeholder="Mot de passe administrateur"></label>
+      <div class="toolbar"><button type="button" id="load">Charger la section</button><span class="hint">Le mot de passe est conservé uniquement dans cette page ouverte.</span></div>
+    </section>
+    <nav aria-label="Sections de gestion">
+      <button class="tab" data-section="planning" aria-pressed="true">📅 Planning</button>
+      <button class="tab" data-section="contacts" aria-pressed="false">✉️ Contacts</button>
+      <button class="tab" data-section="avis" aria-pressed="false">⭐ Avis</button>
+    </nav>
+    <div class="toolbar"><button type="button" id="refresh">↻ Actualiser</button><span class="hint" id="count"></span></div>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <section id="editor"></section>
+    <section id="items" aria-live="polite"></section>
+  </main>
+<script>
+'use strict';
+let section = 'planning';
+let rows = [];
+const $ = id => document.getElementById(id);
+const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+const setStatus = (message, bad = false) => { $('status').textContent = message; $('status').style.color = bad ? '#ff9da7' : '#00ffba'; };
+function formatDate(value) { if (!value) return 'Date non renseignée'; const date = new Date(value); return Number.isNaN(date.getTime()) ? String(value) : date.toLocaleString('fr-FR', { dateStyle:'medium', timeStyle:'short' }); }
+function localDateTime(value) { if (!value) return ''; const d = new Date(value); if (Number.isNaN(d.getTime())) return ''; d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0,16); }
+async function api(method, id, body) {
+  const params = new URLSearchParams({ type: section }); if (id) params.set('id', id);
+  const options = { method, headers: { Authorization: 'Bearer ' + $('password').value.trim(), Accept:'application/json' } };
+  if (body !== undefined) { options.headers['Content-Type'] = 'application/json'; options.body = JSON.stringify(body); }
+  const response = await fetch('/api/admin-manage?' + params.toString(), options);
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || `Erreur serveur (${response.status})`);
+  return data;
+}
+function switchSection(next) {
+  section = next;
+  document.querySelectorAll('[data-section]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.section === section)));
+  $('editor').innerHTML = ''; $('items').innerHTML = ''; $('count').textContent = '';
+  loadSection();
+}
+async function loadSection() {
+  if (!$('password').value.trim()) { setStatus('Saisis le mot de passe administrateur puis charge la section.', true); return; }
+  $('load').disabled = $('refresh').disabled = true;
+  $('items').innerHTML = ''; setStatus('Chargement sécurisé…');
+  try {
+    const data = await api('GET'); rows = Array.isArray(data.items) ? data.items : [];
+    $('count').textContent = `${rows.length} élément(s)`;
+    setStatus(`Données chargées${data.table ? ' depuis ' + data.table : ''}.`);
+    render();
+  } catch (error) { rows = []; $('editor').innerHTML = ''; $('items').innerHTML = `<div class="empty">${esc(error.message)}</div>`; setStatus(error.message, true); }
+  finally { $('load').disabled = $('refresh').disabled = false; }
+}
+function planningForm(item = {}) {
+  return `<div class="panel"><h2>${item.id ? 'Modifier un stream' : 'Ajouter un stream'}</h2><form id="stream-form">
+    <label>Titre du stream<input name="title" maxlength="160" required value="${esc(item.title || '')}" placeholder="Ex. Session gaming"></label>
+    <div class="grid2"><label>Début — date et heure<input name="start_at" type="datetime-local" required value="${esc(localDateTime(item.start_at))}"></label><label>Fin — date et heure (facultatif)<input name="end_at" type="datetime-local" value="${esc(localDateTime(item.end_at))}"></label><label>Jeu / catégorie<input name="game" maxlength="120" value="${esc(item.game || '')}" placeholder="Ex. Cyberpunk 2077"></label></div>
+    <label>Description<textarea name="description" maxlength="2000" placeholder="Détails du stream (facultatif)">${esc(item.description || '')}</textarea></label>
+    <div class="actions"><button class="primary" type="submit">${item.id ? 'Enregistrer les changements' : 'Ajouter au planning'}</button>${item.id ? '<button type="button" id="cancel-edit">Annuler</button>' : ''}</div>
+    <input type="hidden" name="id" value="${esc(item.id || '')}"></form></div>`;
+}
+function card(title, date, name, body, controls, badge = '') {
+  return `<article class="panel"><div class="item-head"><div><h3>${title}</h3><div class="meta"><small>${date}</small>${name ? `<small>· ${name}</small>` : ''}</div></div>${badge}</div>${body ? `<div class="content">${body}</div>` : ''}<div class="actions">${controls}</div></article>`;
+}
+function render() {
+  if (section === 'planning') {
+    $('editor').innerHTML = planningForm();
+    $('stream-form').addEventListener('submit', async event => {
+      event.preventDefault(); const form = new FormData(event.currentTarget); const id = String(form.get('id') || '');
+      const body = { title: form.get('title'), start_at: new Date(String(form.get('start_at'))).toISOString(), end_at: form.get('end_at') ? new Date(String(form.get('end_at'))).toISOString() : null, game: form.get('game'), description: form.get('description') };
+      const submit = event.currentTarget.querySelector('[type=submit]'); submit.disabled = true;
+      try { await api(id ? 'PATCH' : 'POST', id, body); setStatus(id ? 'Stream modifié.' : 'Stream ajouté.'); await loadSection(); }
+      catch (error) { setStatus(error.message, true); }
+      finally { submit.disabled = false; }
+    });
+    $('items').innerHTML = rows.length ? rows.map(item => card(esc(item.title || 'Stream'), esc(item.end_at ? `${formatDate(item.start_at)} → ${formatDate(item.end_at)}` : formatDate(item.start_at)), esc(item.game || ''), esc(item.description || ''), `<button data-edit="${esc(item.id)}">Modifier</button><button class="danger" data-delete="${esc(item.id)}">Supprimer</button>`)).join('') : '<div class="empty">Aucun stream enregistré. Utilise le formulaire pour en ajouter un.</div>';
+    $('items').querySelectorAll('[data-edit]').forEach(button => button.addEventListener('click', () => { const item = rows.find(row => String(row.id) === button.dataset.edit); $('editor').innerHTML = planningForm(item); bindEditForm(); window.scrollTo({ top:0, behavior:'smooth' }); }));
+  } else {
+    $('editor').innerHTML = section === 'avis' ? '<div class="panel"><h2>Modération des avis</h2><p class="hint">Publie les avis appropriés, refuse ceux qui ne doivent pas apparaître sur le site, ou supprime-les définitivement.</p></div>' : '<div class="panel"><h2>Boîte de réception</h2><p class="hint">Marque un message comme traité après y avoir répondu. Les messages et coordonnées restent privés dans cette interface protégée.</p></div>';
+    if (section === 'avis') {
+      $('items').innerHTML = rows.length ? rows.map(item => {
+        const rawState = item.moderation_status || (item.is_approved === false ? 'pending' : 'approved');
+        const state = ['pending', 'approved', 'rejected'].includes(rawState) ? rawState : 'pending';
+        const stateText = state === 'approved' ? 'Publié' : state === 'rejected' ? 'Refusé' : 'En attente';
+        const badge = `<span class="badge ${state}">${stateText}</span>`;
+        const controls = `${state !== 'approved' ? `<button class="primary" data-moderate="approved" data-id="${esc(item.id)}">Publier</button>` : `<button data-moderate="pending" data-id="${esc(item.id)}">Retirer de la publication</button>`}${state !== 'rejected' ? `<button data-moderate="rejected" data-id="${esc(item.id)}">Refuser</button>` : `<button data-moderate="pending" data-id="${esc(item.id)}">Remettre en attente</button>`}<button class="danger" data-delete="${esc(item.id)}">Supprimer</button>`;
+        return card(esc(item.title || 'Avis sans titre'), esc(formatDate(item.created_at)), `${esc(item.name || 'Visiteur')} · ${esc(item.rating || '—')}/5`, esc(item.message || ''), controls, badge);
+      }).join('') : '<div class="empty">Aucun avis à modérer pour le moment.</div>';
+    } else {
+      $('items').innerHTML = rows.length ? rows.map(item => {
+        const status = item.status === 'handled' ? 'handled' : 'new';
+        const badge = `<span class="badge ${status}">${status === 'handled' ? 'Traité' : 'À traiter'}</span>`;
+        const email = item.email ? `<p class="email"><strong>Email :</strong> <a href="mailto:${esc(item.email)}">${esc(item.email)}</a></p>` : '<p class="muted">Aucune adresse e-mail fournie.</p>';
+        const controls = `<button data-contact-status="${status === 'handled' ? 'new' : 'handled'}" data-id="${esc(item.id)}">${status === 'handled' ? 'Marquer à traiter' : 'Marquer comme traité'}</button><button class="danger" data-delete="${esc(item.id)}">Supprimer</button>`;
+        return card(esc(item.subject || 'Message sans objet'), esc(formatDate(item.created_at)), esc(item.name || 'Visiteur'), `${email}<p>${esc(item.message || '')}</p>`, controls, badge);
+      }).join('') : '<div class="empty">Aucun message de contact.</div>';
+    }
+  }
+  $('items').querySelectorAll('[data-delete]').forEach(button => button.addEventListener('click', async () => {
+    if (!confirm('Confirmer la suppression définitive ?')) return;
+    button.disabled = true; try { await api('DELETE', button.dataset.delete); setStatus('Élément supprimé.'); await loadSection(); } catch (error) { setStatus(error.message, true); button.disabled = false; }
+  }));
+  $('items').querySelectorAll('[data-moderate]').forEach(button => button.addEventListener('click', async () => {
+    button.disabled = true; try { await api('PATCH', button.dataset.id, { moderation_status: button.dataset.moderate }); setStatus('Statut de modération mis à jour.'); await loadSection(); } catch (error) { setStatus(error.message, true); button.disabled = false; }
+  }));
+  $('items').querySelectorAll('[data-contact-status]').forEach(button => button.addEventListener('click', async () => {
+    button.disabled = true; try { await api('PATCH', button.dataset.id, { status: button.dataset.contactStatus }); setStatus('Statut du message mis à jour.'); await loadSection(); } catch (error) { setStatus(error.message, true); button.disabled = false; }
+  }));
+}
+function bindEditForm() {
+  $('stream-form').addEventListener('submit', async event => {
+    event.preventDefault(); const form = new FormData(event.currentTarget); const id = String(form.get('id') || '');
+    const body = { title: form.get('title'), start_at: new Date(String(form.get('start_at'))).toISOString(), end_at: form.get('end_at') ? new Date(String(form.get('end_at'))).toISOString() : null, game: form.get('game'), description: form.get('description') };
+    const submit = event.currentTarget.querySelector('[type=submit]'); submit.disabled = true;
+    try { await api('PATCH', id, body); setStatus('Stream modifié.'); await loadSection(); }
+    catch (error) { setStatus(error.message, true); }
+    finally { submit.disabled = false; }
+  });
+  $('cancel-edit').addEventListener('click', () => { $('editor').innerHTML = planningForm(); renderPlanningFormOnly(); });
+}
+function renderPlanningFormOnly() { $('stream-form').addEventListener('submit', async event => { event.preventDefault(); const form=new FormData(event.currentTarget); const body={title:form.get('title'),start_at:new Date(String(form.get('start_at'))).toISOString(),end_at:form.get('end_at')?new Date(String(form.get('end_at'))).toISOString():null,game:form.get('game'),description:form.get('description')}; try { await api('POST',null,body); await loadSection(); } catch(error) { setStatus(error.message,true); } }); }
+document.querySelectorAll('[data-section]').forEach(button => button.addEventListener('click', () => switchSection(button.dataset.section)));
+$('load').addEventListener('click', loadSection); $('refresh').addEventListener('click', loadSection);
+$('password').addEventListener('keydown', event => { if (event.key === 'Enter') loadSection(); });
+</script>
+</body>
+</html>

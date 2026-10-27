@@ -7,7 +7,7 @@ img,video,iframe,svg,canvas{max-width:100%}
 button,input,select,textarea{max-width:100%;font:inherit}
 input,select,textarea{min-width:0}
 #root,main,header,footer,section,article{min-width:0}
-#root{width:min(100% - 24px,1360px);margin-inline:auto}
+#root{width:calc(100% - 24px);max-width:1360px;margin-inline:auto}
 #root > *{min-width:0}
 .rd-header-inner,.rd-footer-inner{width:min(100%,1360px);padding-inline:clamp(12px,3vw,28px)}
 .rd-header-inner{flex-wrap:wrap}
@@ -18,7 +18,7 @@ input,select,textarea{min-width:0}
 button,a{touch-action:manipulation}
 :focus-visible{outline:2px solid var(--rd-cyan,#00f0ff);outline-offset:3px}
 @media(max-width:700px){
- #root{width:min(100% - 16px,1360px)}
+ #root{width:calc(100% - 16px)}
  .rd-header-inner{gap:10px;padding:10px 12px}
  .rd-brand img{width:36px;height:36px}
  .rd-brand-name{font-size:17px}
@@ -28,3 +28,20 @@ button,a{touch-action:manipulation}
  table{display:block;max-width:100%;overflow-x:auto}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Planning administrable : conserve la palette cyberpunk du site. */
+.rd-managed-planning{margin-block:28px;padding:16px;border:1px solid rgba(0,240,255,.28);background:linear-gradient(145deg,rgba(7,15,24,.96),rgba(10,9,13,.96));box-shadow:0 0 24px rgba(0,240,255,.05);min-width:0}
+.rd-managed-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#00f0ff;font:700 11px/1.5 "Share Tech Mono",monospace;letter-spacing:.14em}
+.rd-managed-head button{border:1px solid rgba(0,240,255,.35);background:#0b1722;color:#00f0ff;padding:7px 10px;font:inherit;letter-spacing:.05em;cursor:pointer}
+.rd-managed-status{margin:12px 0;color:#8aa9ba;font:11px/1.6 "Share Tech Mono",monospace}
+.rd-managed-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.rd-managed-card{min-width:0;padding:15px;border:1px solid rgba(0,240,255,.18);background:rgba(2,6,11,.82);overflow-wrap:anywhere}
+.rd-managed-card h3{margin:7px 0;color:#fff;font:700 18px/1.3 Oxanium,system-ui,sans-serif}
+.rd-managed-date{color:#00f0ff;font:11px/1.6 "Share Tech Mono",monospace}
+.rd-managed-game{display:inline-flex;margin:2px 0 6px;padding:4px 7px;border:1px solid rgba(255,60,10,.28);color:#ff987d;font:10px/1.3 "Share Tech Mono",monospace;letter-spacing:.07em}
+.rd-managed-card p{margin:7px 0 12px;color:#b8c8d2;font-size:12px;line-height:1.7;white-space:pre-wrap}
+.rd-managed-actions{margin-top:12px;padding-top:10px;border-top:1px solid rgba(0,240,255,.1)}
+.rd-managed-actions a{color:#7deeff;font:10px/1.5 "Share Tech Mono",monospace;text-decoration:none}
+.rd-managed-actions a:hover{text-decoration:underline;color:#fff}
+.rd-managed-empty{grid-column:1/-1;padding:18px;border:1px dashed rgba(0,240,255,.2);color:#9bb0be;font-size:12px;line-height:1.7}
+@media(max-width:700px){.rd-managed-planning{padding:12px}.rd-managed-grid{grid-template-columns:minmax(0,1fr)}.rd-managed-card{padding:12px}}
