@@ -13,25 +13,38 @@
 <body>
   <header><div><h1>Console de gestion REDDICE</h1><p class="muted">Planning · Modération du livre d’or · Messages de contact</p></div><a href="/">← Retour au site</a></header>
   <main>
-    <section class="panel">
-      <label for="password">Mot de passe administrateur <span class="hint">(Accès direct ou libre)</span><input id="password" type="password" autocomplete="current-password" placeholder="Mot de passe administrateur" value="admin"></label>
-      <div class="toolbar"><button type="button" id="load">Charger la section</button><span class="hint">Fonctionne de manière autonome sans base de données externe.</span></div>
+    <section class="panel" id="auth-panel">
+      <h2>Accès Sécurisé</h2>
+      <label for="password">Mot de passe administrateur<input id="password" type="password" autocomplete="current-password" placeholder="Saisir votre mot de passe secret"></label>
+      <div class="toolbar"><button type="button" id="load" class="primary">Déverrouiller la console</button><button type="button" id="logout" style="display:none;" class="danger">Déconnexion</button></div>
     </section>
-    <nav aria-label="Sections de gestion">
-      <button class="tab" data-section="planning" aria-pressed="true">📅 Planning</button>
-      <button class="tab" data-section="contacts" aria-pressed="false">✉️ Contacts</button>
-      <button class="tab" data-section="avis" aria-pressed="false">⭐ Avis</button>
-    </nav>
-    <div class="toolbar"><button type="button" id="refresh">↻ Actualiser</button><span class="hint" id="count"></span></div>
-    <p id="status" class="status" role="status" aria-live="polite"></p>
-    <section id="editor"></section>
-    <section id="items" aria-live="polite"></section>
+
+    <div id="admin-content" style="display: none;">
+      <nav aria-label="Sections de gestion">
+        <button class="tab" data-section="planning" aria-pressed="true">📅 Planning</button>
+        <button class="tab" data-section="contacts" aria-pressed="false">✉️ Contacts</button>
+        <button class="tab" data-section="avis" aria-pressed="false">⭐ Avis</button>
+      </nav>
+      <div class="toolbar"><button type="button" id="refresh">↻ Actualiser</button><span class="hint" id="count"></span></div>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+      <section id="editor"></section>
+      <section id="items" aria-live="polite"></section>
+    </div>
   </main>
+
 <script>
 'use strict';
+
+// -------------------------------------------------------------------------
+// DEFINISSEZ VOTRE MOT DE PASSE ICI :
+const SECRET_PASSWORD = "reddice2026"; 
+// -------------------------------------------------------------------------
+
 const requestedSection = new URLSearchParams(window.location.search).get('section');
 let section = ['planning', 'contacts', 'avis'].includes(requestedSection) ? requestedSection : 'planning';
 let rows = [];
+let isAuthenticated = false;
+
 const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const setStatus = (message, bad = false) => { $('status').textContent = message; $('status').style.color = bad ? '#ff9da7' : '#00ffba'; };
@@ -39,14 +52,42 @@ const setStatus = (message, bad = false) => { $('status').textContent = message;
 function formatDate(value) { if (!value) return 'Date non renseignée'; const date = new Date(value); return Number.isNaN(date.getTime()) ? String(value) : date.toLocaleString('fr-FR', { dateStyle:'medium', timeStyle:'short' }); }
 function localDateTime(value) { if (!value) return ''; const d = new Date(value); if (Number.isNaN(d.getTime())) return ''; d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0,16); }
 
-// Stockage local persistant
 const STORAGE_KEYS = { planning: 'reddice_planning', contacts: 'reddice_contacts', avis: 'reddice_avis' };
+
+function checkAuth() {
+  const entered = $('password').value.trim();
+  const saved = sessionStorage.getItem('reddice_admin_auth');
+  if (entered === SECRET_PASSWORD || saved === 'true') {
+    isAuthenticated = true;
+    sessionStorage.setItem('reddice_admin_auth', 'true');
+    $('admin-content').style.display = 'block';
+    $('logout').style.display = 'inline-block';
+    $('load').style.display = 'none';
+    $('password').disabled = true;
+    return true;
+  }
+  isAuthenticated = false;
+  $('admin-content').style.display = 'none';
+  $('logout').style.display = 'none';
+  $('load').style.display = 'inline-block';
+  $('password').disabled = false;
+  return false;
+}
+
+function logout() {
+  sessionStorage.removeItem('reddice_admin_auth');
+  $('password').value = '';
+  isAuthenticated = false;
+  checkAuth();
+  setStatus('Déconnecté.');
+}
 
 function getStorageData(key) {
   try {
     const data = localStorage.getItem(STORAGE_KEYS[key]);
     if (data) return JSON.parse(data);
   } catch(e) {}
+  
   if (key === 'planning') {
     return [
       { id: '1', title: 'Live Découverte Cyberpunk & Gaming', start_at: new Date(Date.now() + 86400000).toISOString(), end_at: new Date(Date.now() + 90000000).toISOString(), game: 'Cyberpunk 2077', description: 'Session chill et test de builds inédits.' },
@@ -71,6 +112,7 @@ function saveStorageData(key, items) {
 }
 
 function switchSection(next) {
+  if (!isAuthenticated) return;
   section = next;
   const url = new URL(window.location.href); url.searchParams.set('section', next); window.history.replaceState({}, '', url.pathname + url.search);
   document.querySelectorAll('[data-section]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.section === section)));
@@ -79,7 +121,11 @@ function switchSection(next) {
 }
 
 async function loadSection() {
-  $('load').disabled = $('refresh').disabled = true;
+  if (!checkAuth()) {
+    alert('Mot de passe incorrect.');
+    return;
+  }
+  $('refresh').disabled = true;
   $('items').innerHTML = ''; setStatus('Chargement…');
   try {
     rows = getStorageData(section);
@@ -89,12 +135,12 @@ async function loadSection() {
       rows.sort((a,b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
     }
     $('count').textContent = `${rows.length} élément(s)`;
-    setStatus('Données chargées avec succès (Mode local autonome).');
+    setStatus('Console administrateur déverrouillée.');
     render();
   } catch (error) {
     rows = []; $('editor').innerHTML = ''; $('items').innerHTML = `<div class="empty">${esc(error.message)}</div>`; setStatus(error.message, true);
   } finally {
-    $('load').disabled = $('refresh').disabled = false;
+    $('refresh').disabled = false;
   }
 }
 
@@ -129,7 +175,7 @@ function render() {
         setStatus('Stream modifié avec succès.');
       } else {
         rows.push(newItem);
-        setStatus('Stream ajouté avec succès.');
+        setStatus('Stream ajouté au planning.');
       }
       saveStorageData('planning', rows);
       await loadSection();
@@ -201,28 +247,7 @@ function bindEditForm() {
     setStatus('Stream modifié avec succès.');
     await loadSection();
   });
-  $('cancel-edit').addEventListener('click', () => { $('editor').innerHTML = planningForm(); renderPlanningFormOnly(); });
-}
-
-function renderPlanningFormOnly() {
-  const f = $('stream-form');
-  if (!f) return;
-  f.addEventListener('submit', async event => {
-    event.preventDefault(); 
-    const form = new FormData(event.currentTarget); 
-    const newItem = {
-      id: 'stream_' + Date.now(),
-      title: form.get('title'),
-      start_at: new Date(String(form.get('start_at'))).toISOString(),
-      end_at: form.get('end_at') ? new Date(String(form.get('end_at'))).toISOString() : null,
-      game: form.get('game'),
-      description: form.get('description')
-    };
-    rows.push(newItem);
-    saveStorageData('planning', rows);
-    setStatus('Stream ajouté avec succès.');
-    await loadSection();
-  });
+  $('cancel-edit').addEventListener('click', () => { $('editor').innerHTML = planningForm(); });
 }
 
 document.querySelectorAll('[data-section]').forEach(button => {
@@ -231,11 +256,14 @@ document.querySelectorAll('[data-section]').forEach(button => {
 });
 
 $('load').addEventListener('click', loadSection); 
+$('logout').addEventListener('click', logout);
 $('refresh').addEventListener('click', loadSection);
 $('password').addEventListener('keydown', event => { if (event.key === 'Enter') loadSection(); });
 
 window.addEventListener('DOMContentLoaded', () => {
-  loadSection();
+  if (sessionStorage.getItem('reddice_admin_auth') === 'true') {
+    loadSection();
+  }
 });
 </script>
 </body>
