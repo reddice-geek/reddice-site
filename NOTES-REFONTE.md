@@ -1,21 +1,30 @@
-# REDDICE — Refonte cyberpunk
+# REDDICE — Refonte cyberpunk V2
 
-## Modifications
+## Ce qui change
 
-- Ajout d'une navigation commune sur les pages du site : menu desktop, menu mobile repliable, état actif de la page et fermeture avec Échap.
-- Harmonisation du thème sombre cyberpunk : cyan, violet et orange, fonds en grille, panneaux, boutons, archives vidéo et pied de page.
-- Ajout d'une introduction à la première personne sur Bio, Setup, Mes jeux et Planning.
-- Ajout d'animations de révélation au défilement, avec prise en charge de `prefers-reduced-motion`.
-- Conservation des pages applicatives, des données, des API, des formulaires, de la console d'administration et de la configuration existante.
+- Navigation unique sur toutes les pages : l'ancien menu React présent dans chaque page est repéré à partir des libellés réels (Accueil, Bio, Setup PCB RGB, Mes Jeux, Planning, Livre d’or, Contact, etc.) puis masqué. La détection ne dépend plus d'une liste d'URL rigide, ce qui corrige notamment les variantes de liens sur Setup.
+- Navigation mobile sous forme de panneau repliable, fermeture après sélection, avec Échap et clic extérieur.
+- En-tête et pied de page communs sur les pages publiques, les pages légales, le plan du site, la 404 et la console d'administration.
+- Bannière d'introduction conçue pour chaque page : texte à la première personne, couleur d'accent dédiée, tags et liens rapides.
+- Harmonisation des composants de chaque page : typographie, cartes, bordures, formulaires, boutons, espacements, grilles et effets de survol.
+- Apparitions douces des sections au défilement, jauge de progression et animations décoratives. Les animations sont désactivées si l'utilisateur préfère réduire les mouvements.
+- Maintien des contenus React existants, de la bibliothèque de jeux, du planning administrable, du livre d'or, du formulaire de contact, des rediffusions et des fonctions Twitch.
 
-## Correctif du lecteur Twitch
+## Lecteur Twitch
 
-L'ancien script réassignait régulièrement `iframe.src` pendant une boucle de plusieurs secondes. Chaque réaffectation pouvait recharger l'embed et provoquer le clignotement visible.
+Le script de correction garde un fonctionnement idempotent : il vérifie `parent`, `channel`, `muted` et `autoplay`, puis ne modifie `iframe.src` que si un paramètre est incorrect ou manquant. Il n'y a pas de réaffectation périodique de l'URL, ce qui évite de forcer le rechargement du lecteur en boucle.
 
-Le lecteur est maintenant corrigé de façon idempotente : le script vérifie les paramètres `parent`, `channel`, `muted` et `autoplay`, puis ne change `src` que si une valeur doit réellement être corrigée. Le traitement ne relance plus le lecteur à chaque mutation du DOM.
+## Fichiers fonctionnels préservés
 
-## Mise en ligne
+Les API, données JSON, `vercel.json`, `script.js` et le script `cyberpunk-fixes.js` de la version précédente ont été conservés. Les changements principaux de cette V2 sont dans `site-enhancements.js` et `site-polish.css`.
 
-Remplacer les fichiers du site par ceux de cette archive dans le dépôt GitHub, puis laisser Vercel effectuer le déploiement habituel. Les variables d'environnement et les données ne sont pas modifiées.
+## Contrôles effectués
 
-Le lecteur Twitch doit être testé depuis le domaine de production `reddicestream.com`, car Twitch vérifie le domaine présent dans le paramètre `parent`. La vérification locale de cette archive ne peut pas confirmer l'état réel du stream ou des identifiants API Twitch.
+- Syntaxe JavaScript vérifiée avec Node.js pour les scripts partagés.
+- Feuille CSS vérifiée : aucune erreur de parsing.
+- Présence de la feuille de style et du script communs vérifiée sur toutes les pages HTML du site.
+- Les fichiers API, les fichiers de données et la configuration Vercel ont été comparés : ils sont inchangés.
+
+La prévisualisation complète du navigateur et le test du lecteur Twitch sur le domaine de production doivent encore être faits après déploiement. Twitch exige que le domaine réel figure dans le paramètre `parent`.
+## Mise à jour géographique — Bourges (Cher, 18)
+Les références géographiques du site indiquent désormais Bourges et le Cher (18). Les coordonnées géographiques détaillées ont été retirées de l’affichage au profit de la seule localisation déclarée.

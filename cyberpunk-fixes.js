@@ -22,7 +22,6 @@
         .replaceAll("KEYSTONE", "REDDICE STREAM HUB")
         .replaceAll("FURIOZ COMPAGNIE // INC.", "REDDICE // STREAM HUB")
         .replaceAll("ARASAKADIR://INTEL.DEPT/PROFILE", "REDDICE://PLAYER.PROFILE")
-        .replaceAll("NODE ANGERS // FR", "FRANCE // ONLINE")
         .replaceAll("RED DICE", "REDDICE")
         .replaceAll("reddice.fr", DOMAIN)
         .replaceAll("www.reddice.fr", `www.${DOMAIN}`)

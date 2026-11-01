@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded',()=>{
   const yearEl=document.getElementById('year'); if(yearEl) yearEl.textContent=new Date().getFullYear();
   const sysDate=document.getElementById('sys-date');
-  if(sysDate) setInterval(()=>{sysDate.textContent=new Date().toLocaleString('fr-FR')+' • ANGERS // FR'},1000);
+  if(sysDate) setInterval(()=>{sysDate.textContent=new Date().toLocaleString('fr-FR')+' • BOURGES // CHER (18) // FR'},1000);
 
   // Twitch fallback if iframe blocked in preview
   const twitchBox=document.querySelector('.player-box iframe');
