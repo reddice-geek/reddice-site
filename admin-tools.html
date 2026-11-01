@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#05070a">
   <title>Gestion — REDDICE</title>
+  <link rel="stylesheet" href="site-global.css">
   <link rel="stylesheet" href="site-polish.css">
   <style>
     :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#05070a;color:#edf7ff;font:15px/1.55 Inter,system-ui,sans-serif}header,main{width:min(1050px,100%);margin:auto;padding:20px}header{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid #00f0ff2c}h1,h2,h3{margin:0;color:#00f0ff}h1{font-size:clamp(22px,4vw,32px)}h2{font-size:20px;margin-bottom:12px}h3{font-size:17px;margin-bottom:6px}a{color:#00f0ff}button,input,textarea,select{font:inherit;border:1px solid #276078;border-radius:6px;background:#0b1722;color:#f4fbff;padding:10px;max-width:100%}button{cursor:pointer}button:hover{border-color:#00f0ff}button:disabled{opacity:.55;cursor:wait}input,textarea,select{width:100%}textarea{min-height:100px;resize:vertical}label{display:grid;gap:6px;margin:12px 0;color:#a9c4d5;font-size:13px}.toolbar,nav,.actions,.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.toolbar{margin:16px 0}nav{margin:18px 0}.toolbar button,.tab{width:auto}.tab[aria-pressed=true]{background:#00f0ff;color:#031018;border-color:#00f0ff;font-weight:700}.panel{background:#0b121b;border:1px solid #29485d;padding:18px;border-radius:9px;margin:12px 0;min-width:0}.panel form{max-width:780px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.status{min-height:28px;color:#00ffba;white-space:pre-wrap}.muted,small{color:#95aabc}.item-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}.badge{display:inline-flex;border:1px solid #4b6678;border-radius:30px;padding:3px 9px;font-size:11px;letter-spacing:.04em}.badge.pending{color:#ffd36a;border-color:#9d7426}.badge.approved,.badge.handled{color:#00ffba;border-color:#127b62}.badge.rejected,.badge.new{color:#ff8e9a;border-color:#89404a}.content{white-space:pre-wrap;overflow-wrap:anywhere;color:#d2e3ec;margin:10px 0}.danger{border-color:#8d3440;color:#ff9da7}.primary{background:#00f0ff;color:#041016;font-weight:700}.empty{padding:20px;border:1px dashed #315164;color:#95aabc;text-align:center;border-radius:8px}.hint{font-size:12px;color:#95aabc}.email{overflow-wrap:anywhere}.toolbar .hint{flex:1;min-width:180px}@media(max-width:600px){header,main{padding:14px}.grid2{grid-template-columns:1fr}.panel{padding:14px}.toolbar button{flex:1}}
@@ -226,5 +227,6 @@ $('load').addEventListener('click', loadSection);
 $('refresh').addEventListener('click', loadSection);
 $('password').addEventListener('keydown', event => { if (event.key === 'Enter') loadSection(); });
 </script>
+  <script src="site-enhancements.js" defer></script>
 </body>
 </html>
